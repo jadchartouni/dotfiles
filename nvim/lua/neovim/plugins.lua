@@ -89,9 +89,7 @@ return packer.startup(function(use)
     use({
             "AndrewRadev/splitjoin.vim",
             config = function()
-                vim.g.splitjoin_html_attributes_bracket_on_new_line = 1
-                vim.g.splitjoin_trailing_comma = 1
-                vim.g.splitjoin_php_method_chain_full = 1
+                require("neovim.plugins.splitjoin")
             end,
         })
 
@@ -99,7 +97,7 @@ return packer.startup(function(use)
     use({
             "sickill/vim-pasta",
             config = function()
-                vim.g.pasta_disabled_filetypes = { "fugitive" }
+                require("neovim.plugins.vim-pasta")
             end,
         })
 
@@ -165,7 +163,7 @@ return packer.startup(function(use)
             "voldikss/vim-floaterm",
             after = "vim-nightfly-colors",
             config = function()
-                require("neovim.plugins.floaterm")
+                require("neovim.plugins.vim-floaterm")
             end,
         })
 
@@ -179,7 +177,7 @@ return packer.startup(function(use)
                 "JoosepAlviste/nvim-ts-context-commentstring",
             },
             config = function()
-                require("neovim.plugins.treesitter")
+                require("neovim.plugins.nvim-treesitter")
             end,
         })
 
