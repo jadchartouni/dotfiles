@@ -5,7 +5,6 @@
 # iterm: done
 # kitty
 # nvim
-# nvm
 # scripts
 # tmux: done
 # vim: done
@@ -58,7 +57,7 @@ rm -rf $HOME/.local/bin/start-tmux
 ln -s $DOTFILES/scripts/start-tmux $HOME/.local/bin/start-tmux
 
 # Composer
-
+echo "Installing composer..."
 
 # Laravel
-
+echo "Installing Laravel..."
