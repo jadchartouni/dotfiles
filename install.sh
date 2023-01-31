@@ -32,7 +32,9 @@ rm -rf $HOME/.tmux.conf
 ln -s $DOTFILES/tmux/tmux.conf $HOME/.tmux.conf
 
 # ZSH
-
+echo "Configuring ZSH"
+rm -rf $HOME/.zshrc
+ln -s $DOTFILES/zsh/zshrc $HOME/.zshrc
 
 # NeoVim
 echo "Configuring Neovim"
@@ -46,6 +48,7 @@ ln -s $DOTFILES/vim/vimrc $HOME/.vimrc
 
 # Git
 echo "Configuring git..."
+rm -rf $HOME/.gitignore_global
 ln -s $DOTFILES/git/gitignore $HOME/.gitignore_global
 
 # Scripts
