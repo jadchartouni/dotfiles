@@ -39,6 +39,11 @@ echo "Configuring Neovim"
 rm -rf $HOME/.config/nvim
 ln -s $DOTFILES/nvim $HOME/.config/nvim
 
+# Vim
+echo "Configuring Vim"
+rm -rf $HOME/.vimrc
+ln -s $DOTFILES/vim/vimrc $HOME/.vimrc
+
 # Git
 echo "Configuring git..."
 ln -s $DOTFILES/git/gitignore $HOME/.gitignore_global
