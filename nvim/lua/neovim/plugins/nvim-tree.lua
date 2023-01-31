@@ -4,7 +4,7 @@ require("nvim-tree").setup({
     },
     renderer = {
         highlight_opened_files = "1",
-        group_empty = false,
+        group_empty = true,
         icons = {
             show = {
                 folder_arrow = false,

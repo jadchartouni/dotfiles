@@ -121,6 +121,7 @@ return packer.startup(function(use)
     -- File tree
     use({
             "kyazdani42/nvim-tree.lua",
+            after = "vim-nightfly-colors",
             requires = "kyazdani42/nvim-web-devicons",
             config = function()
                 require("neovim.plugins.nvim-tree")
