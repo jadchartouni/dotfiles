@@ -183,6 +183,22 @@ return packer.startup(function(use)
             end,
         })
 
+    -- Autocompletion
+    
+
+    -- Snippets
+
+
+    -- Mason for managing LSP servers, formatters, and linters
+
+
+    -- LSP
+
+
+    -- Formatters and linters
+
+    
+
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins
     if packer_bootstrap then
