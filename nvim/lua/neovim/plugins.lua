@@ -135,15 +135,6 @@ return packer.startup(function(use)
             end,
         })
 
-    -- Buffer line
-    -- use({
-    --         "akinsho/bufferline.nvim",
-    --         requires = "kyazdani42/nvim-web-devicons",
-    --         config = function()
-    --             require("neovim.plugins.bufferline")
-    --         end,
-    --     })
-
     -- Indent blank lines
     use({
             "lukas-reineke/indent-blankline.nvim",
