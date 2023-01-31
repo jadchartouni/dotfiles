@@ -106,6 +106,7 @@ return packer.startup(function(use)
     -- Fuzzy finder
     use({
             "nvim-telescope/telescope.nvim",
+            after = "vim-nightfly-colors",
             requires = {
                 "nvim-lua/plenary.nvim",
                 "kyazdani42/nvim-web-devicons",
@@ -155,6 +156,15 @@ return packer.startup(function(use)
                             vim.keymap.set('n', '[h', "&diff ? '[c' : '<cmd>Gitsigns prev_hunk<cr>'", { expr = true, buffer = bufnr })
                         end,
                     })
+            end,
+        })
+
+    -- Floating terminal
+    use({
+            "voldikss/vim-floaterm",
+            after = "vim-nightfly-colors",
+            config = function()
+                require("neovim.plugins.floaterm")
             end,
         })
 
