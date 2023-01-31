@@ -168,6 +168,20 @@ return packer.startup(function(use)
             end,
         })
 
+    -- Tree-sitter
+    use({
+            "nvim-treesitter/nvim-treesitter",
+            run = ":TSUpdate",
+            requires = {
+                "nvim-treesitter/playground",
+                "nvim-treesitter/nvim-treesitter-textobjects",
+                "JoosepAlviste/nvim-ts-context-commentstring",
+            },
+            config = function()
+                require("neovim.plugins.treesitter")
+            end,
+        })
+
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins
     if packer_bootstrap then
