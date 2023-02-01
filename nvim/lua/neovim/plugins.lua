@@ -195,7 +195,21 @@ return packer.startup(function(use)
         })
 
     -- Autocompletion
-    
+    use({
+            "hrsh7th/nvim-cmp",
+            requires = {
+                "L3MON4D3/LuaSnip",
+                "hrsh7th/cmp-buffer",
+                "hrsh7th/cmp-path",
+                "hrsh7th/cmp-nvim-lua",
+                "hrsh7th/cmp-cmdline",
+                "onsails/lspkind-nvim",
+                "saadparwaiz1/cmp_luasnip",
+            },
+            config = function()
+                require("neovim.plugins.nvim-cmp")
+            end,
+        })
 
     -- Snippets
 
