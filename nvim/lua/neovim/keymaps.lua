@@ -56,11 +56,8 @@ keymap.set("n", "<leader>tx", ":tabclose<cr>") -- Close current tab
 keymap.set("n", "<leader>tn", ":tabn<cr>") -- Go to next tab
 keymap.set("n", "<leader>tp", ":tabp<cr>") -- Go to pevious tab
 
--- Plugin: vim-maximizer
-keymap.set("n", "<leader>sm", ":MaximizerToggle<cr>")
-
 -- Plugin: nvim-tree
-keymap.set("n", "<leader>1", ":NvimTreeToggle<cr>")
+keymap.set("n", "<leader>ft", ":NvimTreeToggle<cr>")
 
 -- Plugin: telescope
 keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>") -- Find files within current working directory, respects .gitignore
@@ -71,4 +68,4 @@ keymap.set("n", "<leader>fo", "<cmd>Telescope oldfiles<cr>") -- List files from 
 keymap.set("n", "<leader>fh", "<cmd>Telescope help_tags<cr>") -- List available help tags
 
 -- Plugin: telescope-file-browser
-keymap.set("n", "<C-e>", "<cmd>Telescope file_browser hidden=true path=~ grouped=true<cr>") -- Lanch the floating file browser
+keymap.set("n", "<leader>fa", "<cmd>Telescope file_browser hidden=true path=~ grouped=true<cr>") -- Lanch the floating file browser
