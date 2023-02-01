@@ -194,6 +194,14 @@ return packer.startup(function(use)
             end,
         })
 
+    -- Snippets
+    use({
+            "L3MON4D3/LuaSnip",
+            config = function()
+                require("neovim.plugins.luasnip")
+            end,
+        })
+
     -- Autocompletion
     use({
             "hrsh7th/nvim-cmp",
