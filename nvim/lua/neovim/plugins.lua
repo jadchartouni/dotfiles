@@ -126,6 +126,19 @@ return packer.startup(function(use)
             end,
         })
 
+    -- Floating file tree
+    use({
+            "nvim-telescope/telescope-file-browser.nvim",
+            after = {
+                "vim-nightfly-colors",
+                "telescope.nvim",
+            },
+            requires = "nvim-telescope/telescope.nvim",
+            config = function()
+                require("neovim.plugins.telescope-file-browser")
+            end,
+        })
+
     -- Status line
     use({
             "nvim-lualine/lualine.nvim",

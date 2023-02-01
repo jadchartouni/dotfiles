@@ -69,3 +69,6 @@ keymap.set("n", "<leader>fc", "<cmd>Telescope grep_string<cr>") -- Find string u
 keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<cr>") -- List open buffers in current neovim instance
 keymap.set("n", "<leader>fo", "<cmd>Telescope oldfiles<cr>") -- List files from history
 keymap.set("n", "<leader>fh", "<cmd>Telescope help_tags<cr>") -- List available help tags
+
+-- Plugin: telescope-file-browser
+keymap.set("n", "<C-e>", "<cmd>Telescope file_browser hidden=true path=~ grouped=true<cr>") -- Lanch the floating file browser
