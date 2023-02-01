@@ -81,7 +81,7 @@ return packer.startup(function(use)
     use({
             "windwp/nvim-autopairs",
             config = function()
-                require("nvim-autopairs").setup()
+                require("neovim.plugins.nvim-autopairs")
             end,
         })
 
@@ -211,6 +211,8 @@ return packer.startup(function(use)
                 "hrsh7th/cmp-path",
                 "hrsh7th/cmp-nvim-lua",
                 "hrsh7th/cmp-cmdline",
+                "hrsh7th/cmp-nvim-lsp",
+                "hrsh7th/cmp-nvim-lsp-signature-help",
                 "onsails/lspkind-nvim",
                 "saadparwaiz1/cmp_luasnip",
             },
@@ -218,9 +220,6 @@ return packer.startup(function(use)
                 require("neovim.plugins.nvim-cmp")
             end,
         })
-
-    -- Snippets
-
 
     -- Mason for managing LSP servers, formatters, and linters
 
