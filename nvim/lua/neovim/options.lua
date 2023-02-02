@@ -40,7 +40,7 @@ opt.mouse = 'a'
 -- Appearance
 opt.termguicolors = true
 opt.background = "dark"
-opt.signcolumn = "yes:2"
+opt.signcolumn = "yes"
 opt.fillchars:append({ eob = ' ' }) -- Remove ~ from end of buffer
 
 -- Window title

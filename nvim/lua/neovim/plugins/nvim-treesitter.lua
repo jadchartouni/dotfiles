@@ -6,12 +6,6 @@ require('nvim-treesitter.configs').setup({
             disable = { "NvimTree" },
             additional_vim_regex_highlighting = true,
         },
-        indent = {
-            enable = false,
-        },
-        autotag = {
-            enable = true,
-        },
         textobjects = {
             select = {
                 enable = true,
