@@ -57,7 +57,6 @@ return require("packer").startup(function(use)
     use("tpope/vim-surround") -- Add, change, and delete surrounding text
     use("tpope/vim-eunuch") -- Useful commands like :Rename and :SudoWrite
     use("tpope/vim-unimpaired") -- Handy bracket mappings, like [b and ]b
-    -- use("tpope/vim-sleuth") -- Indentation autodetection
     use("tpope/vim-repeat") -- Allow plugins to enable repeating of commands
     use("sheerun/vim-polyglot") -- Add more languages
     use("christoomey/vim-tmux-navigator") -- Seamless navigation between vim and tmux
