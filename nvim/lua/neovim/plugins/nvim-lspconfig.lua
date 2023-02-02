@@ -1,24 +1,24 @@
 -- Setup Mason to automatically install LSP servers
 require("mason").setup()
 require("mason-lspconfig").setup({
-        automatic_installation = true,
-    })
+    automatic_installation = true,
+})
 
 -- PHP
 require("lspconfig").intelephense.setup({})
 
 -- Vue, JavaScript, Typescript
 require("lspconfig").volar.setup({
-        -- Enable "Take Over Mode" where volar will provide all JS/TS LSP services
-        -- This drastically improves the responsiveness of diagnostic updates on change
-        filetypes = {
-            "typescript",
-            "javascript",
-            "javascriptreact",
-            "typescriptreact",
-            "vue"
-        },
-    })
+    -- Enable "Take Over Mode" where volar will provide all JS/TS LSP services
+    -- This drastically improves the responsiveness of diagnostic updates on change
+    filetypes = {
+        "typescript",
+        "javascript",
+        "javascriptreact",
+        "typescriptreact",
+        "vue"
+    },
+})
 
 -- Tailwind CSS
 require("lspconfig").tailwindcss.setup({})
@@ -35,11 +35,11 @@ vim.keymap.set("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<cr>")
 
 -- Diagnostic information
 vim.diagnostic.config({
-                virtual_text = false,
-                float = {
-                        source = true,
-                },
-        })
+    virtual_text = false,
+    float = {
+        source = true,
+    },
+})
 
 vim.fn.sign_define('DiagnosticSignError', { text = '', texthl = 'DiagnosticSignError' })
 vim.fn.sign_define('DiagnosticSignWarn', { text = '', texthl = 'DiagnosticSignWarn' })
