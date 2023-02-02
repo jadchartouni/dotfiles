@@ -194,6 +194,18 @@ return packer.startup(function(use)
             end,
         })
 
+    -- LSP
+    use({
+            "neovim/nvim-lspconfig",
+            requires = {
+                "williamboman/mason.nvim",
+                "williamboman/mason-lspconfig.nvim",
+            },
+            config = function()
+                require("neovim.plugins.nvim-lspconfig")
+            end,
+        })
+
     -- Snippets
     use({
             "L3MON4D3/LuaSnip",
