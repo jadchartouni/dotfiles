@@ -69,3 +69,6 @@ keymap.set("n", "<leader>fh", "<cmd>Telescope help_tags<cr>") -- List available 
 
 -- Plugin: telescope-file-browser
 keymap.set("n", "<leader>fa", "<cmd>Telescope file_browser hidden=true path=~ grouped=true<cr>") -- Lanch the floating file browser
+
+-- Plugin: todo-comments
+keymap.set("n", "<leader>td", ":TodoTelescope<cr>") -- List available help tags
