@@ -187,6 +187,22 @@ return require("packer").startup(function(use)
         end,
     })
 
+    -- Autotags
+    use({
+        "windwp/nvim-ts-autotag",
+        wants = "nvim-treesitter",
+        requires = "nvim-treesitter",
+        config = function()
+            require('nvim-ts-autotag').setup({
+                enable = true,
+                filetypes = {
+                    "html",
+                    "php",
+                }
+            })
+        end,
+    })
+
     -- LSP
     use({
         "neovim/nvim-lspconfig",

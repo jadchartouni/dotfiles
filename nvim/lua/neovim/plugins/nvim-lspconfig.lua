@@ -5,7 +5,12 @@ require("mason-lspconfig").setup({
 })
 
 -- PHP
-require("lspconfig").intelephense.setup({})
+require("lspconfig").intelephense.setup({
+    filetypes = {
+        "blade",
+        "php",
+    },
+})
 
 -- Vue, JavaScript, Typescript
 require("lspconfig").volar.setup({
@@ -22,6 +27,15 @@ require("lspconfig").volar.setup({
 
 -- Tailwind CSS
 require("lspconfig").tailwindcss.setup({})
+
+-- HTML
+require("lspconfig").html.setup({
+    filetypes = {
+        "html",
+        "blade",
+        "php",
+    },
+})
 
 -- Keymaps
 vim.keymap.set("n", "<leader>d", "<cmd>lua vim.diagnostic.open_float()<cr>")
