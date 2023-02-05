@@ -1,28 +1,34 @@
 -- Setup Mason to automatically install LSP servers
 require("mason").setup()
 require("mason-lspconfig").setup({
-    automatic_installation = true,
+	automatic_installation = true,
+})
+
+require("mason-null-ls").setup({
+	ensure_installed = {
+		"prettier",
+		"stylua",
+	},
 })
 
 -- PHP
 require("lspconfig").intelephense.setup({
-    filetypes = {
-        "blade",
-        "php",
-    },
+	-- filetypes = {
+	--     "php",
+	-- },
 })
 
 -- Vue, JavaScript, Typescript
 require("lspconfig").volar.setup({
-    -- Enable "Take Over Mode" where volar will provide all JS/TS LSP services
-    -- This drastically improves the responsiveness of diagnostic updates on change
-    filetypes = {
-        "typescript",
-        "javascript",
-        "javascriptreact",
-        "typescriptreact",
-        "vue"
-    },
+	-- Enable "Take Over Mode" where volar will provide all JS/TS LSP services
+	-- This drastically improves the responsiveness of diagnostic updates on change
+	filetypes = {
+		"typescript",
+		"javascript",
+		"javascriptreact",
+		"typescriptreact",
+		"vue",
+	},
 })
 
 -- Tailwind CSS
@@ -30,11 +36,11 @@ require("lspconfig").tailwindcss.setup({})
 
 -- HTML
 require("lspconfig").html.setup({
-    filetypes = {
-        "html",
-        "blade",
-        "php",
-    },
+	filetypes = {
+		"html",
+		"blade",
+		"php",
+	},
 })
 
 -- Keymaps
@@ -49,14 +55,13 @@ vim.keymap.set("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<cr>")
 
 -- Diagnostic information
 vim.diagnostic.config({
-    virtual_text = false,
-    float = {
-        source = true,
-    },
+	virtual_text = false,
+	float = {
+		source = true,
+	},
 })
 
-vim.fn.sign_define('DiagnosticSignError', { text = '', texthl = 'DiagnosticSignError' })
-vim.fn.sign_define('DiagnosticSignWarn', { text = '', texthl = 'DiagnosticSignWarn' })
-vim.fn.sign_define('DiagnosticSignInfo', { text = '', texthl = 'DiagnosticSignInfo' })
-vim.fn.sign_define('DiagnosticSignHint', { text = '', texthl = 'DiagnosticSignHint' })
-
+vim.fn.sign_define("DiagnosticSignError", { text = "", texthl = "DiagnosticSignError" })
+vim.fn.sign_define("DiagnosticSignWarn", { text = "", texthl = "DiagnosticSignWarn" })
+vim.fn.sign_define("DiagnosticSignInfo", { text = "", texthl = "DiagnosticSignInfo" })
+vim.fn.sign_define("DiagnosticSignHint", { text = "", texthl = "DiagnosticSignHint" })
