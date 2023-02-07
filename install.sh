@@ -1,24 +1,5 @@
 #!/usr/bin/env bash
 
-# brew: done
-# git: done
-# iterm: done
-# kitty
-# nvim
-# scripts
-# tmux: done
-# vim: done
-# wallpapers
-# zsh
-
-# Update macOS
-# Install Xcode from the App Store
-# Install macOS Command Line Tools by running xcode-select --install
-# Copy public and private keys to .ssh and set permission to 600
-# Clone this repo to ~/.dotfiles
-# Run this script
-# Restart macOS
-
 DOTFILES=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 
 # Configure macOS
