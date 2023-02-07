@@ -2,51 +2,95 @@
 
 DOTFILES=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 
-# Configure macOS
-echo "Configuring macOS..."
-touch ~/.hushlogin
+# Ask for the administrator password upfront
+echo "This script requires sudo permissions."
+sudo -v
 
-# Brew 
+# Setup macOS
+function setup_macos()
+{
+    echo "Configuring macOS..."
+    touch ~/.hushlogin
+}
 
+# Setup Ubuntu
+function setup_ubuntu()
+{
 
-# Kitty
-echo "Configuring kitty..."
-rm -rf $HOME/.config/kitty
-ln -s $DOTFILES/kitty $HOME/.config/kitty
+}
 
-# Tmux
-echo "Configuring tmux..."
-rm -rf $HOME/.tmux.conf
-ln -s $DOTFILES/tmux/tmux.conf $HOME/.tmux.conf
+# Setup Homebrew 
+function setup_homebrew()
+{
 
-# ZSH
-echo "Configuring ZSH"
-rm -rf $HOME/.zshrc
-ln -s $DOTFILES/zsh/zshrc $HOME/.zshrc
+}
 
-# NeoVim
-echo "Configuring Neovim"
-rm -rf $HOME/.config/nvim
-ln -s $DOTFILES/nvim $HOME/.config/nvim
+# Setup Kitty
+function setup_kitty()
+{
+    echo "Configuring kitty..."
+    rm -rf $HOME/.config/kitty
+    ln -s $DOTFILES/kitty $HOME/.config/kitty
+}
 
-# Vim
-echo "Configuring Vim"
-rm -rf $HOME/.vimrc
-ln -s $DOTFILES/vim/vimrc $HOME/.vimrc
+# Setup Tmux
+function setup_tmux()
+{
+    echo "Configuring tmux..."
+    rm -rf $HOME/.tmux.conf
+    ln -s $DOTFILES/tmux/tmux.conf $HOME/.tmux.conf
+}
 
-# Git
-echo "Configuring git..."
-rm -rf $HOME/.gitignore_global
-ln -s $DOTFILES/git/gitignore $HOME/.gitignore_global
+# Setup ZSH
+function setup_zsh()
+{
+    echo "Configuring ZSH"
+    rm -rf $HOME/.zshrc
+    ln -s $DOTFILES/zsh/zshrc $HOME/.zshrc
+}
 
-# Scripts
-echo "Configuring scripts..."
-mkdir -p $HOME/.local/bin
-rm -rf $HOME/.local/bin/start-tmux
-ln -s $DOTFILES/scripts/start-tmux $HOME/.local/bin/start-tmux
+# Setup NeoVim
+function setup_neovim()
+{
+    echo "Configuring Neovim"
+    rm -rf $HOME/.config/nvim
+    ln -s $DOTFILES/nvim $HOME/.config/nvim
+}
 
-# Composer
-echo "Installing composer..."
+# Setup Vim
+function setup_vim()
+{
+    echo "Configuring Vim"
+    rm -rf $HOME/.vimrc
+    ln -s $DOTFILES/vim/vimrc $HOME/.vimrc
+}
 
-# Laravel
-echo "Installing Laravel..."
+# Setup Git
+function setup_git()
+{
+    echo "Configuring git..."
+    rm -rf $HOME/.gitignore_global
+    ln -s $DOTFILES/git/gitignore $HOME/.gitignore_global
+}
+
+# Setup Scripts
+function setup_scripts()
+{
+    echo "Configuring scripts..."
+    mkdir -p $HOME/.local/bin
+    rm -rf $HOME/.local/bin/start-tmux
+    ln -s $DOTFILES/scripts/start-tmux $HOME/.local/bin/start-tmux
+}
+
+# Setup Composer
+function setup_composer()
+{
+    echo "Installing composer..."
+}
+
+# Setup Laravel
+function setup_laravel()
+{
+    echo "Installing Laravel..."
+}
+
