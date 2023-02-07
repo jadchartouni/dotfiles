@@ -19,12 +19,6 @@ function setup_ubuntu()
 
 }
 
-# Setup Homebrew 
-function setup_homebrew()
-{
-
-}
-
 # Setup Kitty
 function setup_kitty()
 {
