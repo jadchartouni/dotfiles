@@ -22,6 +22,7 @@ opt.wrap = false
 
 -- Autocomplete
 opt.wildmode = "longest:full,full"
+opt.completeopt = "menuone,longest,preview" -- Set completeopt to have a better completion experience
 
 -- Search settings
 opt.ignorecase = true
@@ -35,13 +36,13 @@ opt.scrolloff = 8
 opt.sidescrolloff = 8
 
 -- Mouse settings
-opt.mouse = 'a'
+opt.mouse = "a"
 
 -- Appearance
 opt.termguicolors = true
 opt.background = "dark"
 opt.signcolumn = "yes"
-opt.fillchars:append({ eob = ' ' }) -- Remove ~ from end of buffer
+opt.fillchars:append({ eob = " " }) -- Remove ~ from end of buffer
 
 -- Window title
 opt.title = true
@@ -65,4 +66,4 @@ opt.spell = false
 opt.confirm = true -- Ask if exiting without writing
 opt.undofile = true -- Persistent undo
 opt.backup = true -- Automatic backup
-opt.backupdir:remove('.') -- Keep backups out of the current directory
+opt.backupdir:remove(".") -- Keep backups out of the current directory

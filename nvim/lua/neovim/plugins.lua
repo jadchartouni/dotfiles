@@ -123,11 +123,123 @@ return require("packer").startup(function(use)
 	})
 
 	---------------------------------------------------------
+	-- Search -----------------------------------------------
+	---------------------------------------------------------
+	-- Fuzzy finder
+	use({
+		"nvim-telescope/telescope.nvim",
+		after = "vim-nightfly-colors",
+		requires = {
+			"nvim-lua/plenary.nvim",
+			"kyazdani42/nvim-web-devicons",
+			"nvim-telescope/telescope-live-grep-args.nvim",
+			{ "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
+		},
+		config = function()
+			require("neovim.plugins.telescope")
+		end,
+	})
+
+	---------------------------------------------------------
+	-- LSP & Formatters -------------------------------------
+	---------------------------------------------------------
+	-- Tree-sitter
+	use({
+		"nvim-treesitter/nvim-treesitter",
+		run = function()
+			require("nvim-treesitter.install").update({ with_sync = true })
+		end,
+		requires = {
+			"nvim-treesitter/playground",
+			"nvim-treesitter/nvim-treesitter-textobjects",
+			"JoosepAlviste/nvim-ts-context-commentstring",
+		},
+		config = function()
+			require("neovim.plugins.nvim-treesitter")
+		end,
+	})
+
+	-- LSP
+	use({
+		"neovim/nvim-lspconfig",
+		requires = {
+			"williamboman/mason.nvim",
+			"williamboman/mason-lspconfig.nvim",
+			"b0o/schemastore.nvim",
+		},
+		config = function()
+			require("neovim.plugins.nvim-lspconfig")
+		end,
+	})
+
+	-- Linters & Formatters
+	use({
+		"jose-elias-alvarez/null-ls.nvim",
+		requires = "jayp0521/mason-null-ls.nvim",
+		after = "nvim-lspconfig",
+		config = function()
+			require("neovim.plugins.null-ls")
+		end,
+	})
+
+	-- Autocompletion
+	use({
+		"hrsh7th/nvim-cmp",
+		requires = {
+			"hrsh7th/cmp-buffer",
+			"hrsh7th/cmp-path",
+			"hrsh7th/cmp-nvim-lua",
+			"hrsh7th/cmp-cmdline",
+			"hrsh7th/cmp-nvim-lsp",
+			"hrsh7th/cmp-nvim-lsp-signature-help",
+			"L3MON4D3/LuaSnip",
+			"saadparwaiz1/cmp_luasnip",
+			"onsails/lspkind-nvim",
+		},
+		config = function()
+			require("neovim.plugins.nvim-cmp")
+		end,
+	})
+
+	---------------------------------------------------------
+	-- Clean up below ---------------------------------------
+	---------------------------------------------------------
+	use("tpope/vim-eunuch") -- Useful commands like :Rename and :SudoWrite
+	use("tpope/vim-unimpaired") -- Handy bracket mappings, like [b and ]b
+	use("nelstrom/vim-visual-star-search") -- Enable * searching with visually selected text
+
+	-- Gitsigns
+	use({
+		"lewis6991/gitsigns.nvim",
+		requires = "nvim-lua/plenary.nvim",
+		config = function()
+			require("gitsigns").setup({
+				sign_priority = 20,
+				on_attach = function(bufnr)
+					vim.keymap.set(
+						"n",
+						"]h",
+						"&diff ? ']c' : '<cmd>Gitsigns next_hunk<cr>'",
+						{ expr = true, buffer = bufnr }
+					)
+					vim.keymap.set(
+						"n",
+						"[h",
+						"&diff ? '[c' : '<cmd>Gitsigns prev_hunk<cr>'",
+						{ expr = true, buffer = bufnr }
+					)
+				end,
+			})
+		end,
+	})
+
+	---------------------------------------------------------
 	-- Code Editing -----------------------------------------
 	---------------------------------------------------------
 	use("tpope/vim-commentary") -- Commenting support
 	use("tpope/vim-surround") -- Add, change, and delete surrounding text
 	use("tpope/vim-repeat") -- Allow plugins to enable repeating of commands
+	use("sheerun/vim-polyglot") -- Syntax highlighting for a lot of languages
 
 	-- Indent blank lines
 	use({
@@ -177,114 +289,6 @@ return require("packer").startup(function(use)
 		"L3MON4D3/LuaSnip",
 		config = function()
 			require("neovim.plugins.luasnip")
-		end,
-	})
-
-	---------------------------------------------------------
-	-- Search -----------------------------------------------
-	---------------------------------------------------------
-	-- Fuzzy finder
-	use({
-		"nvim-telescope/telescope.nvim",
-		after = "vim-nightfly-colors",
-		requires = {
-			"nvim-lua/plenary.nvim",
-			"kyazdani42/nvim-web-devicons",
-			"nvim-telescope/telescope-live-grep-args.nvim",
-			{ "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
-		},
-		config = function()
-			require("neovim.plugins.telescope")
-		end,
-	})
-
-	---------------------------------------------------------
-	-- LSP & Formatters -------------------------------------
-	---------------------------------------------------------
-	-- Tree-sitter
-	use({
-		"nvim-treesitter/nvim-treesitter",
-		run = ":TSUpdate",
-		requires = {
-			"nvim-treesitter/playground",
-			"nvim-treesitter/nvim-treesitter-textobjects",
-			"JoosepAlviste/nvim-ts-context-commentstring",
-		},
-		config = function()
-			require("neovim.plugins.nvim-treesitter")
-		end,
-	})
-
-	-- Autocompletion
-	use({
-		"hrsh7th/nvim-cmp",
-		requires = {
-			"L3MON4D3/LuaSnip",
-			"hrsh7th/cmp-buffer",
-			"hrsh7th/cmp-path",
-			"hrsh7th/cmp-nvim-lua",
-			"hrsh7th/cmp-cmdline",
-			"hrsh7th/cmp-nvim-lsp",
-			"hrsh7th/cmp-nvim-lsp-signature-help",
-			"onsails/lspkind-nvim",
-			"saadparwaiz1/cmp_luasnip",
-		},
-		config = function()
-			require("neovim.plugins.nvim-cmp")
-		end,
-	})
-
-	-- LSP
-	use({
-		"neovim/nvim-lspconfig",
-		requires = {
-			"williamboman/mason.nvim",
-			"williamboman/mason-lspconfig.nvim",
-		},
-		config = function()
-			require("neovim.plugins.nvim-lspconfig")
-		end,
-	})
-
-	-- Formatters
-	use({
-		"jose-elias-alvarez/null-ls.nvim",
-		requires = "jayp0521/mason-null-ls.nvim",
-		config = function()
-			require("neovim.plugins.null-ls")
-		end,
-	})
-
-	---------------------------------------------------------
-	-- Clean up below ---------------------------------------
-	---------------------------------------------------------
-	use("tpope/vim-eunuch") -- Useful commands like :Rename and :SudoWrite
-	use("tpope/vim-unimpaired") -- Handy bracket mappings, like [b and ]b
-	use("sheerun/vim-polyglot") -- Add more languages
-	use("nelstrom/vim-visual-star-search") -- Enable * searching with visually selected text
-
-	-- Gitsigns
-	use({
-		"lewis6991/gitsigns.nvim",
-		requires = "nvim-lua/plenary.nvim",
-		config = function()
-			require("gitsigns").setup({
-				sign_priority = 20,
-				on_attach = function(bufnr)
-					vim.keymap.set(
-						"n",
-						"]h",
-						"&diff ? ']c' : '<cmd>Gitsigns next_hunk<cr>'",
-						{ expr = true, buffer = bufnr }
-					)
-					vim.keymap.set(
-						"n",
-						"[h",
-						"&diff ? '[c' : '<cmd>Gitsigns prev_hunk<cr>'",
-						{ expr = true, buffer = bufnr }
-					)
-				end,
-			})
 		end,
 	})
 

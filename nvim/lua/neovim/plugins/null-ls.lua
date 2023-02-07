@@ -29,3 +29,13 @@ require("null-ls").setup({
 		end
 	end,
 })
+
+require("mason-null-ls").setup({
+	ensure_installed = {
+		"prettier",
+		"stylua",
+	},
+})
+
+-- Keymaps
+vim.api.nvim_create_user_command("Format", vim.lsp.buf.formatting, {})

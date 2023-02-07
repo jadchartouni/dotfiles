@@ -1,21 +1,46 @@
 -- Setup Mason to automatically install LSP servers
 require("mason").setup()
+
 require("mason-lspconfig").setup({
 	automatic_installation = true,
-})
-
-require("mason-null-ls").setup({
 	ensure_installed = {
-		"prettier",
-		"stylua",
+		"html",
+		"cssls",
+		"tailwindcss",
+		"sumneko_lua",
+		"emmet_ls",
+		"intelephense",
 	},
 })
 
+-- Enable keybinds for available lsp servers
+local on_attach = function(client, bufnr)
+	-- Keybind options
+	local opts = { noremap = true, silent = true, buffer = bufnr }
+end
+
+-- Used to enable autocompletion (assign to every lsp server config)
+local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+-- Diagnostic information
+vim.diagnostic.config({
+	virtual_text = false,
+	float = {
+		source = true,
+	},
+})
+
+-- Change the Diagnostic symbols in the sign column (gutter)
+local signs = { Error = " ", Warn = " ", Hint = "ﴞ ", Info = " " }
+for type, icon in pairs(signs) do
+	local hl = "DiagnosticSign" .. type
+	vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
+end
+
 -- PHP
 require("lspconfig").intelephense.setup({
-	-- filetypes = {
-	--     "php",
-	-- },
+	capabilities = capabilities,
+	on_attach = on_attach,
 })
 
 -- Vue, JavaScript, Typescript
@@ -28,11 +53,17 @@ require("lspconfig").volar.setup({
 		"javascriptreact",
 		"typescriptreact",
 		"vue",
+		"json",
 	},
+	capabilities = capabilities,
+	on_attach = on_attach,
 })
 
 -- Tailwind CSS
-require("lspconfig").tailwindcss.setup({})
+require("lspconfig").tailwindcss.setup({
+	capabilities = capabilities,
+	on_attach = on_attach,
+})
 
 -- HTML
 require("lspconfig").html.setup({
@@ -40,6 +71,18 @@ require("lspconfig").html.setup({
 		"html",
 		"blade",
 		"php",
+	},
+	capabilities = capabilities,
+	on_attach = on_attach,
+})
+
+-- JSON
+require("lspconfig").jsonls.setup({
+	capabilities = capabilities,
+	settings = {
+		json = {
+			schemas = require("schemastore").json.schemas(),
+		},
 	},
 })
 
@@ -52,16 +95,3 @@ vim.keymap.set("n", "gi", ":Telescope lsp_implementations<cr>")
 vim.keymap.set("n", "gr", ":Telescope lsp_references<cr>")
 vim.keymap.set("n", "K", "<cmd>lua vim.lsp.buf.hover()<cr>")
 vim.keymap.set("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<cr>")
-
--- Diagnostic information
-vim.diagnostic.config({
-	virtual_text = false,
-	float = {
-		source = true,
-	},
-})
-
-vim.fn.sign_define("DiagnosticSignError", { text = "", texthl = "DiagnosticSignError" })
-vim.fn.sign_define("DiagnosticSignWarn", { text = "", texthl = "DiagnosticSignWarn" })
-vim.fn.sign_define("DiagnosticSignInfo", { text = "", texthl = "DiagnosticSignInfo" })
-vim.fn.sign_define("DiagnosticSignHint", { text = "", texthl = "DiagnosticSignHint" })
