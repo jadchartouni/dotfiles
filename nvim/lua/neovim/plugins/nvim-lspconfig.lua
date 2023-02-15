@@ -7,7 +7,6 @@ require("mason-lspconfig").setup({
 		"html",
 		"cssls",
 		"tailwindcss",
-		"sumneko_lua",
 		"emmet_ls",
 		"intelephense",
 	},
