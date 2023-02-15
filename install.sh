@@ -45,6 +45,10 @@ function setup_zsh()
     echo "Configuring ZSH"
     rm -rf $HOME/.zshrc
     ln -s $DOTFILES/zsh/zshrc $HOME/.zshrc
+
+    // Install zsh-autosuggestions
+
+    // Install powerlevel10k theme
 }
 
 # Setup NeoVim
