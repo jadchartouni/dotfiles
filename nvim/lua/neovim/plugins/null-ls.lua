@@ -38,4 +38,4 @@ require("mason-null-ls").setup({
 })
 
 -- Keymaps
-vim.api.nvim_create_user_command("Format", vim.lsp.buf.formatting, {})
+-- vim.api.nvim_create_user_command("Format", vim.lsp.buf.formatting, {})
