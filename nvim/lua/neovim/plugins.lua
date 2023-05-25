@@ -202,6 +202,26 @@ return require("packer").startup(function(use)
 	})
 
 	---------------------------------------------------------
+	-- Copilot ----------------------------------------------
+	---------------------------------------------------------
+	use({
+		"zbirenbaum/copilot.lua",
+		cmd = "Copilot",
+		event = "InsertEnter",
+		config = function()
+			require("neovim.plugins.copilot")
+		end,
+	})
+
+	use({
+		"zbirenbaum/copilot-cmp",
+		after = { "copilot.lua" },
+		config = function()
+			require("copilot_cmp").setup()
+		end,
+	})
+
+	---------------------------------------------------------
 	-- Clean up below ---------------------------------------
 	---------------------------------------------------------
 	use("tpope/vim-eunuch") -- Useful commands like :Rename and :SudoWrite

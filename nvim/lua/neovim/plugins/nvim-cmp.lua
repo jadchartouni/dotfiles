@@ -19,6 +19,7 @@ cmp.setup({
 			mode = "symbol_text",
 			with_text = true,
 			menu = {
+				copilot = "[Copilot]",
 				nvim_lsp = "[LSP]",
 				luasnip = "[Lua]",
 				buffer = "[Buffer]",
@@ -59,6 +60,7 @@ cmp.setup({
 		end, { "i", "s" }),
 	},
 	sources = {
+		{ name = "copilot" },
 		{ name = "nvim_lsp" },
 		{ name = "nvim_lsp_signature_help" },
 		{ name = "luasnip" },
