@@ -68,6 +68,16 @@ return require("packer").startup(function(use)
 		end,
 	})
 
+	-- Buffer line
+	use({
+		"akinsho/bufferline.nvim",
+		tag = "*",
+		requires = "nvim-tree/nvim-web-devicons",
+		config = function()
+			require("neovim.plugins.bufferline")
+		end,
+	})
+
 	-- File tree
 	use({
 		"kyazdani42/nvim-tree.lua",
