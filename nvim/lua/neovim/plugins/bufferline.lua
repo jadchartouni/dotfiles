@@ -3,11 +3,13 @@ local bufferline = require("bufferline")
 bufferline.setup({
 	options = {
 		offsets = {
-			filetype = "NvimTree",
-			text = "File Explorer",
-			text_align = "left",
-			highlight = "Directory",
-			separator = true,
+			{
+				filetype = "NvimTree",
+				text = "File Explorer",
+				text_align = "left",
+				highlight = "Directory",
+				separator = true,
+			},
 		},
 		diagnostics = "nvim_lsp",
 		separator_style = { "", "" },
