@@ -30,6 +30,7 @@ source $SYSTEM/components/zsh.sh
 # Let's start
 ##################################################################
 clear
+output
 
 functions=(
     "lets_brew"
