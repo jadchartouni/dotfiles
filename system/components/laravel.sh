@@ -3,19 +3,22 @@
 ##################################################################
 function lets_laravel()
 {
-    output $C_FG_BLACK$C_BG_BLUE" Laravel "
+    echo -e " ${C_FG_BLACK}${C_BG_BLUE} Laravel ${C_OFF}"
 
     # Global Laravel installer
-    output "Downloading and installing Laravel installer..."
+    start_process "Downloading and installing ${C_FG_YELLOW}Laravel installer${C_OFF}..."
     # composer global require laravel/installer > /dev/null 2>&1
+    end_process
 
     # Valet
-    output "Downloading and installing Laravel valet..."
+    start_process "Downloading and installing ${C_FG_YELLOW}Laravel valet${C_OFF}..."
     # composer global require laravel/valet > /dev/null 2>&1
     # valet install > /dev/null 2>&1
+    end_process
 
     # Sites
-    output "Setting up ~/Sites to serve..."
+    start_process "Setting up ${C_FG_YELLOW}~/Sites${C_OFF} to serve..."
     # mkdir ~/Sites > /dev/null 2>&1
     # valet park > /dev/null 2>&1
+    end_process
 }

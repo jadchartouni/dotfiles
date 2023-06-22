@@ -3,13 +3,15 @@
 ##################################################################
 function lets_zsh()
 {
-    output $C_FG_BLACK$C_BG_BLUE" Z shell "
+    echo -e " ${C_FG_BLACK}${C_BG_BLUE} Z shell ${C_OFF}"
 
-    output "Removing "$C_FG_YELLOW"$HOME/.zshrc"$C_OFF
+    start_process "Removing ${C_FG_YELLOW}${HOME}/.zshrc${C_OFF}"
     rm -rf $HOME/.zshrc
+    end_process
 
-    output "Linking $C_FG_YELLOW$DOTFILES/zsh/zshrc$C_OFF to $C_FG_YELLOW$HOME/.zshrc$C_OFF"
+    start_process "Linking ${C_FG_YELLOW}${DOTFILES}/zsh/zshrc${C_OFF} to ${C_FG_YELLOW}${HOME}/.zshrc${C_OFF}"
     ln -s $DOTFILES/zsh/zshrc $HOME/.zshrc
+    end_process
 
     # Install zsh-autosuggestions
 

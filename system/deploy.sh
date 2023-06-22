@@ -10,8 +10,8 @@ sudo -v
 ##################################################################
 # Import helpers
 ##################################################################
-source $SYSTEM/helpers/functions.sh
 source $SYSTEM/helpers/colors.sh
+source $SYSTEM/helpers/process.sh
 
 ##################################################################
 # Import components
@@ -30,7 +30,7 @@ source $SYSTEM/components/zsh.sh
 # Let's start
 ##################################################################
 clear
-output
+echo
 
 functions=(
     "lets_brew"
@@ -47,5 +47,5 @@ functions=(
 for function in "${functions[@]}"
 do
     $function
-    output
+    echo
 done
