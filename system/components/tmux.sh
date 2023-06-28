@@ -12,8 +12,6 @@ function lets_tmux()
     # Start-tmux script
     start_process "Creating ${C_FG_YELLOW}start-tmux${C_OFF} script..."
     mkdir -p $HOME/.local/bin
-    rm -rf $HOME/.local/bin/start-tmux
-    ln -s $DOTFILES/scripts/start-tmux $HOME/.local/bin/start-tmux
+    symlink $DOTFILES/scripts/start-tmux $HOME/.local/bin/start-tmux
     end_process
 }
-

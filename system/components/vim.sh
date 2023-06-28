@@ -9,4 +9,3 @@ function lets_vim()
     # Create symlink
     symlink $DOTFILES/vim/vimrc $HOME/.vimrc
 }
-

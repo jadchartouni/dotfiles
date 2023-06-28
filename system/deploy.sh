@@ -2,6 +2,7 @@
 
 SYSTEM=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 DOTFILES=$(dirname $SYSTEM)
+OUTPUT="/dev/stdout"
 
 # Ask for the administrator password upfront
 echo "This script requires sudo permissions."

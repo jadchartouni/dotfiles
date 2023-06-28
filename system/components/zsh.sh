@@ -19,14 +19,13 @@ function lets_zsh()
     symlink $DOTFILES/zsh/p10k.zsh $HOME/.p10k.zsh
 
     # Install zsh-autosuggestions
-    # git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions > /dev/null 2>&1
+    # git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions > $OUTPUT 2>&1
 
     # Install syntax-highlighting
-    # git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting > /dev/null 2>&1
+    # git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting > $OUTPUT 2>&1
 
     # Source configuration
     start_process "Sourcing ${C_FG_YELLOW}${HOME}/.zshrc${C_OFF}"
-    source $HOME/.zshrc > /dev/null 2>&1
+    source $HOME/.zshrc > $OUTPUT 2>&1
     end_process
 }
-

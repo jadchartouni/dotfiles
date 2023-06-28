@@ -9,4 +9,3 @@ function lets_kitty()
     # Create symlink
     symlink $DOTFILES/kitty $HOME/.config/kitty
 }
-

@@ -1,3 +1,6 @@
+##################################################################
+# Create symlinks
+##################################################################
 function symlink()
 {
     # Check if symlink exists
@@ -14,7 +17,7 @@ function symlink()
 
             # Create symlink
             start_process "Linking ${C_FG_YELLOW}$1${C_OFF} to ${C_FG_YELLOW}$2${C_OFF}"
-            ln -s $1 $2 > /dev/null 2>&1
+            ln -s $1 $2 > $OUTPUT 2>&1
             end_process
         else
             end_process
@@ -22,7 +25,7 @@ function symlink()
     else
         # Create symlink
         start_process "Linking ${C_FG_YELLOW}$1${C_OFF} to ${C_FG_YELLOW}$2${C_OFF}"
-        ln -s $1 $2 > /dev/null 2>&1
+        ln -s $1 $2 > $OUTPUT 2>&1
         end_process
     fi
 }
