@@ -15,7 +15,7 @@ function end_process()
     COLS=`tput cols`
     PADDING=2
     PROCESS_TIME=$(($(date +%s) - $PROCESS_START_TIME))
-    DOTS=$(($COLS - ${#MSG} - $PADDING - ${#PROCESS_TIME} - 11))
+    DOTS=$(($COLS - ${#MSG} - $PADDING - ${#PROCESS_TIME} - 10))
 
     for ((i=0; i<$DOTS; i++)); do echo -n "."; done
 

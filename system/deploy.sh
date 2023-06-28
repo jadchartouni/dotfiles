@@ -12,13 +12,13 @@ sudo -v
 ##################################################################
 source $SYSTEM/helpers/colors.sh
 source $SYSTEM/helpers/process.sh
+source $SYSTEM/helpers/symlink.sh
 
 ##################################################################
 # Import components
 ##################################################################
 source $SYSTEM/components/git.sh
 source $SYSTEM/components/homebrew.sh
-source $SYSTEM/components/iterm.sh
 source $SYSTEM/components/kitty.sh
 source $SYSTEM/components/laravel.sh
 source $SYSTEM/components/nvim.sh
@@ -35,7 +35,6 @@ echo
 functions=(
     "lets_brew"
     "lets_git"
-    "lets_iterm"
     "lets_kitty"
     "lets_nvim"
     "lets_vim"

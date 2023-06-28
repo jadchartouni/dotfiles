@@ -4,7 +4,8 @@ tap "homebrew/cask-fonts"
 tap "homebrew/cask-versions"
 tap "homebrew/core"
 tap "homebrew/bundle"
-tap "nicoverbruggen/homebrew-cask"
+tap "nicoverbruggen/homebrew-cask"  # PHP Monitor
+tap "microsoft/git"                 # Git Credential Manager Core
 
 # Core
 brew "coreutils"
@@ -37,6 +38,7 @@ brew "tree-sitter"
 
 # Security
 brew "gnupg"
+cask "git-credential-manager-core"
 
 # CLIs
 brew "awscli"           # AWS cli

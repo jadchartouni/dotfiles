@@ -3,15 +3,11 @@
 ##################################################################
 function lets_tmux()
 {
+    # Title
     echo -e " ${C_FG_BLACK}${C_BG_BLUE} Tmux ${C_OFF}"
 
-    start_process "Removing ${C_FG_YELLOW}${HOME}/.tmux.conf${C_OFF}"
-    rm -rf $HOME/.tmux.conf
-    end_process
-
-    start_process "Linking ${C_FG_YELLOW}${DOTFILES}/tmux/tmux.conf${C_OFF} to ${C_FG_YELLOW}${HOME}/.tmux.conf${C_OFF}"
-    ln -s $DOTFILES/tmux/tmux.conf $HOME/.tmux.conf
-    end_process
+    # Create symlink
+    symlink $DOTFILES/tmux/tmux.conf $HOME/.tmux.conf
 
     # Start-tmux script
     start_process "Creating ${C_FG_YELLOW}start-tmux${C_OFF} script..."
