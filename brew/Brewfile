@@ -1,11 +1,7 @@
 # Taps
 tap "homebrew/cask"
-tap "homebrew/cask-fonts"
-tap "homebrew/cask-versions"
 tap "homebrew/core"
 tap "homebrew/bundle"
-tap "nicoverbruggen/homebrew-cask"  # PHP Monitor
-tap "microsoft/git"                 # Git Credential Manager Core
 
 # Core
 brew "coreutils"
@@ -17,7 +13,6 @@ brew "curl"
 brew "svn"
 brew "jq"
 brew "ffmpeg"
-brew "fzf"
 
 # Shell
 brew "bash"
@@ -38,42 +33,17 @@ brew "tree-sitter"
 
 # Security
 brew "gnupg"
-cask "git-credential-manager-core"
 
 # CLIs
 brew "awscli"           # AWS cli
-brew "gh"               # Github cli
 
 # Terminal emulators
-cask "iterm2"
-cask "kitty"
+cask "wezterm"
 
 # Apps
-cask "1password"        # Password manager
-cask "caffeine"         # Prevents mac from sleeping
-cask "firefox"          # Firefox browser
-cask "google-chrome"    # Google Chrome browser
-cask "zoom"             # Zoom for video meetings
-cask "slack"            # Slack
-cask "docker"           # Docker desktop
-cask "dbngin"           # Database management
-cask "github"           # Github
-cask "phpmon"           # PHP Monitor
-cask "figma"            # Interface design app
 cask "raycast"          # Raycast
-cask "screenflow"       # Screen recording
-cask "tableplus"        # Database management
 cask "the-unarchiver"   # Opens RAR and other archives
-cask "tinkerwell"       # Tinkey on steroids
 
 # Fonts
-cask "font-lato"
-cask "font-open-sans"
-cask "font-roboto"
-cask "font-source-code-pro-for-powerline"
-cask "font-source-code-pro"
-cask "font-source-sans-pro"
-cask "font-source-serif-pro"
-cask "font-sauce-code-pro-nerd-font"
 cask "font-fira-code-nerd-font"
 cask "font-meslo-lg-nerd-font"
