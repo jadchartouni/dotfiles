@@ -1,3 +1,3 @@
-require("neovim/plugins")
-require("neovim/options")
-require("neovim/keymaps")
+require("core.options")
+require("core.keymaps")
+require("core.lazy")
