@@ -1,0 +1,71 @@
+[colors]
+# Base
+foreground   = "#E6E4F0"
+background   = "#0F0A1F"
+cursor_bg    = "#6A39A9"
+cursor_fg    = "#FFFFFF"
+cursor_border = "#6A39A9"
+
+# Selection
+selection_fg = "#FFFFFF"
+selection_bg = "#3D2570"
+
+# Scrollbar + split
+scrollbar_thumb = "#2A1F4A"
+split           = "#3D55B6"
+
+# ANSI (normal)
+# black, red, green, yellow, blue, magenta, cyan, white
+ansi = [
+  "#1A1230",
+  "#E74C3C",
+  "#00BFA5",
+  "#C29BFF",
+  "#3D55B6",
+  "#8324BF",
+  "#4A8FE7",
+  "#C9C5DB",
+]
+
+# Bright
+brights = [
+  "#3D2570",
+  "#FF6B5B",
+  "#3DD5B6",
+  "#D9B8FF",
+  "#5A78D9",
+  "#A855E0",
+  "#6BA8FF",
+  "#FFFFFF",
+]
+
+# Tab bar
+[colors.tab_bar]
+background = "#0A0618"
+
+[colors.tab_bar.active_tab]
+bg_color   = "#6A39A9"
+fg_color   = "#FFFFFF"
+intensity  = "Bold"
+
+[colors.tab_bar.inactive_tab]
+bg_color = "#1A1230"
+fg_color = "#9890B8"
+
+[colors.tab_bar.inactive_tab_hover]
+bg_color = "#2A1F4A"
+fg_color = "#E6E4F0"
+italic   = true
+
+[colors.tab_bar.new_tab]
+bg_color = "#1A1230"
+fg_color = "#9890B8"
+
+[colors.tab_bar.new_tab_hover]
+bg_color = "#3D2570"
+fg_color = "#FFFFFF"
+
+[metadata]
+name      = "SentryCore"
+author    = "Jad"
+origin_url = ""

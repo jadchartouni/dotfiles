@@ -61,5 +61,18 @@ keymap.set("n", "<leader>bn", ":bn<cr>") -- Go to next buffer
 keymap.set("n", "<leader>bp", ":bp<cr>") -- Go to previous buffer
 keymap.set("n", "<leader>bd", ":bd | bn<cr>") -- Delete current buffer
 
+-- Re-indent the whole file, keeping the cursor in place
+keymap.set("n", "<leader>=", "mzgg=G`z")
+
+-- Toggle soft word wrap (with word-boundary breaking) for the current buffer
+keymap.set("n", "<leader>w", function()
+  vim.wo.wrap = not vim.wo.wrap
+  vim.wo.linebreak = vim.wo.wrap
+end, { desc = "Toggle word wrap" })
+
 -- Plugin: nvim-tree
-keymap.set("n", "<leader>ft", ":NvimTreeToggle<cr>")
+keymap.set("n", "<leader>ft", ":NvimTreeToggle<cr>") -- Toggle file tree
+keymap.set("n", "<leader>fe", ":NvimTreeFindFile<cr>") -- Reveal current file in tree
+
+-- Plugin: render-markdown
+keymap.set("n", "<leader>mr", ":RenderMarkdown toggle<cr>") -- Toggle markdown rendering

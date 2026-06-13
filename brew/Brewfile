@@ -8,29 +8,31 @@ brew "curl"
 brew "svn"
 brew "jq"
 brew "ffmpeg"
-
-# Shell
-brew "bash"
-brew "zsh"
-brew "tmux"
-brew "tree"
+brew "bat"            # cat with syntax highlighting
+brew "tree"          # directory tree viewer
+brew "tmux"          # terminal multiplexer
 
 # Editors
-brew "vim"
 brew "neovim"
 
 # Development
-brew "git"
 brew "php"
 brew "composer"
 brew "node"
-brew "tree-sitter"
+brew "pnpm"
+brew "uv"            # Python package/project manager
+
+# Containers
+cask "docker-desktop"   # Docker Desktop: engine, CLI & Compose
+
+# Cloud
+brew "awscli"
+brew "azure-cli"
+cask "session-manager-plugin"   # AWS SSM session plugin
 
 # Security
 brew "gnupg"
-
-# CLIs
-brew "awscli"           # AWS cli
+cask "git-credential-manager"
 
 # Terminal emulators
 cask "wezterm"
@@ -40,5 +42,6 @@ cask "raycast"          # Raycast
 cask "the-unarchiver"   # Opens RAR and other archives
 
 # Fonts
+cask "font-jetbrains-mono-nerd-font"   # terminal + powerlevel10k font
 cask "font-fira-code-nerd-font"
 cask "font-meslo-lg-nerd-font"

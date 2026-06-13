@@ -4,7 +4,19 @@ Tmux configuration and cheat sheet
 
 ## Setup
 
-`git clone https://github.com/tmux-plugins/tpm.git ~/.tmux/plugins/tpm`
+```sh
+# 1. Symlink the config (the dotfiles are the single source of truth)
+ln -s ~/.dotfiles/tmux/tmux.conf ~/.tmux.conf
+
+# 2. Install the plugin manager (TPM)
+git clone https://github.com/tmux-plugins/tpm.git ~/.tmux/plugins/tpm
+
+# 3. Start tmux, then install the plugins with: Ctrl + a, I
+tmux
+```
+
+Plugins: `vim-tmux-navigator` (seamless nvim ↔ tmux pane navigation),
+`tmux-resurrect` + `tmux-continuum` (session persistence).
 
 ## Custom key bindings
 
@@ -18,7 +30,7 @@ Tmux configuration and cheat sheet
 | Resize window up    | `Ctrl + a` `k`        |
 | Resize window right | `Ctrl + a` `l`        |
 | Resize window left  | `Ctrl + a` `h`        |
-| Maximze window      | `Ctrl + a` `m`        |
+| Maximize window     | `Ctrl + a` `m`        |
 
 ## Miscellaneous
 
