@@ -14,6 +14,7 @@ brew "tmux"          # terminal multiplexer
 
 # Editors
 brew "neovim"
+brew "tree-sitter-cli"   # compiles nvim-treesitter (main branch) parsers
 
 # Development
 brew "php"
