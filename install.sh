@@ -156,6 +156,25 @@ ensure_version_tools() {
   fi
 }
 
+# Install JetBrainsMono Nerd Font into the user font dir if not already present.
+install_nerd_font_linux() {
+  if fc-list 2>/dev/null | grep -qi "JetBrainsMono Nerd Font"; then
+    ok "JetBrainsMono Nerd Font present"; return
+  fi
+  local dir="$HOME/.local/share/fonts" tmp
+  mkdir -p "$dir"; tmp="$(mktemp -d)"
+  info "Downloading JetBrainsMono Nerd Font..."
+  if curl -fsSL -o "$tmp/JBM.zip" \
+       https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip \
+     && unzip -oq "$tmp/JBM.zip" -d "$dir"; then
+    fc-cache -f "$dir" >/dev/null 2>&1
+    ok "JetBrainsMono Nerd Font installed"
+  else
+    warn "Nerd Font install failed; install JetBrainsMono Nerd Font manually"
+  fi
+  rm -rf "$tmp"
+}
+
 # ----------------------------------------------------------------------------
 # Idempotent symlink: link <source> <destination>
 #   - already the correct symlink -> leave it
@@ -246,6 +265,14 @@ if is_macos; then
   fi
 elif is_linux; then
   ensure_version_tools
+fi
+
+# ----------------------------------------------------------------------------
+# 2b. Fonts (Linux — macOS gets Nerd Fonts via Brewfile casks)
+# ----------------------------------------------------------------------------
+if is_linux; then
+  step "Fonts"
+  install_nerd_font_linux
 fi
 
 # ----------------------------------------------------------------------------
