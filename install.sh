@@ -40,6 +40,7 @@ has_gui()  { [ -n "${DISPLAY:-}" ] || [ -n "${WAYLAND_DISPLAY:-}" ]; }
 MIN_NVIM="0.11"
 
 # Run privileged package commands as root directly, otherwise via sudo.
+# Use UNQUOTED ($SUDO cmd) so the empty-string case drops the word cleanly.
 if [ "$(id -u)" -eq 0 ]; then SUDO=""; else SUDO="sudo"; fi
 
 # Detect the system package manager. Echoes apt|dnf|pacman, or returns 1.
@@ -65,10 +66,10 @@ version_ge() {
   [ "$a_minor" -ge "$b_minor" ]
 }
 
-# Installed nvim version (x.y.z) on stdout, or return 1 if nvim is absent.
+# Installed nvim version (x.y.z) on stdout, or return 1 if nvim is absent or unparseable.
 nvim_version() {
   command -v nvim >/dev/null 2>&1 || return 1
-  nvim --version | head -1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1
+  nvim --version | head -1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+'
 }
 
 # ----------------------------------------------------------------------------
@@ -101,6 +102,7 @@ link() {
 
 # When sourced (e.g. by tests/test_helpers.sh) expose the helpers above and stop
 # before performing any installation. When executed normally, continue.
+# bash-only: `return` in a subshell succeeds only when the file is being sourced.
 if (return 0 2>/dev/null); then return 0; fi
 
 # ----------------------------------------------------------------------------
