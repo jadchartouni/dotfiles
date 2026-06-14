@@ -186,14 +186,23 @@ install_wezterm_linux() {
   local pm="$1"
   case "$pm" in
     pacman)
-      pm_install pacman wezterm && { ok "wezterm installed (pacman)"; return; } ;;
+      # wezterm is in Arch's official repos; a failure here is transient, and an
+      # Ubuntu AppImage is the wrong remedy on Arch — so do not fall through.
+      pm_install pacman wezterm && ok "wezterm installed (pacman)" \
+        || warn "wezterm: pacman install failed"
+      return ;;
     apt)
-      curl -fsSL https://apt.fury.io/wez/gpg.key \
-        | $SUDO gpg --yes --dearmor -o /usr/share/keyrings/wezterm-fury.gpg 2>/dev/null
-      echo "deb [signed-by=/usr/share/keyrings/wezterm-fury.gpg] https://apt.fury.io/wez/ * *" \
-        | $SUDO tee /etc/apt/sources.list.d/wezterm.list >/dev/null
-      $SUDO apt-get update -y \
-        && pm_install apt wezterm && { ok "wezterm installed (apt repo)"; return; } ;;
+      # Only register the apt repo if we actually fetched a key — otherwise a
+      # network failure would write a sources.list that poisons every future
+      # `apt update`. On any failure, fall through to the AppImage (valid on Debian/Ubuntu).
+      local key
+      if key="$(curl -fsSL https://apt.fury.io/wez/gpg.key)" && [ -n "$key" ]; then
+        printf '%s' "$key" | gpg --dearmor | $SUDO tee /usr/share/keyrings/wezterm-fury.gpg >/dev/null
+        echo "deb [arch=amd64 signed-by=/usr/share/keyrings/wezterm-fury.gpg] https://apt.fury.io/wez/ * *" \
+          | $SUDO tee /etc/apt/sources.list.d/wezterm.list >/dev/null
+        $SUDO apt-get update \
+          && pm_install apt wezterm && { ok "wezterm installed (apt repo)"; return; }
+      fi ;;
     dnf)
       $SUDO dnf -y copr enable wezfurlong/wezterm-nightly \
         && pm_install dnf wezterm && { ok "wezterm installed (copr)"; return; } ;;
@@ -203,6 +212,7 @@ install_wezterm_linux() {
   url="$(curl -fsSL https://api.github.com/repos/wez/wezterm/releases/latest | appimage_url_filter)"
   if [ -n "$url" ]; then
     mkdir -p "$HOME/.local/bin"
+    info "Downloading wezterm AppImage..."
     if curl -fsSL -o "$HOME/.local/bin/wezterm" "$url"; then
       chmod +x "$HOME/.local/bin/wezterm"
       ok "wezterm AppImage installed to ~/.local/bin/wezterm"; return
