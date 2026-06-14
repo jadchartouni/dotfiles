@@ -4,12 +4,15 @@ local wezterm = require 'wezterm'
 -- This will hold the configuration.
 local config = wezterm.config_builder()
 
+-- macOS uses CMD as leader; Linux/Windows have no CMD key, so use SUPER.
+local is_macos = wezterm.target_triple:find('darwin') ~= nil
+
 -- This is where you actually apply your config choices.
 
 -- Leader key
 config.leader = {
     key = 'a',
-    mods = 'CMD',
+    mods = is_macos and 'CMD' or 'SUPER',
     timeout_milliseconds = 1000,
 }
 
@@ -95,7 +98,9 @@ config.color_scheme = 'SentryCore'
 
 -- Window opacity
 config.window_background_opacity = 0.9
-config.macos_window_background_blur = 20
+if is_macos then
+    config.macos_window_background_blur = 20
+end
 
 -- Finally, return the configuration to wezterm:
 return config
