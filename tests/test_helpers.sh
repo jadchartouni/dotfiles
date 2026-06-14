@@ -27,5 +27,14 @@ check_false version_ge 0.10.4 0.11
 check_false version_ge 0.9.5  0.11
 check_true  version_ge 0.11   0.11
 
+# native_packages <pm> -> space-separated package list for that PM
+check_true  test -n "$(native_packages apt)"
+check_nonempty() { if native_packages "$1" | grep -q "$2"; then printf 'ok   - native_packages %s has %s\n' "$1" "$2"; else printf 'FAIL - native_packages %s missing %s\n' "$1" "$2"; fails=$((fails+1)); fi; }
+check_nonempty apt    build-essential
+check_nonempty dnf    "@development-tools"
+check_nonempty pacman base-devel
+check_nonempty apt    wl-clipboard
+check_nonempty pacman fontconfig
+
 echo
 if [ "$fails" -eq 0 ]; then echo "ALL PASS"; exit 0; else echo "$fails FAILURE(S)"; exit 1; fi

@@ -72,6 +72,34 @@ nvim_version() {
   nvim --version | head -1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+'
 }
 
+# Native-tier package list for the given PM (bootstrap + tools distros ship fine).
+native_packages() {
+  case "$1" in
+    apt)    echo "git curl zsh tmux jq tree unzip build-essential wl-clipboard xclip fontconfig" ;;
+    dnf)    echo "git curl zsh tmux jq tree unzip @development-tools wl-clipboard xclip fontconfig" ;;
+    pacman) echo "git curl zsh tmux jq tree unzip base-devel wl-clipboard xclip fontconfig" ;;
+  esac
+}
+
+# Refresh package metadata for the given PM.
+pm_update() {
+  case "$1" in
+    apt)    $SUDO apt-get update -y ;;
+    dnf)    $SUDO dnf -y makecache ;;
+    pacman) $SUDO pacman -Sy --noconfirm ;;
+  esac
+}
+
+# Install packages with the given PM: pm_install <pm> pkg...
+pm_install() {
+  local pm="$1"; shift
+  case "$pm" in
+    apt)    $SUDO apt-get install -y "$@" ;;
+    dnf)    $SUDO dnf install -y "$@" ;;
+    pacman) $SUDO pacman -S --needed --noconfirm "$@" ;;
+  esac
+}
+
 # ----------------------------------------------------------------------------
 # Idempotent symlink: link <source> <destination>
 #   - already the correct symlink -> leave it
