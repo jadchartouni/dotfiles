@@ -3,8 +3,10 @@
 # Idempotent dotfiles installer / updater.
 #
 # Safe to run any number of times: every step checks current state first, then
-# fixes / installs / updates only what's needed. Homebrew runs on macOS only,
-# so this also works on Linux (it just skips the brew step there).
+# fixes / installs / updates only what's needed. On macOS it uses Homebrew; on
+# Linux it uses the native package manager (apt/dnf/pacman) for base tools and
+# falls back to Linuxbrew only for version-sensitive tools. Linux package
+# installs require root — the script uses sudo and may prompt for a password.
 #
 # Run from a local checkout:
 #   ./install.sh
@@ -151,6 +153,15 @@ if is_macos; then
   else
     ok "Homebrew present"
   fi
+elif is_linux; then
+  PM="$(detect_pm)" || die "Unsupported Linux: need apt, dnf, or pacman. Install base tools manually and re-run."
+  info "Detected package manager: $PM"
+  [ -n "$SUDO" ] && info "Privileged installs use sudo; you may be prompted for your password."
+  # shellcheck disable=SC2046
+  pm_update "$PM" || warn "package metadata refresh failed (continuing)"
+  # shellcheck disable=SC2046
+  pm_install "$PM" $(native_packages "$PM") || die "native package install failed"
+  ok "native tier installed"
 fi
 command -v git >/dev/null 2>&1 || die "git is required. Install it (e.g. 'sudo apt install git') and re-run."
 
