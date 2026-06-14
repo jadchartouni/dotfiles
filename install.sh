@@ -332,7 +332,8 @@ else
     "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended \
     && ok "Oh My Zsh installed" || warn "Oh My Zsh install failed"
 fi
-ZSH_PLUGINS="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins"
+ZSH_CUSTOM_DIR="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
+ZSH_PLUGINS="$ZSH_CUSTOM_DIR/plugins"
 for p in zsh-autosuggestions zsh-syntax-highlighting; do
   if [ -d "$ZSH_PLUGINS/$p/.git" ]; then
     git -C "$ZSH_PLUGINS/$p" pull --ff-only --quiet 2>/dev/null && ok "$p updated" || warn "$p update skipped"
@@ -341,6 +342,15 @@ for p in zsh-autosuggestions zsh-syntax-highlighting; do
       && ok "$p installed" || warn "$p clone failed"
   fi
 done
+
+# Powerlevel10k theme (referenced by zshrc as ZSH_THEME="powerlevel10k/powerlevel10k").
+P10K_DIR="$ZSH_CUSTOM_DIR/themes/powerlevel10k"
+if [ -d "$P10K_DIR/.git" ]; then
+  git -C "$P10K_DIR" pull --ff-only --quiet 2>/dev/null && ok "powerlevel10k updated" || warn "powerlevel10k update skipped"
+else
+  git clone --depth 1 "https://github.com/romkatv/powerlevel10k" "$P10K_DIR" >/dev/null 2>&1 \
+    && ok "powerlevel10k installed" || warn "powerlevel10k clone failed"
+fi
 
 # ----------------------------------------------------------------------------
 # 4. Symlinks
