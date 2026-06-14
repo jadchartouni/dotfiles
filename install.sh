@@ -102,6 +102,60 @@ pm_install() {
   esac
 }
 
+# Ensure brew is available on Linux, installing Linuxbrew on first need.
+ensure_linuxbrew() {
+  command -v brew >/dev/null 2>&1 && return 0
+  if [ -x /home/linuxbrew/.linuxbrew/bin/brew ]; then
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"; return 0
+  fi
+  info "Installing Homebrew (Linuxbrew) for version-sensitive tools..."
+  NONINTERACTIVE=1 /bin/bash -c \
+    "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" \
+    || { warn "Linuxbrew install failed"; return 1; }
+  [ -x /home/linuxbrew/.linuxbrew/bin/brew ] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+  command -v brew >/dev/null 2>&1
+}
+
+# Ensure the version-sensitive tools the configs depend on, brewing only laggards.
+ensure_version_tools() {
+  local v
+  v="$(nvim_version || true)"
+  if [ -n "$v" ] && version_ge "$v" "$MIN_NVIM"; then
+    ok "neovim $v (>= $MIN_NVIM)"
+  else
+    info "neovim ${v:-absent} (< $MIN_NVIM) — installing via Homebrew"
+    ensure_linuxbrew && brew install neovim && ok "neovim installed via brew" \
+      || warn "could not install neovim >= $MIN_NVIM; treesitter may not work"
+  fi
+
+  # tree-sitter-cli (binary: tree-sitter) — needed for :TSUpdate to compile parsers
+  if command -v tree-sitter >/dev/null 2>&1; then
+    ok "tree-sitter-cli present"
+  else
+    info "tree-sitter-cli absent — installing via Homebrew"
+    ensure_linuxbrew && brew install tree-sitter-cli && ok "tree-sitter-cli installed" \
+      || warn "tree-sitter-cli install failed; parsers may not compile"
+  fi
+
+  # fzf must support `fzf --zsh` (>= 0.48), used by zshrc
+  if command -v fzf >/dev/null 2>&1 && fzf --zsh >/dev/null 2>&1; then
+    ok "fzf (supports --zsh)"
+  else
+    info "fzf missing or too old (no --zsh) — installing via Homebrew"
+    ensure_linuxbrew && brew install fzf && ok "fzf installed via brew" \
+      || warn "fzf install failed; Ctrl-R/Ctrl-T integration unavailable"
+  fi
+
+  # bat — referenced by config; native Debian ships it as `batcat`, so brew it
+  if command -v bat >/dev/null 2>&1; then
+    ok "bat present"
+  else
+    info "bat absent — installing via Homebrew"
+    ensure_linuxbrew && brew install bat && ok "bat installed via brew" \
+      || warn "bat install failed"
+  fi
+}
+
 # ----------------------------------------------------------------------------
 # Idempotent symlink: link <source> <destination>
 #   - already the correct symlink -> leave it
@@ -190,9 +244,8 @@ if is_macos; then
   else
     warn "brew bundle reported problems (continuing)"
   fi
-else
-  info "Non-macOS ($(uname -s)) — skipping Homebrew."
-  warn "Install equivalents with your package manager, e.g.: neovim tmux wezterm fzf + a Nerd Font"
+elif is_linux; then
+  ensure_version_tools
 fi
 
 # ----------------------------------------------------------------------------
