@@ -33,6 +33,43 @@ step() { printf '\n%s══ %s ══%s\n' "$c_blue" "$*" "$c_reset"; }
 die()  { warn "$*"; exit 1; }
 
 is_macos() { [ "$(uname -s)" = "Darwin" ]; }
+is_linux() { [ "$(uname -s)" = "Linux" ]; }
+has_gui()  { [ -n "${DISPLAY:-}" ] || [ -n "${WAYLAND_DISPLAY:-}" ]; }
+
+# Minimum Neovim for nvim-treesitter's `main` branch (parsers compiled via :TSUpdate).
+MIN_NVIM="0.11"
+
+# Run privileged package commands as root directly, otherwise via sudo.
+if [ "$(id -u)" -eq 0 ]; then SUDO=""; else SUDO="sudo"; fi
+
+# Detect the system package manager. Echoes apt|dnf|pacman, or returns 1.
+detect_pm() {
+  if   command -v apt-get >/dev/null 2>&1; then echo apt
+  elif command -v dnf     >/dev/null 2>&1; then echo dnf
+  elif command -v pacman  >/dev/null 2>&1; then echo pacman
+  else return 1
+  fi
+}
+
+# version_ge A B  -> success (0) when version A >= version B, comparing major.minor.
+version_ge() {
+  local a="$1" b="$2" a_major a_minor b_major b_minor a_rest b_rest
+  a_major="${a%%.*}"; a_rest="${a#*.}"; a_minor="${a_rest%%.*}"
+  b_major="${b%%.*}"; b_rest="${b#*.}"; b_minor="${b_rest%%.*}"
+  a_major="${a_major//[!0-9]/}"; a_minor="${a_minor//[!0-9]/}"
+  b_major="${b_major//[!0-9]/}"; b_minor="${b_minor//[!0-9]/}"
+  a_major="${a_major:-0}"; a_minor="${a_minor:-0}"
+  b_major="${b_major:-0}"; b_minor="${b_minor:-0}"
+  if [ "$a_major" -gt "$b_major" ]; then return 0; fi
+  if [ "$a_major" -lt "$b_major" ]; then return 1; fi
+  [ "$a_minor" -ge "$b_minor" ]
+}
+
+# Installed nvim version (x.y.z) on stdout, or return 1 if nvim is absent.
+nvim_version() {
+  command -v nvim >/dev/null 2>&1 || return 1
+  nvim --version | head -1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1
+}
 
 # ----------------------------------------------------------------------------
 # Idempotent symlink: link <source> <destination>
@@ -61,6 +98,10 @@ link() {
   ln -s "$src" "$dest"
   ok "linked $dest -> $src"
 }
+
+# When sourced (e.g. by tests/test_helpers.sh) expose the helpers above and stop
+# before performing any installation. When executed normally, continue.
+if (return 0 2>/dev/null); then return 0; fi
 
 # ----------------------------------------------------------------------------
 # 0. Prerequisites: Homebrew (macOS) provides git; ensure git exists elsewhere
