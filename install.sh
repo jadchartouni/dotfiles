@@ -84,9 +84,9 @@ native_packages() {
 # Refresh package metadata for the given PM.
 pm_update() {
   case "$1" in
-    apt)    $SUDO apt-get update -y ;;
+    apt)    $SUDO apt-get update ;;
     dnf)    $SUDO dnf -y makecache ;;
-    pacman) $SUDO pacman -Sy --noconfirm ;;
+    pacman) $SUDO pacman -Syu --noconfirm ;;
   esac
 }
 
