@@ -115,22 +115,46 @@ else
 fi
 
 # ----------------------------------------------------------------------------
-# 3. Symlinks
+# 3. Shell (Oh My Zsh + plugins)
+# ----------------------------------------------------------------------------
+step "Shell (zsh)"
+if [ -d "$HOME/.oh-my-zsh" ]; then
+  ok "Oh My Zsh present"
+else
+  RUNZSH=no KEEP_ZSHRC=yes sh -c \
+    "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended \
+    && ok "Oh My Zsh installed" || warn "Oh My Zsh install failed"
+fi
+ZSH_PLUGINS="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins"
+for p in zsh-autosuggestions zsh-syntax-highlighting; do
+  if [ -d "$ZSH_PLUGINS/$p/.git" ]; then
+    git -C "$ZSH_PLUGINS/$p" pull --ff-only --quiet 2>/dev/null && ok "$p updated" || warn "$p update skipped"
+  else
+    git clone --depth 1 "https://github.com/zsh-users/$p" "$ZSH_PLUGINS/$p" >/dev/null 2>&1 \
+      && ok "$p installed" || warn "$p clone failed"
+  fi
+done
+
+# ----------------------------------------------------------------------------
+# 4. Symlinks
 # ----------------------------------------------------------------------------
 step "Symlinks"
 link "$DOTFILES/nvim"           "$HOME/.config/nvim"
 link "$DOTFILES/wezterm"        "$HOME/.config/wezterm"
 link "$DOTFILES/tmux/tmux.conf" "$HOME/.tmux.conf"
+link "$DOTFILES/zsh/zshrc"      "$HOME/.zshrc"
+link "$DOTFILES/zsh/p10k.zsh"   "$HOME/.p10k.zsh"
+link "$DOTFILES/zsh/zprofile"   "$HOME/.zprofile"
 
 # ----------------------------------------------------------------------------
-# 4. Git global ignore (setting the value is itself idempotent)
+# 5. Git global ignore (setting the value is itself idempotent)
 # ----------------------------------------------------------------------------
 step "Git"
 git config --global core.excludesfile "$DOTFILES/git/gitignore_global"
 ok "core.excludesfile -> $DOTFILES/git/gitignore_global"
 
 # ----------------------------------------------------------------------------
-# 5. tmux plugin manager + plugins
+# 6. tmux plugin manager + plugins
 # ----------------------------------------------------------------------------
 step "tmux plugins"
 TPM_DIR="$HOME/.tmux/plugins/tpm"
@@ -149,7 +173,7 @@ if command -v tmux >/dev/null 2>&1 && [ -x "$TPM_DIR/bin/install_plugins" ]; the
 fi
 
 # ----------------------------------------------------------------------------
-# 6. Neovim plugins (lazy.nvim install + sync to lockfile)
+# 7. Neovim plugins (lazy.nvim install + sync to lockfile)
 # ----------------------------------------------------------------------------
 step "Neovim plugins"
 if command -v nvim >/dev/null 2>&1; then

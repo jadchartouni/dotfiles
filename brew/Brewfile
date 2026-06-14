@@ -11,6 +11,7 @@ brew "ffmpeg"
 brew "bat"            # cat with syntax highlighting
 brew "tree"          # directory tree viewer
 brew "tmux"          # terminal multiplexer
+brew "fzf"           # fuzzy finder (shell Ctrl-R history / Ctrl-T files)
 
 # Editors
 brew "neovim"

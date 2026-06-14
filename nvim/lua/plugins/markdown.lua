@@ -8,6 +8,19 @@ return {
       "nvim-tree/nvim-web-devicons",
     },
     ft = { "markdown" },
-    opts = {},
+    opts = {
+      heading = {
+        -- No background bars: headings render as bold coloured text only.
+        -- (render-markdown's default backgrounds link to Diff/Visual groups,
+        -- which produced random-looking bars.) Foreground colours come from
+        -- RenderMarkdownH1..H6 in the sentrycore theme.
+        backgrounds = {},
+      },
+      bullet = {
+        -- Smaller bullets than the default large filled circle (●), graded
+        -- by nesting level.
+        icons = { "•", "◦", "▪", "▫" },
+      },
+    },
   },
 }

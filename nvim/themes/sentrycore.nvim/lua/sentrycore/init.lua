@@ -277,20 +277,20 @@ function M.setup(opts)
   hl("@lsp.type.typeParameter", { link = "@type.definition" })
   hl("@lsp.type.variable",      { link = "@variable" })
 
-  -- render-markdown.nvim headings: clear bold foregrounds, no background bar
-  -- (overrides its default blended light-purple background, which read poorly).
-  hl("RenderMarkdownH1",   { fg = c.purple_br, bold = true })
-  hl("RenderMarkdownH2",   { fg = c.blue_br, bold = true })
-  hl("RenderMarkdownH3",   { fg = c.cyan_br, bold = true })
-  hl("RenderMarkdownH4",   { fg = c.teal_br, bold = true })
-  hl("RenderMarkdownH5",   { fg = c.yellow_br, bold = true })
-  hl("RenderMarkdownH6",   { fg = c.orange, bold = true })
-  hl("RenderMarkdownH1Bg", { bg = c.none })
-  hl("RenderMarkdownH2Bg", { bg = c.none })
-  hl("RenderMarkdownH3Bg", { bg = c.none })
-  hl("RenderMarkdownH4Bg", { bg = c.none })
-  hl("RenderMarkdownH5Bg", { bg = c.none })
-  hl("RenderMarkdownH6Bg", { bg = c.none })
+  -- render-markdown.nvim
+  -- Headings: bold coloured text only (background bars are disabled via the
+  -- plugin's `heading.backgrounds = {}` opt; setting *Bg to NONE here does not
+  -- stick because render-markdown then treats it as unset and re-links it).
+  hl("RenderMarkdownH1", { fg = c.purple_br, bold = true })
+  hl("RenderMarkdownH2", { fg = c.blue_br, bold = true })
+  hl("RenderMarkdownH3", { fg = c.cyan_br, bold = true })
+  hl("RenderMarkdownH4", { fg = c.teal_br, bold = true })
+  hl("RenderMarkdownH5", { fg = c.yellow_br, bold = true })
+  hl("RenderMarkdownH6", { fg = c.orange, bold = true })
+  -- Tables: keep every border/cell white (the default head links to a coloured
+  -- heading group, which made the header border pink).
+  hl("RenderMarkdownTableHead", { fg = c.fg })
+  hl("RenderMarkdownTableRow",  { fg = c.fg })
 
   -- LSP
   hl("DiagnosticError",           { fg = c.red })

@@ -116,3 +116,4 @@ In copy mode, all vi movement keys will work.
 | Show all buffers and paste selected        | `:choose-buffer`          |
 | Save buffer contents to file               | `:save-buffer [filename]` |
 | Delete buffer (-b buffer)                  | `:delete-buffer -b 1`     |
+

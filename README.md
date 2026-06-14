@@ -5,15 +5,15 @@ custom dark colorscheme shared across the editor, terminal, and multiplexer.
 
 ## What's inside
 
-| Path             | Description                                                        |
-| ---------------- | ----------------------------------------------------------------- |
-| `brew/Brewfile`  | CLI tools, apps, and Nerd Fonts installed via Homebrew            |
-| `git/`           | Global gitignore                                                   |
-| `nvim/`          | Neovim config (lazy.nvim) + the SentryCore theme                  |
-| `tmux/`          | tmux config (see `docs/tmux.md` for the cheat sheet)             |
-| `wezterm/`       | WezTerm config + SentryCore color scheme                          |
-| `docs/`          | Notes and cheat sheets                                             |
-| `LICENSE.md`     | MIT                                                                |
+| Path            | Description                                            |
+| --------------- | ------------------------------------------------------ |
+| `brew/Brewfile` | CLI tools, apps, and Nerd Fonts installed via Homebrew |
+| `git/`          | Global gitignore                                       |
+| `nvim/`         | Neovim config (lazy.nvim) + the SentryCore theme       |
+| `tmux/`         | tmux config (see `docs/tmux.md` for the cheat sheet)   |
+| `wezterm/`      | WezTerm config + SentryCore color scheme               |
+| `docs/`         | Notes and cheat sheets                                 |
+| `LICENSE.md`    | MIT                                                    |
 
 ## Highlights
 
@@ -59,14 +59,14 @@ gitignore, and installs the tmux + Neovim plugins.
 
 Leader is <kbd>,</kbd>. A few essentials:
 
-| Key            | Action                          |
-| -------------- | ------------------------------- |
-| `<leader>ft`   | Toggle file tree                |
-| `<leader>fe`   | Reveal current file in the tree |
-| `<leader>=`    | Re-indent the whole file        |
-| `<leader>w`    | Toggle soft word wrap           |
-| `<leader>mr`   | Toggle markdown rendering        |
-| `jj`           | Escape (insert mode)            |
+| Key          | Action                          |
+| ------------ | ------------------------------- |
+| `<leader>ft` | Toggle file tree                |
+| `<leader>fe` | Reveal current file in the tree |
+| `<leader>=`  | Re-indent the whole file        |
+| `<leader>w`  | Toggle soft word wrap           |
+| `<leader>mr` | Toggle markdown rendering       |
+| `jj`         | Escape (insert mode)            |
 
 To swap the colorscheme back to nightfly, set `enabled = true` in
 `nvim/lua/plugins/ui.nightfly.lua` and `enabled = false` in `ui.lua`.
