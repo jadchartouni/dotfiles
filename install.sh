@@ -88,7 +88,7 @@ pm_update() {
   case "$1" in
     apt)    $SUDO apt-get update ;;
     dnf)    $SUDO dnf -y makecache ;;
-    pacman) $SUDO pacman -Syu --noconfirm ;;
+    pacman) : ;;   # no-op: pm_install runs an atomic -Syu so the DB is never synced without upgrading
   esac
 }
 
@@ -98,7 +98,7 @@ pm_install() {
   case "$pm" in
     apt)    $SUDO apt-get install -y "$@" ;;
     dnf)    $SUDO dnf install -y "$@" ;;
-    pacman) $SUDO pacman -S --needed --noconfirm "$@" ;;
+    pacman) $SUDO pacman -Syu --needed --noconfirm "$@" ;;
   esac
 }
 
@@ -157,7 +157,6 @@ elif is_linux; then
   PM="$(detect_pm)" || die "Unsupported Linux: need apt, dnf, or pacman. Install base tools manually and re-run."
   info "Detected package manager: $PM"
   [ -n "$SUDO" ] && info "Privileged installs use sudo; you may be prompted for your password."
-  # shellcheck disable=SC2046
   pm_update "$PM" || warn "package metadata refresh failed (continuing)"
   # shellcheck disable=SC2046
   pm_install "$PM" $(native_packages "$PM") || die "native package install failed"
