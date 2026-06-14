@@ -12,6 +12,9 @@ return {
       update_focused_file = { enable = true },
       view = { width = 35, side = "left" },
       git = { ignore = false },
+      filters = {
+        custom = { "__pycache__" },
+      },
       renderer = {
         group_empty = true,
         indent_markers = { enable = true },
