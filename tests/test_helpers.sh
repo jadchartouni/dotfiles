@@ -36,5 +36,11 @@ check_nonempty pacman base-devel
 check_nonempty apt    wl-clipboard
 check_nonempty pacman fontconfig
 
+# appimage_url_filter reads release JSON on stdin, echoes the AppImage asset URL
+sample_json='{"assets":[{"browser_download_url":"https://github.com/wez/wezterm/releases/download/2024/WezTerm-2024-Ubuntu20.04.AppImage"},{"browser_download_url":"https://github.com/wez/wezterm/releases/download/2024/WezTerm-2024-src.tar.gz"}]}'
+got="$(printf '%s' "$sample_json" | appimage_url_filter)"
+check "appimage_url_filter picks the AppImage" \
+  "https://github.com/wez/wezterm/releases/download/2024/WezTerm-2024-Ubuntu20.04.AppImage" "$got"
+
 echo
 if [ "$fails" -eq 0 ]; then echo "ALL PASS"; exit 0; else echo "$fails FAILURE(S)"; exit 1; fi

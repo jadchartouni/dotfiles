@@ -175,6 +175,42 @@ install_nerd_font_linux() {
   rm -rf "$tmp"
 }
 
+# Read GitHub release JSON on stdin, echo the first Ubuntu AppImage asset URL.
+appimage_url_filter() {
+  grep -oE 'https://[^"]*Ubuntu[^"]*\.AppImage' | head -1
+}
+
+# Install wezterm on a Linux desktop: native repo per PM, AppImage as fallback.
+install_wezterm_linux() {
+  command -v wezterm >/dev/null 2>&1 && { ok "wezterm present"; return; }
+  local pm="$1"
+  case "$pm" in
+    pacman)
+      pm_install pacman wezterm && { ok "wezterm installed (pacman)"; return; } ;;
+    apt)
+      curl -fsSL https://apt.fury.io/wez/gpg.key \
+        | $SUDO gpg --yes --dearmor -o /usr/share/keyrings/wezterm-fury.gpg 2>/dev/null
+      echo "deb [signed-by=/usr/share/keyrings/wezterm-fury.gpg] https://apt.fury.io/wez/ * *" \
+        | $SUDO tee /etc/apt/sources.list.d/wezterm.list >/dev/null
+      $SUDO apt-get update -y \
+        && pm_install apt wezterm && { ok "wezterm installed (apt repo)"; return; } ;;
+    dnf)
+      $SUDO dnf -y copr enable wezfurlong/wezterm-nightly \
+        && pm_install dnf wezterm && { ok "wezterm installed (copr)"; return; } ;;
+  esac
+  warn "wezterm repo install unavailable; trying AppImage"
+  local url
+  url="$(curl -fsSL https://api.github.com/repos/wez/wezterm/releases/latest | appimage_url_filter)"
+  if [ -n "$url" ]; then
+    mkdir -p "$HOME/.local/bin"
+    if curl -fsSL -o "$HOME/.local/bin/wezterm" "$url"; then
+      chmod +x "$HOME/.local/bin/wezterm"
+      ok "wezterm AppImage installed to ~/.local/bin/wezterm"; return
+    fi
+  fi
+  warn "wezterm install failed; install manually from https://wezterm.org/install/linux.html"
+}
+
 # ----------------------------------------------------------------------------
 # Idempotent symlink: link <source> <destination>
 #   - already the correct symlink -> leave it
@@ -342,6 +378,18 @@ if command -v nvim >/dev/null 2>&1; then
     || warn "Neovim plugin sync had issues; open nvim and run :Lazy"
 else
   warn "nvim not installed; skipping plugin sync"
+fi
+
+# ----------------------------------------------------------------------------
+# 8. wezterm (Linux desktop only — useless on a headless box)
+# ----------------------------------------------------------------------------
+if is_linux; then
+  step "wezterm"
+  if has_gui; then
+    install_wezterm_linux "$PM"
+  else
+    info "No display detected (headless) — skipping wezterm install."
+  fi
 fi
 
 step "Done"
