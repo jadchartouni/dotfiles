@@ -12,6 +12,7 @@ brew "bat"            # cat with syntax highlighting
 brew "tree"          # directory tree viewer
 brew "tmux"          # terminal multiplexer
 brew "fzf"           # fuzzy finder (shell Ctrl-R history / Ctrl-T files)
+brew "ripgrep"       # fast recursive search; powers telescope live_grep
 
 # Editors
 brew "neovim"
