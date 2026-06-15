@@ -18,7 +18,8 @@ custom dark colorscheme shared across the editor, terminal, and multiplexer.
 ## Highlights
 
 - **Neovim** as a clean file editor (not an IDE): lazy.nvim, treesitter
-  highlighting, lualine, nvim-tree, in-editor markdown rendering, and seamless
+  highlighting, lualine, nvim-tree, Telescope fuzzy finding (files + live grep),
+  inactive-window dimming (vimade), in-editor markdown rendering, and seamless
   tmux navigation. No LSP / completion / formatters by design.
 - **WezTerm** using JetBrainsMono Nerd Font, the SentryCore scheme, leader-based
   splits/panes, and single-cell icon rendering.
@@ -57,19 +58,78 @@ gitignore, and installs the tmux + Neovim plugins.
 
 ## Neovim keys
 
-Leader is <kbd>,</kbd>. A few essentials:
+Leader is <kbd>,</kbd>.
+
+**Find / files** (Telescope + nvim-tree)
 
 | Key          | Action                          |
 | ------------ | ------------------------------- |
+| `<leader>ff` | Find files by name              |
+| `<leader>fg` | Live grep (search file contents)|
+| `<leader>fb` | Find open buffers               |
+| `<leader>fr` | Recent files                    |
+| `<leader>fh` | Help tags                       |
 | `<leader>ft` | Toggle file tree                |
 | `<leader>fe` | Reveal current file in the tree |
+
+**Windows / tabs / buffers**
+
+| Key          | Action                          |
+| ------------ | ------------------------------- |
+| `<leader>sv` / `<leader>sh` | Split vertical / horizontal |
+| `<leader>se` / `<leader>sx` | Equalize / close split      |
+| `<leader>to` / `<leader>tx` | New / close tab             |
+| `<leader>tn` / `<leader>tp` | Next / previous tab         |
+| `<leader>bn` / `<leader>bp` | Next / previous buffer      |
+| `<leader>bd` | Delete current buffer           |
+
+**Editing / misc**
+
+| Key          | Action                          |
+| ------------ | ------------------------------- |
+| `jj`         | Escape (insert mode)            |
+| `<leader><space>` | Clear search highlight     |
+| `<A-j>` / `<A-k>` | Move line/selection down / up |
 | `<leader>=`  | Re-indent the whole file        |
 | `<leader>w`  | Toggle soft word wrap           |
 | `<leader>mr` | Toggle markdown rendering       |
-| `jj`         | Escape (insert mode)            |
+| `<leader>es` / `<leader>ds` | Spellcheck on / off  |
 
 To swap the colorscheme back to nightfly, set `enabled = true` in
 `nvim/lua/plugins/ui.nightfly.lua` and `enabled = false` in `ui.lua`.
+
+## tmux keys & options
+
+Prefix is <kbd>C-a</kbd> (remapped from `C-b`). `docs/tmux.md` has the full
+cheat sheet; the essentials:
+
+**Keys** (`prefix` = `C-a`)
+
+| Key                    | Action                                    |
+| ---------------------- | ----------------------------------------- |
+| `C-h/j/k/l`            | Move between panes (no prefix; spans nvim & tmux) |
+| `prefix \|` / `prefix -` | Split horizontally / vertically         |
+| `prefix h/j/k/l`       | Resize focused pane by 5 cells (repeatable) |
+| `prefix m`             | Toggle pane zoom (fullscreen)             |
+| `prefix R` / `prefix T`| Resize pane to an exact width / height %  |
+| `prefix r`             | Reload `~/.tmux.conf`                      |
+
+**Key options**
+
+| Option                       | Why                                       |
+| ---------------------------- | ----------------------------------------- |
+| `prefix C-a`                 | Easier reach than the default `C-b`       |
+| `mouse on`                   | Click/scroll/drag to select & resize panes |
+| `mode-keys vi`               | vi-style copy mode (`y` / `Enter` to yank)|
+| `set-clipboard on`           | Yanks go to the system clipboard          |
+| `base-index 1` / `pane-base-index 1` | Windows & panes count from 1      |
+| `renumber-windows on`        | No gaps in window numbers after closing   |
+| `escape-time 0`              | No lag on `<Esc>` (important inside nvim) |
+| `focus-events on`            | Lets nvim/vimade react to pane focus changes |
+| `aggressive-resize on`       | Panes resize to the active client         |
+
+Plugins (via [TPM](https://github.com/tmux-plugins/tpm)): `vim-tmux-navigator`,
+`tmux-resurrect`, `tmux-continuum` (auto-saves sessions every 15 min).
 
 ## License
 

@@ -42,6 +42,8 @@ return {
         -- instead — still colored, and avoids that fragile chain entirely.
         -- (Grep result highlighting still uses treesitter via the shims below.)
         preview = { treesitter = false },
+        -- mappings are added in config() below (they need telescope.actions,
+        -- which isn't on the runtimepath yet while this opts table is built).
       },
       extensions = {
         fzf = {
@@ -70,6 +72,16 @@ return {
           return true
         end
       end
+
+      -- Move through results with Ctrl-j / Ctrl-k without leaving insert mode
+      -- (plain j/k still work after pressing <Esc> for normal mode).
+      local actions = require("telescope.actions")
+      opts.defaults.mappings = {
+        i = {
+          ["<C-j>"] = actions.move_selection_next,
+          ["<C-k>"] = actions.move_selection_previous,
+        },
+      }
 
       local telescope = require("telescope")
       telescope.setup(opts)
