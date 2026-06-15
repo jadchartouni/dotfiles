@@ -1,0 +1,90 @@
+#* SentryCore — a dark indigo / lavender theme for btop.
+#* Matches the palette used across the dotfiles (wezterm, tmux, nvim).
+#*
+#* Gradients are 3-stop (start -> mid -> end); single colors are flat.
+#* main_bg is intentionally left empty so the terminal's own (translucent)
+#* background shows through — pair with `theme_background = False` in btop.conf.
+
+# Empty background -> inherit the terminal background (keeps WezTerm translucency)
+theme[main_bg]=""
+
+# Main text
+theme[main_fg]="#E6E4F0"
+
+# Title color for boxes
+theme[title]="#E6E4F0"
+
+# Highlight color for keyboard shortcuts / selected letters
+theme[hi_fg]="#A855E0"
+
+# Background of selected item in menus / process list
+theme[selected_bg]="#3D2570"
+
+# Foreground of selected item in menus / process list
+theme[selected_fg]="#FFFFFF"
+
+# Text color of inactive / disabled boxes and dimmed values
+theme[inactive_fg]="#5E5280"
+
+# Text color for the graph values overlaid on meters/graphs
+theme[graph_text]="#9890B8"
+
+# Background color of the percentage meters
+theme[meter_bg]="#2A1F4A"
+
+# Misc colors for processes box (tree, thread count, etc.)
+theme[proc_misc]="#C29BFF"
+
+# Box outlines — distinct in-palette hues so each panel reads apart
+theme[cpu_box]="#8324BF"
+theme[mem_box]="#3D55B6"
+theme[net_box]="#6A39A9"
+theme[proc_box]="#5A78D9"
+
+# Divider lines between boxes
+theme[div_line]="#2E1C52"
+
+# Temperature graph (cool teal -> lavender -> hot red)
+theme[temp_start]="#00BFA5"
+theme[temp_mid]="#A855E0"
+theme[temp_end]="#E74C3C"
+
+# CPU usage graph (low blue -> mid purple -> high coral)
+theme[cpu_start]="#4A8FE7"
+theme[cpu_mid]="#A855E0"
+theme[cpu_end]="#FF6B5B"
+
+# Mem/disk free meter (teal)
+theme[free_start]="#00BFA5"
+theme[free_mid]="#2DC9AE"
+theme[free_end]="#3DD5B6"
+
+# Mem/disk cached meter (blue)
+theme[cached_start]="#4A8FE7"
+theme[cached_mid]="#5A9CF0"
+theme[cached_end]="#6BA8FF"
+
+# Mem/disk available meter (lavender)
+theme[available_start]="#9890B8"
+theme[available_mid]="#B0AAC9"
+theme[available_end]="#C9C5DB"
+
+# Mem/disk used meter (purple -> warning coral as it fills)
+theme[used_start]="#6A39A9"
+theme[used_mid]="#A855E0"
+theme[used_end]="#FF6B5B"
+
+# Download graph (teal -> blue)
+theme[download_start]="#00BFA5"
+theme[download_mid]="#3DD5B6"
+theme[download_end]="#6BA8FF"
+
+# Upload graph (violet -> light purple)
+theme[upload_start]="#8324BF"
+theme[upload_mid]="#A855E0"
+theme[upload_end]="#D9B8FF"
+
+# Process box CPU gradient (low blue -> mid purple -> high coral)
+theme[process_start]="#4A8FE7"
+theme[process_mid]="#A855E0"
+theme[process_end]="#FF6B5B"

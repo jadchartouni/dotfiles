@@ -358,6 +358,7 @@ fi
 step "Symlinks"
 link "$DOTFILES/nvim"           "$HOME/.config/nvim"
 link "$DOTFILES/wezterm"        "$HOME/.config/wezterm"
+link "$DOTFILES/btop"           "$HOME/.config/btop"
 link "$DOTFILES/tmux/tmux.conf" "$HOME/.tmux.conf"
 link "$DOTFILES/zsh/zshrc"      "$HOME/.zshrc"
 link "$DOTFILES/zsh/p10k.zsh"   "$HOME/.p10k.zsh"

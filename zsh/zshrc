@@ -51,6 +51,64 @@ alias pip="pip3"
 command -v fzf >/dev/null 2>&1 && source <(fzf --zsh)
 
 # ─────────────────────────────────────────────────────────────────────────
+# Functions
+# ─────────────────────────────────────────────────────────────────────────
+
+# crew — launch a tmux dev session rooted at a folder.
+#   Window 1 "Claude":   nvim | claude
+#   Window 2 "Codex":    nvim | codex
+#   Window 3 "Terminal": shell (activates .venv if present)
+# Usage: crew [session-name] [folder]
+#   - prompts for the name if omitted
+#   - folder defaults to the current directory; pass one to root the
+#     session elsewhere (handy when launching from inside another session)
+crew() {
+  local session="$1"
+  local dir="${2:-$PWD}"
+
+  # Resolve ~, relative paths, and symlinks to a real absolute path.
+  dir="${dir:A}"
+  if [[ ! -d "$dir" ]]; then
+    echo "crew: no such directory: $dir" >&2
+    return 1
+  fi
+
+  # Ask for a name when none was passed; Enter accepts the folder name.
+  if [[ -z "$session" ]]; then
+    read "session?Session name [$(basename "$dir")]: "
+    session="${session:-$(basename "$dir")}"
+  fi
+
+  # Already running? Just go to it.
+  if tmux has-session -t "$session" 2>/dev/null; then
+    [[ -n "$TMUX" ]] && tmux switch-client -t "$session" || tmux attach -t "$session"
+    return
+  fi
+
+  # Window 1: Claude  (nvim | claude)
+  tmux new-session -d -s "$session" -n Claude -c "$dir"
+  tmux send-keys -t "$session:Claude" 'nvim' C-m
+  tmux split-window -h -t "$session:Claude" -c "$dir"
+  tmux send-keys -t "$session:Claude" 'claude' C-m
+
+  # Window 2: Codex  (nvim | codex)
+  tmux new-window -t "$session" -n Codex -c "$dir"
+  tmux send-keys -t "$session:Codex" 'nvim' C-m
+  tmux split-window -h -t "$session:Codex" -c "$dir"
+  tmux send-keys -t "$session:Codex" 'codex' C-m
+
+  # Window 3: Terminal (activate the venv if one exists, then clear the prompt)
+  tmux new-window -t "$session" -n Terminal -c "$dir"
+  [[ -f "$dir/.venv/bin/activate" ]] && \
+    tmux send-keys -t "$session:Terminal" 'source .venv/bin/activate && clear' C-m
+
+  # Land on window 1, left (nvim) pane, then attach.
+  tmux select-window -t "$session:Claude"
+  tmux select-pane -t "$session:Claude.1"
+  [[ -n "$TMUX" ]] && tmux switch-client -t "$session" || tmux attach -t "$session"
+}
+
+# ─────────────────────────────────────────────────────────────────────────
 # Tool integrations — activate only if present, so this file is portable.
 # ─────────────────────────────────────────────────────────────────────────
 
