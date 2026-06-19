@@ -364,6 +364,13 @@ link "$DOTFILES/zsh/zshrc"      "$HOME/.zshrc"
 link "$DOTFILES/zsh/p10k.zsh"   "$HOME/.p10k.zsh"
 link "$DOTFILES/zsh/zprofile"   "$HOME/.zprofile"
 
+# Obsidian SentryCore snippet — only on machines where the iCloud vault exists.
+# (iCloud won't sync the symlink to other devices; it's a local convenience.)
+OBSIDIAN_VAULT="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/Vault"
+if [ -d "$OBSIDIAN_VAULT/.obsidian" ]; then
+  link "$DOTFILES/obsidian/sentrycore.css" "$OBSIDIAN_VAULT/.obsidian/snippets/sentrycore.css"
+fi
+
 # ----------------------------------------------------------------------------
 # 5. Git global ignore (setting the value is itself idempotent)
 # ----------------------------------------------------------------------------

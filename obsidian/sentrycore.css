@@ -1,0 +1,570 @@
+/* SentryCore — Obsidian Theme Snippet
+   Ported from the SentryCore Neovim/WezTerm colorscheme */
+
+.theme-dark {
+  /* ── Base surfaces ── */
+  --background-primary:           #0F0A1F;
+  --background-primary-alt:       #1A1230;
+  --background-secondary:         #0A0618;
+  --background-secondary-alt:     #0A0618;
+  --background-modifier-border:   #2A2045;
+  --background-modifier-form-field: #15102A;
+  --background-modifier-form-field-highlighted: #2A1F4A;
+  --background-modifier-box-shadow: rgba(0, 0, 0, 0.4);
+  --background-modifier-success:  #1E3A2E;
+  --background-modifier-error:    #C0392B;
+  --background-modifier-error-rgb: 192, 57, 43;
+  --background-modifier-error-hover: #E74C3C;
+  --background-modifier-cover:    rgba(10, 6, 24, 0.85);
+
+  /* ── Text ── */
+  --text-normal:                  #E6E4F0;
+  --text-muted:                   #9890B8;
+  --text-faint:                   #3D3560;
+  --text-on-accent:               #E6E4F0;
+  --text-on-accent-inverted:      #E6E4F0;
+  --text-error:                   #E74C3C;
+  --text-error-hover:             #FF6B5B;
+  --text-success:                 #00BFA5;
+  --text-selection:               rgba(61, 37, 112, 0.6);
+  --text-accent:                  #A855E0;
+  --text-accent-hover:            #C29BFF;
+
+  /* ── Interactive accent ── */
+  --interactive-normal:           #1A1230;
+  --interactive-hover:            #2A1F4A;
+  --interactive-accent:           #6A39A9;
+  --interactive-accent-hsl:       267, 47%, 44%;
+  --interactive-accent-hover:     #A855E0;
+  --interactive-accent-rgb:       106, 57, 169;
+
+  /* ── Scrollbar ── */
+  --scrollbar-bg:                 rgba(10, 6, 24, 0.2);
+  --scrollbar-thumb-bg:           rgba(106, 57, 169, 0.35);
+  --scrollbar-active-thumb-bg:    rgba(168, 85, 224, 0.5);
+
+  /* ── Navigation / sidebar ── */
+  --nav-item-color:               #C9C5DB;
+  --nav-item-color-hover:         #E6E4F0;
+  --nav-item-color-active:        #C9C5DB;
+  --nav-item-background-hover:    #1A1230;
+  --nav-item-background-active:   #2A1F4A;
+  --nav-item-weight-hover:        600;
+  --nav-item-weight-active:       600;
+
+  /* ── Heading colors (softened from nvim palette) ── */
+  --h1-color: #C9C5DB;
+  --h2-color: #7B8FC2;
+  --h3-color: #8DB5E6;
+  --h4-color: #7EC4AD;
+  --h5-color: #7EA8D4;
+  --h6-color: #B5A8D9;
+  --inline-title-color: #C9C5DB;
+
+  /* ── Inline ── */
+  --bold-color:                   #E6E4F0;
+  --italic-color:                 #C9C5DB;
+  --tag-color:                    #00BFA5;
+  --tag-background:               rgba(0, 191, 165, 0.12);
+  --tag-padding-x:                6px;
+  --tag-padding-y:                2px;
+  --tag-radius:                   4px;
+
+  /* ── Code ── */
+  --code-normal:                  #3DD5B6;
+  --code-background:              #1A1230;
+  --code-size:                    0.9em;
+
+  /* ── Link ── */
+  --link-color:                   #6BA8FF;
+  --link-color-hover:             #A855E0;
+  --link-decoration-hover:        underline;
+  --link-external-color:          #4A8FE7;
+  --link-external-color-hover:    #6BA8FF;
+  --link-unresolved-color:        #8324BF;
+  --link-unresolved-opacity:      0.7;
+
+  /* ── Indentation guides ── */
+  --indentation-guide-color:       #2A2045;
+  --indentation-guide-color-active: #3D3560;
+
+  /* ── Graph ── */
+  --graph-line:                   #3D2570;
+  --graph-node:                   #A855E0;
+  --graph-node-focused:           #3DD5B6;
+  --graph-node-tag:               #00BFA5;
+  --graph-node-attachment:        #5A78D9;
+  --graph-node-unresolved:        #9890B8;
+
+  /* ── Tabs ── */
+  --tab-text-color:               #9890B8;
+  --tab-text-color-focused:       #E6E4F0;
+  --tab-text-color-focused-active: #E6E4F0;
+  --tab-text-color-focused-active-current: #E6E4F0;
+  --tab-background-active:        #0F0A1F;
+  --tab-outline-color:            #2A2045;
+
+  /* ── Titlebar ── */
+  --titlebar-background:          #0A0618;
+  --titlebar-background-focused:  #0A0618;
+  --titlebar-text-color:          #C9C5DB;
+
+  /* ── Status bar ── */
+  --status-bar-background:        #0A0618;
+  --status-bar-border-color:      #2A2045;
+  --status-bar-text-color:        #9890B8;
+
+  /* ── Checkbox ── */
+  --checkbox-color:               #3D3560;
+  --checkbox-color-hover:         #5A78D9;
+  --checkbox-border-color:        #2A2045;
+
+  /* ── Toggle ── */
+  --toggle-thumb-color:           #E6E4F0;
+  --toggle-border-width:          1px;
+
+  /* ── Blockquote ── */
+  --blockquote-border-color:      #3D3560;
+
+  /* ── Callout ── */
+  --callout-default:              90, 120, 217;
+  --callout-info:                 74, 143, 231;
+  --callout-todo:                 168, 85, 224;
+  --callout-tip:                  0, 191, 165;
+  --callout-success:              0, 191, 165;
+  --callout-warning:              232, 154, 74;
+  --callout-bug:                  231, 76, 60;
+  --callout-fail:                 231, 76, 60;
+  --callout-error:                231, 76, 60;
+  --callout-question:             107, 168, 255;
+  --callout-example:              168, 85, 224;
+  --callout-quote:                152, 144, 184;
+
+  /* ── Ribbon ── */
+  --ribbon-background:            #0A0618;
+  --ribbon-background-collapsed:  #0A0618;
+
+  /* ── Prompt / modal ── */
+  --prompt-border-color:          #2A2045;
+
+  /* ── Table ── */
+  --table-header-background:      #1A1230;
+  --table-header-background-hover: #2A1F4A;
+  --table-border-color:           #2A2045;
+  --table-row-even-background:    rgba(26, 18, 48, 0.5);
+
+  /* ── Divider / hr ── */
+  --hr-color:                     #2A2045;
+
+  /* ── Vault name ── */
+  --vault-name-color:             #C9C5DB;
+  --vault-name-font-weight:       600;
+
+  /* ── File colors ── */
+  --nav-file-tag:                 #00BFA5;
+
+  /* ── Cursor ── */
+  --cursor:                       #6A39A9;
+
+  /* ── Color accent override ── */
+  --color-accent:                 #5A78D9;
+  --color-accent-1:               #6BA8FF;
+  --color-accent-2:               #5A78D9;
+}
+
+/* ── Heading styles ── */
+.theme-dark .HyperMD-header-1,
+.theme-dark .cm-header-1,
+.theme-dark .markdown-rendered h1 {
+  color: var(--h1-color) !important;
+  font-weight: 700;
+}
+
+.theme-dark .HyperMD-header-2,
+.theme-dark .cm-header-2,
+.theme-dark .markdown-rendered h2 {
+  color: var(--h2-color) !important;
+  font-weight: 700;
+}
+
+.theme-dark .HyperMD-header-3,
+.theme-dark .cm-header-3,
+.theme-dark .markdown-rendered h3 {
+  color: var(--h3-color) !important;
+  font-weight: 600;
+}
+
+.theme-dark .HyperMD-header-4,
+.theme-dark .cm-header-4,
+.theme-dark .markdown-rendered h4 {
+  color: var(--h4-color) !important;
+  font-weight: 600;
+}
+
+.theme-dark .HyperMD-header-5,
+.theme-dark .cm-header-5,
+.theme-dark .markdown-rendered h5 {
+  color: var(--h5-color) !important;
+  font-weight: 600;
+}
+
+.theme-dark .HyperMD-header-6,
+.theme-dark .cm-header-6,
+.theme-dark .markdown-rendered h6 {
+  color: var(--h6-color) !important;
+  font-weight: 600;
+}
+
+/* ── Bold & italic in editor ── */
+.theme-dark .cm-strong {
+  color: var(--bold-color);
+  font-weight: 700;
+}
+
+.theme-dark .cm-em {
+  color: var(--italic-color);
+}
+
+/* ── Inline code ── */
+.theme-dark code:not(pre code),
+.theme-dark .cm-inline-code {
+  color: var(--code-normal);
+  background-color: var(--code-background);
+  padding: 2px 5px;
+  border-radius: 4px;
+}
+
+/* ── Code blocks ── */
+.theme-dark pre,
+.theme-dark .HyperMD-codeblock {
+  background-color: #0A0618 !important;
+}
+
+.theme-dark .markdown-rendered pre {
+  border: 1px solid #2A2045;
+  border-radius: 6px;
+}
+
+.theme-dark .markdown-rendered pre code {
+  color: #E6E4F0;
+}
+
+/* ── Blockquote left border ── */
+.theme-dark blockquote,
+.theme-dark .HyperMD-quote {
+  border-left: 2px solid var(--blockquote-border-color) !important;
+}
+
+/* ── Internal links (wiki-links) ── */
+.theme-dark .cm-hmd-internal-link,
+.theme-dark .internal-link {
+  color: var(--link-color) !important;
+}
+
+.theme-dark .cm-hmd-internal-link:hover,
+.theme-dark .internal-link:hover {
+  color: var(--link-color-hover) !important;
+}
+
+/* ── External links ── */
+.theme-dark .external-link {
+  color: var(--link-external-color);
+}
+
+.theme-dark .external-link:hover {
+  color: var(--link-external-color-hover);
+}
+
+/* ── Tags ── */
+.theme-dark .tag,
+.theme-dark .cm-hashtag {
+  color: var(--tag-color) !important;
+  background-color: var(--tag-background);
+  border-radius: var(--tag-radius);
+}
+
+/* ── Horizontal rule ── */
+.theme-dark hr,
+.theme-dark .cm-hr {
+  border-color: var(--hr-color);
+}
+
+/* ── Lists — bullet/number color ── */
+.theme-dark .list-bullet::after {
+  color: #9890B8;
+}
+
+.theme-dark .cm-formatting-list {
+  color: #9890B8 !important;
+}
+
+/* ── Checkbox ── */
+.theme-dark input[type="checkbox"]:checked {
+  background-color: var(--checkbox-color);
+  border-color: var(--checkbox-color);
+}
+
+/* ── Search highlight ── */
+.theme-dark .search-result-file-matched-text {
+  background-color: rgba(168, 85, 224, 0.3);
+  color: #E6E4F0;
+}
+
+/* ── Empty new-tab action buttons (Create new note / Go to file / Close) ── */
+.theme-dark .empty-state-action,
+.theme-dark .empty-state-action-list .empty-state-action {
+  color: #FFFFFF !important;
+}
+
+.theme-dark .empty-state-action:hover {
+  color: #FFFFFF !important;
+  opacity: 0.85;
+}
+
+/* ── ==Highlight== syntax — themed to match SentryCore ── */
+.theme-dark .markdown-rendered mark,
+.theme-dark .cm-highlight {
+  background-color: rgba(168, 85, 224, 0.15) !important;
+  color: #3DD5B6 !important;
+  border-radius: 3px;
+  padding: 1px 4px;
+  box-shadow: inset 0 -1px 0 rgba(61, 213, 182, 0.4);
+  font-weight: 500;
+}
+
+/* ── Selection ── */
+.theme-dark ::selection {
+  background-color: rgba(61, 37, 112, 0.55);
+}
+
+/* ── Scrollbar ── */
+.theme-dark ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.theme-dark ::-webkit-scrollbar-track {
+  background: var(--scrollbar-bg);
+}
+
+.theme-dark ::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb-bg);
+  border-radius: 4px;
+}
+
+.theme-dark ::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-active-thumb-bg);
+}
+
+/* ── Active line highlight ── */
+.theme-dark .cm-active.cm-line {
+  background-color: rgba(42, 31, 74, 0.45);
+}
+
+/* ── Graph view ── */
+.theme-dark .graph-view.color-fill {
+  color: var(--graph-node);
+}
+
+.theme-dark .graph-view.color-line {
+  color: var(--graph-line);
+}
+
+.theme-dark .graph-view.color-fill-focused {
+  color: var(--graph-node-focused);
+}
+
+.theme-dark .graph-view.color-fill-tag {
+  color: var(--graph-node-tag);
+}
+
+.theme-dark .graph-view.color-fill-attachment {
+  color: var(--graph-node-attachment);
+}
+
+.theme-dark .graph-view.color-fill-unresolved {
+  color: var(--graph-node-unresolved);
+}
+
+/* ── Sidebar folder icons — purple accent ── */
+.theme-dark .nav-folder-title-content {
+  color: #C9C5DB;
+}
+
+.theme-dark .nav-folder-collapse-indicator {
+  color: #9890B8;
+}
+
+/* ── Vault title ── */
+.theme-dark .nav-header .vault-name {
+  color: var(--vault-name-color);
+  font-weight: var(--vault-name-font-weight);
+}
+
+/* ── Tooltip / popover ── */
+.theme-dark .tooltip,
+.theme-dark .popover {
+  background-color: #15102A;
+  border: 1px solid #2A2045;
+  color: #E6E4F0;
+}
+
+/* ── Destructive / delete buttons ── */
+.theme-dark .mod-warning,
+.theme-dark .mod-destructive,
+.theme-dark button.mod-warning {
+  background-color: #C0392B !important;
+  color: #E6E4F0 !important;
+}
+
+.theme-dark .mod-warning:hover,
+.theme-dark .mod-destructive:hover,
+.theme-dark button.mod-warning:hover {
+  background-color: #E74C3C !important;
+  color: #E6E4F0 !important;
+}
+
+/* ── Collapse gap above tables (Live Preview + Reading) ── */
+.markdown-source-view.mod-cm6 .cm-table-widget,
+.markdown-source-view.mod-cm6 .HyperMD-table-row,
+.markdown-rendered table {
+  margin-top: 0 !important;
+}
+
+.markdown-rendered p:has(+ table) {
+  margin-bottom: 0 !important;
+}
+
+/* Collapse the required-but-empty blank line that sits above a table */
+.markdown-source-view.mod-cm6 .cm-line:has(+ .HyperMD-table-row),
+.markdown-source-view.mod-cm6 .cm-line:has(+ .cm-embed-block.cm-table-widget) {
+  height: 0 !important;
+  min-height: 0 !important;
+  line-height: 0 !important;
+  font-size: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+/* Only collapse it when it's empty — keep cursor visible when focused */
+.markdown-source-view.mod-cm6 .cm-line.cm-active:has(+ .HyperMD-table-row),
+.markdown-source-view.mod-cm6 .cm-line.cm-active:has(+ .cm-embed-block.cm-table-widget) {
+  height: auto !important;
+  min-height: 1.5em !important;
+  line-height: normal !important;
+  font-size: inherit !important;
+}
+
+/* ═══════════════════════════════════════════════
+   Tasks plugin — colors only (no layout, no sizing)
+   SentryCORE palette
+   ═══════════════════════════════════════════════ */
+
+/* Filter input — theme-matched */
+.theme-dark .block-language-tasks input:not([type="checkbox"]) {
+  background-color: #15102A !important;
+  border: 1px solid #2A2045 !important;
+  border-radius: 6px !important;
+  color: #E6E4F0 !important;
+  font-size: 0.9em !important;
+  padding-left: 32px !important;
+  box-shadow: none !important;
+  transition: border-color 0.12s ease, background-color 0.12s ease;
+}
+
+.theme-dark .block-language-tasks input:not([type="checkbox"])::placeholder {
+  color: #9890B8 !important;
+  opacity: 0.7;
+}
+
+.theme-dark .block-language-tasks input:not([type="checkbox"]):hover {
+  border-color: #3D3560 !important;
+}
+
+.theme-dark .block-language-tasks input:not([type="checkbox"]):focus {
+  border-color: #A855E0 !important;
+  background-color: #1A1230 !important;
+  outline: none !important;
+}
+
+/* Checkboxes — fully restyled, vault-wide */
+.theme-dark input[type="checkbox"].task-list-item-checkbox,
+.theme-dark .block-language-tasks input[type="checkbox"],
+.theme-dark .markdown-source-view.mod-cm6 .cm-line input[type="checkbox"],
+.theme-dark .markdown-preview-view ul.contains-task-list input[type="checkbox"] {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  width: 16px !important;
+  height: 16px !important;
+  border: 1.5px solid #6A39A9 !important;
+  border-radius: 4px !important;
+  background-color: #1A1230 !important;
+  cursor: pointer !important;
+  vertical-align: middle !important;
+  position: relative !important;
+  transition: all 0.12s ease;
+}
+
+.theme-dark input[type="checkbox"].task-list-item-checkbox:hover,
+.theme-dark .block-language-tasks input[type="checkbox"]:hover,
+.theme-dark .markdown-source-view.mod-cm6 .cm-line input[type="checkbox"]:hover,
+.theme-dark .markdown-preview-view ul.contains-task-list input[type="checkbox"]:hover {
+  border-color: #A855E0 !important;
+  background-color: #2A1F4A !important;
+}
+
+.theme-dark input[type="checkbox"].task-list-item-checkbox:checked,
+.theme-dark .block-language-tasks input[type="checkbox"]:checked,
+.theme-dark .markdown-source-view.mod-cm6 .cm-line input[type="checkbox"]:checked,
+.theme-dark .markdown-preview-view ul.contains-task-list input[type="checkbox"]:checked {
+  background-color: #3DD5B6 !important;
+  border-color: #3DD5B6 !important;
+}
+
+.theme-dark input[type="checkbox"].task-list-item-checkbox:checked::after,
+.theme-dark .block-language-tasks input[type="checkbox"]:checked::after,
+.theme-dark .markdown-source-view.mod-cm6 .cm-line input[type="checkbox"]:checked::after,
+.theme-dark .markdown-preview-view ul.contains-task-list input[type="checkbox"]:checked::after {
+  content: "✓";
+  position: absolute;
+  top: -2px;
+  left: 2px;
+  color: #0F0A1F;
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 1;
+}
+
+/* Reading-view checkboxes sit lower than the text baseline; nudge them up */
+.theme-dark .markdown-preview-view ul.contains-task-list input[type="checkbox"],
+.theme-dark .block-language-tasks input[type="checkbox"] {
+  top: -2px !important;
+}
+
+/* Backlinks to source file — muted grey, blue on hover */
+.theme-dark .block-language-tasks .tasks-backlink,
+.theme-dark .block-language-tasks a.tasks-backlink {
+  color: #9890B8 !important;
+}
+
+.theme-dark .block-language-tasks .tasks-backlink:hover,
+.theme-dark .block-language-tasks a.tasks-backlink:hover {
+  color: #6BA8FF !important;
+}
+
+/* Edit icon — muted grey, purple on hover */
+.theme-dark .block-language-tasks .tasks-edit,
+.theme-dark .block-language-tasks a.tasks-edit {
+  color: #9890B8 !important;
+}
+
+.theme-dark .block-language-tasks .tasks-edit:hover,
+.theme-dark .block-language-tasks a.tasks-edit:hover {
+  color: #A855E0 !important;
+}
+
+/* Task count footer */
+.theme-dark .block-language-tasks .tasks-count {
+  color: #9890B8 !important;
+}
