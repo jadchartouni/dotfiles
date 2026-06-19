@@ -520,20 +520,12 @@
 .theme-dark .markdown-preview-view ul.contains-task-list input[type="checkbox"]:checked {
   background-color: #3DD5B6 !important;
   border-color: #3DD5B6 !important;
-}
-
-.theme-dark input[type="checkbox"].task-list-item-checkbox:checked::after,
-.theme-dark .block-language-tasks input[type="checkbox"]:checked::after,
-.theme-dark .markdown-source-view.mod-cm6 .cm-line input[type="checkbox"]:checked::after,
-.theme-dark .markdown-preview-view ul.contains-task-list input[type="checkbox"]:checked::after {
-  content: "✓";
-  position: absolute;
-  top: -2px;
-  left: 2px;
-  color: #0F0A1F;
-  font-weight: 700;
-  font-size: 13px;
-  line-height: 1;
+  /* Checkmark as a centered SVG (dark stroke on the teal fill) — renders
+     identically regardless of font metrics or box-sizing. */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%230F0A1F' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round' d='M5 12.5 L10 17.5 L19 7'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: 11px 11px !important;
 }
 
 /* Reading-view checkboxes sit lower than the text baseline; nudge them up */
