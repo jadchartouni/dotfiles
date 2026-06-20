@@ -1,0 +1,23 @@
+{
+  "name": "sentrycore-theme",
+  "displayName": "SentryCore",
+  "description": "SentryCore — dark indigo / lavender color theme. Matches the dotfiles palette (WezTerm, tmux, btop, Obsidian).",
+  "version": "1.0.0",
+  "publisher": "jadchartouni",
+  "private": true,
+  "engines": {
+    "vscode": "^1.70.0"
+  },
+  "categories": [
+    "Themes"
+  ],
+  "contributes": {
+    "themes": [
+      {
+        "label": "SentryCore",
+        "uiTheme": "vs-dark",
+        "path": "./themes/sentrycore-color-theme.json"
+      }
+    ]
+  }
+}

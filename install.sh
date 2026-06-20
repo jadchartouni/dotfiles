@@ -371,6 +371,11 @@ if [ -d "$OBSIDIAN_VAULT/.obsidian" ]; then
   link "$DOTFILES/obsidian/sentrycore.css" "$OBSIDIAN_VAULT/.obsidian/snippets/sentrycore.css"
 fi
 
+# Cursor SentryCore theme — linked as an unpacked extension, only if Cursor exists.
+if [ -d "$HOME/.cursor/extensions" ]; then
+  link "$DOTFILES/cursor" "$HOME/.cursor/extensions/sentrycore-theme"
+fi
+
 # ----------------------------------------------------------------------------
 # 5. Git global ignore (setting the value is itself idempotent)
 # ----------------------------------------------------------------------------
