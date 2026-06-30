@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>name</key>
+	<string>SentryCore</string>
+	<key>settings</key>
+	<array>
+		<dict>
+			<key>settings</key>
+			<dict>
+				<key>background</key>
+				<string>#0F0A1F</string>
+				<key>foreground</key>
+				<string>#E6E4F0</string>
+				<key>caret</key>
+				<string>#A855E0</string>
+				<key>selection</key>
+				<string>#2A1F4A</string>
+				<key>lineHighlight</key>
+				<string>#1A1230</string>
+				<key>invisibles</key>
+				<string>#3D3560</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Comment</string>
+			<key>scope</key>
+			<string>comment, punctuation.definition.comment</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#9890B8</string>
+				<key>fontStyle</key>
+				<string>italic</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>String</string>
+			<key>scope</key>
+			<string>string, string.quoted</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#3DD5B6</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Number</string>
+			<key>scope</key>
+			<string>constant.numeric</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#C29BFF</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Constant / Boolean</string>
+			<key>scope</key>
+			<string>constant.language, constant.character, support.constant</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#FF6B5B</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Keyword</string>
+			<key>scope</key>
+			<string>keyword, keyword.control, keyword.operator</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#A855E0</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Storage / Type</string>
+			<key>scope</key>
+			<string>storage, storage.type, storage.modifier</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#5A78D9</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Type / Class</string>
+			<key>scope</key>
+			<string>entity.name.type, entity.name.class, support.type, support.class</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#D9B8FF</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Function</string>
+			<key>scope</key>
+			<string>entity.name.function, support.function, meta.function-call</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#6BA8FF</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Tag</string>
+			<key>scope</key>
+			<string>entity.name.tag</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#A855E0</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Attribute</string>
+			<key>scope</key>
+			<string>entity.other.attribute-name</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#D9B8FF</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Variable</string>
+			<key>scope</key>
+			<string>variable, variable.parameter</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#E6E4F0</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Punctuation</string>
+			<key>scope</key>
+			<string>punctuation, meta.brace</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#C9C5DB</string>
+			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>

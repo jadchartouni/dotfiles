@@ -10,6 +10,7 @@ brew "jq"
 brew "ffmpeg"
 brew "bat"            # cat with syntax highlighting
 brew "tree"          # directory tree viewer
+brew "yazi"          # blazing-fast terminal file manager (TUI)
 brew "tmux"          # terminal multiplexer
 brew "sesh"          # fuzzy tmux session manager (prefix s popup)
 brew "btop"          # resource monitor; themed via btop/ (SentryCore)

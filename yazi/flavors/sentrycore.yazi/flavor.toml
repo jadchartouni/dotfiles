@@ -1,0 +1,159 @@
+# SentryCore — a yazi flavor matching the SentryCore palette.
+# Colors mirror nvim/themes/sentrycore.nvim/lua/sentrycore/palette.lua.
+
+# : Manager {{{
+
+[mgr]
+cwd = { fg = "#6BA8FF" }
+
+# Find
+find_keyword  = { fg = "#D9B8FF", bold = true, italic = true, underline = true }
+find_position = { fg = "#A855E0", bg = "reset", bold = true, italic = true }
+
+# Symlink
+symlink_target = { fg = "#4A8FE7", italic = true }
+
+# Marker (the thin bar in the left margin)
+marker_copied   = { fg = "#00BFA5", bg = "#00BFA5" }
+marker_cut      = { fg = "#E74C3C", bg = "#E74C3C" }
+marker_marked   = { fg = "#4A8FE7", bg = "#4A8FE7" }
+marker_selected = { fg = "#C29BFF", bg = "#C29BFF" }
+marker_symbol   = "│"
+
+# Count badges
+count_copied   = { fg = "#0F0A1F", bg = "#00BFA5" }
+count_cut      = { fg = "#E6E4F0", bg = "#E74C3C" }
+count_selected = { fg = "#0F0A1F", bg = "#C29BFF" }
+
+# Border
+border_symbol = "│"
+border_style  = { fg = "#3D2570" }
+
+# Highlighting — left empty so the flavor's own tmtheme.xml is used.
+syntect_theme = ""
+
+# : }}}
+
+
+# : Tabs {{{
+
+[tabs]
+active   = { fg = "#FFFFFF", bg = "#6A39A9", bold = true }
+inactive = { fg = "#9890B8", bg = "#1A1230" }
+
+# : }}}
+
+
+# : Mode {{{
+
+[mode]
+normal_main = { fg = "#0F0A1F", bg = "#A855E0", bold = true }
+normal_alt  = { fg = "#A855E0", bg = "#1A1230" }
+
+select_main = { fg = "#0F0A1F", bg = "#00BFA5", bold = true }
+select_alt  = { fg = "#00BFA5", bg = "#1A1230" }
+
+unset_main = { fg = "#0F0A1F", bg = "#E74C3C", bold = true }
+unset_alt  = { fg = "#E74C3C", bg = "#1A1230" }
+
+# : }}}
+
+
+# : Indicator of the hovered/current file {{{
+
+[indicator]
+parent  = { fg = "#E6E4F0", bg = "#3D2570", bold = true }
+current = { fg = "#E6E4F0", bg = "#3D2570", bold = true }
+preview = { fg = "#E6E4F0", bg = "#3D2570" }
+padding = { open = "", close = "" }
+
+# : }}}
+
+
+# : Status bar {{{
+
+[status]
+overall   = { fg = "#9890B8", bg = "#1A1230" }
+sep_left  = { open = "", close = "" }
+sep_right = { open = "", close = "" }
+
+# Permissions
+perm_sep   = { fg = "#3D3560" }
+perm_type  = { fg = "#00BFA5" }
+perm_read  = { fg = "#C29BFF" }
+perm_write = { fg = "#E74C3C" }
+perm_exec  = { fg = "#4A8FE7" }
+
+# Progress
+progress_label  = { fg = "#E6E4F0", bold = true }
+progress_normal = { fg = "#00BFA5", bg = "#1A1230" }
+progress_error  = { fg = "#E6E4F0", bg = "#E74C3C" }
+
+# : }}}
+
+
+# : Pick / Input / Completion / Tasks / Which / Confirm / Notify {{{
+
+[pick]
+border   = { fg = "#6A39A9" }
+active   = { fg = "#A855E0", bold = true }
+inactive = { fg = "#9890B8" }
+
+[input]
+border   = { fg = "#6A39A9" }
+title    = { fg = "#E6E4F0" }
+value    = { fg = "#E6E4F0" }
+selected = { bg = "#2A1F4A" }
+
+[cmp]
+border      = { fg = "#6A39A9" }
+active      = { fg = "#E6E4F0", bg = "#3D2570", bold = true }
+inactive    = { fg = "#9890B8" }
+
+[tasks]
+border  = { fg = "#6A39A9" }
+title   = { fg = "#E6E4F0" }
+hovered = { fg = "#E6E4F0", bg = "#3D2570", underline = true }
+
+[which]
+cols           = 3
+mask           = { bg = "#15102A" }
+cand           = { fg = "#6BA8FF" }
+rest           = { fg = "#9890B8" }
+desc           = { fg = "#E6E4F0" }
+separator      = "  "
+separator_style = { fg = "#3D3560" }
+
+[confirm]
+border    = { fg = "#6A39A9" }
+title     = { fg = "#A855E0" }
+body      = { fg = "#E6E4F0" }
+list      = { fg = "#C9C5DB" }
+btn_yes   = { fg = "#0F0A1F", bg = "#00BFA5", bold = true }
+btn_no    = { fg = "#E6E4F0", bg = "#3D2570" }
+btn_labels = [ "  [Y]es  ", "  (N)o  " ]
+
+[notify]
+title_info  = { fg = "#00BFA5" }
+title_warn  = { fg = "#E89A4A" }
+title_error = { fg = "#E74C3C" }
+
+# : }}}
+
+
+# : Filetype coloring {{{
+
+[filetype]
+rules = [
+	{ mime = "image/*", fg = "#C29BFF" },
+	{ mime = "{audio,video}/*", fg = "#A855E0" },
+	{ mime = "application/pdf", fg = "#FF6B5B" },
+	{ mime = "application/{zip,gzip,x-tar,x-bzip2,x-7z-compressed,x-xz,x-rar,vnd.rar}", fg = "#E89A4A" },
+	{ mime = "inode/empty", fg = "#9890B8" },
+
+	{ url = "*", is = "orphan", fg = "#E74C3C" },
+	{ url = "*", is = "exec", fg = "#00BFA5" },
+	{ url = "*/", fg = "#5A78D9" },
+]
+
+# : }}}

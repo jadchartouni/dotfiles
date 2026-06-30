@@ -1,0 +1,7 @@
+# Yazi appearance is delegated to the bundled SentryCore flavor
+# (flavors/sentrycore.yazi/). Add style overrides below the [flavor] block
+# only if you want to tweak specific elements on top of the flavor.
+
+[flavor]
+dark  = "sentrycore"
+light = "sentrycore"
