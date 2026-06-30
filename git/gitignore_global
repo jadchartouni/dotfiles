@@ -17,7 +17,8 @@ Icon
 *.swp
 *.swo
 *~
-Session.vim   # vim-obsession session files (per-project, not shared)
+# vim-obsession session files (per-project, not shared)
+Session.vim
 
 # AI coding tools
 .claude/
@@ -30,6 +31,7 @@ Session.vim   # vim-obsession session files (per-project, not shared)
 
 # Environment / secrets
 .env
+.envrc
 
 # Misc
 .matrix
