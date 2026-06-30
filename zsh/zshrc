@@ -101,6 +101,11 @@ EOF
 # Tool integrations — activate only if present, so this file is portable.
 # ─────────────────────────────────────────────────────────────────────────
 
+# zoxide — "smarter cd": `z <fragment>` jumps to your most-used dirs (ranked by
+# frecency), `zi` opens an interactive picker. Also feeds sesh's session picker
+# with the directories you frequent.
+command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)"
+
 # direnv — per-directory env. On `cd` into a dir with an (allowed) .envrc it
 # loads those vars; on leaving, it unloads them. Used to auto-activate .venv.
 if command -v direnv >/dev/null 2>&1; then
