@@ -17,6 +17,7 @@ Icon
 *.swp
 *.swo
 *~
+Session.vim   # vim-obsession session files (per-project, not shared)
 
 # AI coding tools
 .claude/
