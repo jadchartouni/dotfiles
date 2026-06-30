@@ -29,6 +29,17 @@ source "$ZSH/oh-my-zsh.sh"
 [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
 
 # ─────────────────────────────────────────────────────────────────────────
+# History — set after oh-my-zsh so these win over its defaults.
+# ─────────────────────────────────────────────────────────────────────────
+HISTSIZE=50000                 # commands kept in memory per session
+SAVEHIST=50000                 # commands persisted to $HISTFILE
+setopt hist_ignore_all_dups    # drop older duplicates of a repeated command
+setopt hist_ignore_space       # don't record commands typed with a leading space
+setopt hist_reduce_blanks      # trim redundant whitespace before saving
+setopt hist_verify             # expand a history entry to the line, don't run it blind
+setopt share_history           # share history live across running sessions
+
+# ─────────────────────────────────────────────────────────────────────────
 # Environment
 # ─────────────────────────────────────────────────────────────────────────
 export EDITOR="nvim"
@@ -54,63 +65,57 @@ command -v fzf >/dev/null 2>&1 && source <(fzf --zsh)
 # Functions
 # ─────────────────────────────────────────────────────────────────────────
 
-# crew — launch a tmux dev session rooted at a folder.
-#   Window 1 "Claude":   nvim | claude
-#   Window 2 "Codex":    nvim | codex
-#   Window 3 "Terminal": shell (activates .venv if present)
-# Usage: crew [session-name] [folder]
-#   - prompts for the name if omitted
-#   - folder defaults to the current directory; pass one to root the
-#     session elsewhere (handy when launching from inside another session)
-crew() {
-  local session="$1"
-  local dir="${2:-$PWD}"
+# envrc — scaffold a direnv .envrc that auto-activates ./.venv, then allow it.
+# Usage: envrc [folder]   (folder defaults to the current directory)
+envrc() {
+  local dir="${1:-$PWD}"
 
   # Resolve ~, relative paths, and symlinks to a real absolute path.
   dir="${dir:A}"
   if [[ ! -d "$dir" ]]; then
-    echo "crew: no such directory: $dir" >&2
+    echo "envrc: no such directory: $dir" >&2
     return 1
   fi
 
-  # Ask for a name when none was passed; Enter accepts the folder name.
-  if [[ -z "$session" ]]; then
-    read "session?Session name [$(basename "$dir")]: "
-    session="${session:-$(basename "$dir")}"
+  local file="$dir/.envrc"
+  if [[ -e "$file" ]]; then
+    echo "envrc: $file already exists; not overwriting" >&2
+    return 1
   fi
 
-  # Already running? Just go to it.
-  if tmux has-session -t "$session" 2>/dev/null; then
-    [[ -n "$TMUX" ]] && tmux switch-client -t "$session" || tmux attach -t "$session"
-    return
+  # Quoted heredoc: keep $PWD / $VIRTUAL_ENV literal so direnv expands them at load.
+  cat > "$file" <<'EOF'
+# Auto-activate the project virtualenv via direnv.
+export VIRTUAL_ENV="$PWD/.venv"
+PATH_add "$VIRTUAL_ENV/bin"
+EOF
+
+  if command -v direnv >/dev/null 2>&1; then
+    direnv allow "$dir"
+  else
+    echo "envrc: wrote $file (install direnv to load it)" >&2
   fi
-
-  # Window 1: Claude  (nvim | claude)
-  tmux new-session -d -s "$session" -n Claude -c "$dir"
-  tmux send-keys -t "$session:Claude" 'nvim' C-m
-  tmux split-window -h -t "$session:Claude" -c "$dir"
-  tmux send-keys -t "$session:Claude" 'claude' C-m
-
-  # Window 2: Codex  (nvim | codex)
-  tmux new-window -t "$session" -n Codex -c "$dir"
-  tmux send-keys -t "$session:Codex" 'nvim' C-m
-  tmux split-window -h -t "$session:Codex" -c "$dir"
-  tmux send-keys -t "$session:Codex" 'codex' C-m
-
-  # Window 3: Terminal (activate the venv if one exists, then clear the prompt)
-  tmux new-window -t "$session" -n Terminal -c "$dir"
-  [[ -f "$dir/.venv/bin/activate" ]] && \
-    tmux send-keys -t "$session:Terminal" 'source .venv/bin/activate && clear' C-m
-
-  # Land on window 1, left (nvim) pane, then attach.
-  tmux select-window -t "$session:Claude"
-  tmux select-pane -t "$session:Claude.1"
-  [[ -n "$TMUX" ]] && tmux switch-client -t "$session" || tmux attach -t "$session"
 }
 
 # ─────────────────────────────────────────────────────────────────────────
 # Tool integrations — activate only if present, so this file is portable.
 # ─────────────────────────────────────────────────────────────────────────
+
+# direnv — per-directory env. On `cd` into a dir with an (allowed) .envrc it
+# loads those vars; on leaving, it unloads them. Used to auto-activate .venv.
+if command -v direnv >/dev/null 2>&1; then
+  eval "$(direnv hook zsh)"
+  # This direnv build ignores DIRENV_LOG_FORMAT, so silence its routine
+  # loading/export/unloading status lines at the hook instead. Real errors
+  # (e.g. a broken .envrc) are not filtered and still surface.
+  _direnv_hook() {
+    trap -- '' SIGINT
+    local errfile="${TMPDIR:-/tmp}/direnv-stderr.$$"
+    eval "$(direnv export zsh 2>| "$errfile")"
+    [[ -s "$errfile" ]] && grep -vE 'direnv: (loading|export|unloading|using)' "$errfile" >&2
+    trap - SIGINT
+  }
+fi
 
 # Laravel Herd (PHP toolchain + bundled NVM)
 HERD_DIR="$HOME/Library/Application Support/Herd"
@@ -137,4 +142,9 @@ fi
   && export PATH="$HOME/.local/share/uv/tools/huggingface-hub/bin:$PATH"
 
 # Matrix — sandboxed dev shell
-[[ -d "$HOME/Matrix" ]] && export PATH="$HOME/Matrix:$PATH"
+[[ -d "$HOME/.matrix" ]] && export PATH="$HOME/.matrix:$PATH"
+
+# Reset $? so the first p10k prompt isn't flagged red. The conditional PATH
+# guards above return non-zero when their target dir is absent, and that exit
+# code would otherwise carry into the initial prompt.
+true

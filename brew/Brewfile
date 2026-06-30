@@ -14,6 +14,7 @@ brew "tmux"          # terminal multiplexer
 brew "btop"          # resource monitor; themed via btop/ (SentryCore)
 brew "fzf"           # fuzzy finder (shell Ctrl-R history / Ctrl-T files)
 brew "ripgrep"       # fast recursive search; powers telescope live_grep
+brew "direnv"        # per-directory env: auto-loads .envrc on cd
 
 # Editors
 brew "neovim"
