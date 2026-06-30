@@ -65,6 +65,9 @@ return {
           duplicate_selected = { fg = c.fg_dim, bg = c.bg, italic = true },
         },
       })
+
+      -- Start with the tab bar hidden; toggle it with <leader>bt.
+      vim.opt.showtabline = 0
     end,
   },
 }

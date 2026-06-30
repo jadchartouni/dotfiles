@@ -60,6 +60,9 @@ keymap.set("n", "<leader>tp", ":tabp<cr>") -- Go to pevious tab
 keymap.set("n", "<leader>bn", ":bn<cr>") -- Go to next buffer
 keymap.set("n", "<leader>bp", ":bp<cr>") -- Go to previous buffer
 keymap.set("n", "<leader>bd", ":bd | bn<cr>") -- Delete current buffer
+keymap.set("n", "<leader>bt", function() -- Toggle the buffer tab bar
+  vim.opt.showtabline = (vim.opt.showtabline:get() == 0) and 2 or 0
+end, { desc = "Toggle bufferline visibility" })
 
 -- Re-indent the whole file, keeping the cursor in place
 keymap.set("n", "<leader>=", "mzgg=G`z")
