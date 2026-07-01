@@ -94,6 +94,7 @@ config.allow_square_glyphs_to_overflow_width = 'Never'
 
 -- or, changing the font size and color scheme.
 config.font_size = 16
+config.line_height = 1.1
 config.color_scheme = 'SentryCore'
 
 -- Window opacity
