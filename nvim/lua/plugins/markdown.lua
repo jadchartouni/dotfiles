@@ -9,6 +9,10 @@ return {
     },
     ft = { "markdown" },
     opts = {
+      -- Keep the cursor line rendered too (default reveals raw source on the
+      -- line under the cursor). Trade-off: while actively typing a line, the
+      -- rendered version can overlap your text until you move off it.
+      anti_conceal = { enabled = false },
       heading = {
         -- No background bars: headings render as bold coloured text only.
         -- (render-markdown's default backgrounds link to Diff/Visual groups,
