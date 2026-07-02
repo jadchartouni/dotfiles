@@ -38,11 +38,12 @@ Arch (pacman):
       nvim --version | head -1'
 
 Expected per distro:
-- First run: native tier installs; nvim/tree-sitter/fzf/bat resolved (brew on
-  Ubuntu/Fedora-old, native on Arch); symlinks created.
-- Second run: every step reports "already" / "in sync" (idempotent).
+- First run: native tier installs (incl. ripgrep/zoxide/direnv); nvim,
+  tree-sitter-cli, fzf, bat and sesh are resolved via Linuxbrew when absent —
+  on every distro, since the native tier does not include them.
+- Second run: every step reports "already" / "in sync" (idempotent), and
+  Linuxbrew is not reinstalled.
 - `nvim --version` reports >= 0.11.
-- Arch run never prints "Installing Homebrew (Linuxbrew)".
 
 To iterate against the local checkout instead of the GitHub clone, mount it:
 `docker run --rm -it -v "$PWD":/root/.dotfiles ubuntu:24.04 bash -c '... cd /root/.dotfiles && ./install.sh ...'`

@@ -77,9 +77,11 @@ nvim_version() {
 # Native-tier package list for the given PM (bootstrap + tools distros ship fine).
 native_packages() {
   case "$1" in
-    apt)    echo "git curl zsh tmux jq tree unzip build-essential wl-clipboard xclip fontconfig" ;;
-    dnf)    echo "git curl zsh tmux jq tree unzip @development-tools wl-clipboard xclip fontconfig" ;;
-    pacman) echo "git curl zsh tmux jq tree unzip base-devel wl-clipboard xclip fontconfig" ;;
+    # gnupg: the apt wezterm repo path needs `gpg` (minimal installs lack it).
+    # ripgrep/zoxide/direnv: required by telescope live_grep, sesh + zshrc.
+    apt)    echo "git curl zsh tmux jq tree unzip build-essential wl-clipboard xclip fontconfig gnupg ripgrep zoxide direnv" ;;
+    dnf)    echo "git curl zsh tmux jq tree unzip @development-tools wl-clipboard xclip fontconfig ripgrep zoxide direnv" ;;
+    pacman) echo "git curl zsh tmux jq tree unzip base-devel wl-clipboard xclip fontconfig ripgrep zoxide direnv" ;;
   esac
 }
 
@@ -146,13 +148,24 @@ ensure_version_tools() {
       || warn "fzf install failed; Ctrl-R/Ctrl-T integration unavailable"
   fi
 
-  # bat — referenced by config; native Debian ships it as `batcat`, so brew it
+  # bat — everyday pager (macOS gets it via the Brewfile); native Debian
+  # ships the binary as `batcat`, so brew it for a consistent name
   if command -v bat >/dev/null 2>&1; then
     ok "bat present"
   else
     info "bat absent — installing via Homebrew"
     ensure_linuxbrew && brew install bat && ok "bat installed via brew" \
       || warn "bat install failed"
+  fi
+
+  # sesh — tmux session manager bound to prefix-s in tmux.conf; no distro
+  # packages it, so brew is the only non-Go install path
+  if command -v sesh >/dev/null 2>&1; then
+    ok "sesh present"
+  else
+    info "sesh absent — installing via Homebrew"
+    ensure_linuxbrew && brew install sesh && ok "sesh installed via brew" \
+      || warn "sesh install failed; tmux prefix-s session picker unavailable"
   fi
 }
 
@@ -415,7 +428,16 @@ else
 fi
 
 # ----------------------------------------------------------------------------
-# 8. wezterm (Linux desktop only — useless on a headless box)
+# 8. Raycast visual settings (macOS only, and only if Raycast is installed)
+# ----------------------------------------------------------------------------
+if is_macos && [ -d "/Applications/Raycast.app" ]; then
+  step "Raycast"
+  bash "$DOTFILES/raycast/settings.sh" && ok "Raycast visual settings applied" \
+    || warn "Raycast settings failed"
+fi
+
+# ----------------------------------------------------------------------------
+# 9. wezterm (Linux desktop only — useless on a headless box)
 # ----------------------------------------------------------------------------
 if is_linux; then
   step "wezterm"

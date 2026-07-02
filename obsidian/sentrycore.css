@@ -34,7 +34,7 @@
   --interactive-normal:           #1A1230;
   --interactive-hover:            #2A1F4A;
   --interactive-accent:           #6A39A9;
-  --interactive-accent-hsl:       267, 47%, 44%;
+  --interactive-accent-hsl:       266, 50%, 44%; /* exact HSL of #6A39A9 */
   --interactive-accent-hover:     #A855E0;
   --interactive-accent-rgb:       106, 57, 169;
 

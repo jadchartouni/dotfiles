@@ -59,18 +59,24 @@ return {
       -- legacy APIs telescope 0.1.x still calls in its grep-results highlighter
       -- (__files.lua). Both delegate to core/equivalent behavior:
       --   ft_to_lang  -> core vim.treesitter.language.get_lang
-      --   is_enabled  -> true (callers already verified a parser + query exist)
+      --   is_enabled  -> parser actually loadable for the language
       local pok, ts_parsers = pcall(require, "nvim-treesitter.parsers")
       if pok and ts_parsers.ft_to_lang == nil then
         ts_parsers.ft_to_lang = function(ft)
           return vim.treesitter.language.get_lang(ft) or ft
         end
       end
-      local cok, ts_configs = pcall(require, "nvim-treesitter.configs")
-      if cok and ts_configs.is_enabled == nil then
-        ts_configs.is_enabled = function()
-          return true
-        end
+      -- The main branch has no "configs" module at all (only config.lua), so
+      -- requiring it fails and the module must be provided outright, not
+      -- patched — otherwise :Telescope current_buffer_fuzzy_find errors with
+      -- "attempt to call field 'is_enabled'".
+      if not pcall(require, "nvim-treesitter.configs") then
+        package.loaded["nvim-treesitter.configs"] = {
+          is_enabled = function(_, lang)
+            local ok, added = pcall(vim.treesitter.language.add, lang)
+            return ok and added == true
+          end,
+        }
       end
 
       -- Move through results with Ctrl-j / Ctrl-k without leaving insert mode

@@ -411,14 +411,14 @@ function M.setup(opts)
   vim.g.terminal_color_5  = c.magenta
   vim.g.terminal_color_6  = c.cyan
   vim.g.terminal_color_7  = c.fg_dim
-  vim.g.terminal_color_8  = c.bg_visual
+  vim.g.terminal_color_8  = c.fg_faint -- bright black must stay readable (dim CLI text)
   vim.g.terminal_color_9  = c.red_br
   vim.g.terminal_color_10 = c.teal_br
   vim.g.terminal_color_11 = c.yellow_br
   vim.g.terminal_color_12 = c.blue_br
   vim.g.terminal_color_13 = c.purple_br
   vim.g.terminal_color_14 = c.cyan_br
-  vim.g.terminal_color_15 = c.fg
+  vim.g.terminal_color_15 = c.white
 end
 
 return M

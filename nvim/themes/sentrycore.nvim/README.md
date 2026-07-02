@@ -6,28 +6,21 @@ Requires Neovim 0.8+ with `termguicolors` enabled.
 
 ## Install
 
-### lazy.nvim
+This theme lives only in this dotfiles repo (there is no published GitHub
+package) — install it as a local plugin.
+
+### lazy.nvim (how these dotfiles load it — see `nvim/lua/plugins/ui.lua`)
 
 ```lua
 {
-  "sentrycore/sentrycore.nvim",
+  dir = vim.fn.stdpath("config") .. "/themes/sentrycore.nvim",
+  name = "sentrycore",
   lazy = false,
   priority = 1000,
   config = function()
     vim.cmd.colorscheme("sentrycore")
   end,
 }
-```
-
-### packer.nvim
-
-```lua
-use({
-  "sentrycore/sentrycore.nvim",
-  config = function()
-    vim.cmd.colorscheme("sentrycore")
-  end,
-})
 ```
 
 ### Manual install (no plugin manager)

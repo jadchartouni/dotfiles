@@ -2,7 +2,9 @@ return {
   {
     "nvim-tree/nvim-tree.lua",
     dependencies = { "nvim-tree/nvim-web-devicons" },
-    cmd = { "NvimTreeToggle", "NvimTreeFindFile" },
+    -- Eager load: netrw is disabled below, so nvim-tree's hijack_directories
+    -- must be active at startup or `nvim <dir>` opens a blank buffer.
+    lazy = false,
     init = function()
       -- Disable netrw so nvim-tree is the only file explorer
       vim.g.loaded_netrw = 1

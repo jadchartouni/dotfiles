@@ -6,15 +6,19 @@ Tmux configuration and cheat sheet
 
 | Description         | Command / key binding |
 | ------------------- | --------------------- |
-| Prefix              | `Ctrl + a`            |
-| Reload ~tmux.conf   | `Ctrl + a` `r`        |
-| Split vertically    | `Ctrl + a` `\|`       |
-| Split horizontally  | `Ctrl + a` `-`        |
-| Resize window down  | `Ctrl + a` `j`        |
-| Resize window up    | `Ctrl + a` `k`        |
-| Resize window right | `Ctrl + a` `l`        |
-| Resize window left  | `Ctrl + a` `h`        |
-| Maximize window     | `Ctrl + a` `m`        |
+| Prefix                          | `Ctrl + a`            |
+| Reload ~tmux.conf               | `Ctrl + a` `r`        |
+| Split pane side-by-side         | `Ctrl + a` `\|`       |
+| Split pane stacked              | `Ctrl + a` `-`        |
+| Resize pane down                | `Ctrl + a` `j`        |
+| Resize pane up                  | `Ctrl + a` `k`        |
+| Resize pane right               | `Ctrl + a` `l`        |
+| Resize pane left                | `Ctrl + a` `h`        |
+| Resize pane to exact width %    | `Ctrl + a` `R`        |
+| Resize pane to exact height %   | `Ctrl + a` `T`        |
+| Toggle pane zoom                | `Ctrl + a` `m`        |
+| Session picker popup (sesh)     | `Ctrl + a` `s`        |
+| Session/window tree (built-in)  | `Ctrl + a` `S`        |
 
 ## Miscellaneous
 
@@ -43,7 +47,8 @@ Tmux configuration and cheat sheet
 | Kill / delete all sessions but one         | `tmux kill-session -a -t [session-name]` |
 | List all sessions                          | `tmux ls`                                |
 | ...                                        | `tmux list-sessions`                     |
-| ...                                        | `Ctrl + a` `s`                           |
+| ...                                        | `Ctrl + a` `S`                           |
+| Fuzzy session picker (sesh popup)          | `Ctrl + a` `s`                           |
 | Attach to the last session                 | `tmux a`                                 |
 | ...                                        | `tmux at`                                |
 | ...                                        | `tmux attach`                            |
@@ -77,8 +82,8 @@ Tmux configuration and cheat sheet
 | Description                  | Command / key binding     |
 | ---------------------------- | ------------------------- |
 | Toggle last active pane      | `Ctrl + a` `;`            |
-| Split pane horizontally      | `Ctrl + a` `\|`           |
-| Split pane vertically        | `Ctrl + a` `-`            |
+| Split pane side-by-side      | `Ctrl + a` `\|`           |
+| Split pane stacked           | `Ctrl + a` `-`            |
 | Move the current pane left   | `Ctrl + a` `{`            |
 | Move the current pane right  | `Ctrl + a` `}`            |
 | Switch pane left             | `Ctrl + h`                |
@@ -106,9 +111,10 @@ In copy mode, all vi movement keys will work.
 | ------------------------------------------ | ------------------------- |
 | Enter copy mode                            | `Ctrl + a` `[`            |
 | Quit copy mode                             | `q`                       |
-| Start selection                            | `Space`                   |
+| Start selection                            | `v` or `Space`            |
+| Toggle block (rectangle) selection         | `Ctrl + v`                |
 | Clear selection                            | `ESC`                     |
-| Copy selection                             | `Enter`                   |
+| Copy selection (to system clipboard)       | `y` or `Enter`            |
 | Paste selection of buffer_0                | `Ctrl + a` `]`            |
 | Display buffer_0 contents                  | `:show-buffer`            |
 | Capture visible contents of pane to buffer | `:capture-pane`           |

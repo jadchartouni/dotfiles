@@ -59,7 +59,16 @@ keymap.set("n", "<leader>tp", ":tabp<cr>") -- Go to pevious tab
 -- Buffers
 keymap.set("n", "<leader>bn", ":bn<cr>") -- Go to next buffer
 keymap.set("n", "<leader>bp", ":bp<cr>") -- Go to previous buffer
-keymap.set("n", "<leader>bd", ":bd | bn<cr>") -- Delete current buffer
+keymap.set("n", "<leader>bd", function() -- Delete current buffer, keep the window
+  -- Plain :bd CLOSES the window when another window exists (e.g. the tree),
+  -- so show a different buffer here first, then delete the old one.
+  local cur = vim.api.nvim_get_current_buf()
+  local other_listed = vim.tbl_filter(function(b)
+    return vim.bo[b].buflisted and b ~= cur
+  end, vim.api.nvim_list_bufs())
+  vim.cmd(#other_listed > 0 and "bprevious" or "enew")
+  vim.cmd("bdelete " .. cur)
+end, { desc = "Delete buffer without closing the window" })
 keymap.set("n", "<leader>bt", function() -- Toggle the buffer tab bar
   vim.opt.showtabline = (vim.opt.showtabline:get() == 0) and 2 or 0
 end, { desc = "Toggle bufferline visibility" })

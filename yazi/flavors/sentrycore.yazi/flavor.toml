@@ -148,7 +148,10 @@ rules = [
 	{ mime = "image/*", fg = "#C29BFF" },
 	{ mime = "{audio,video}/*", fg = "#A855E0" },
 	{ mime = "application/pdf", fg = "#FF6B5B" },
-	{ mime = "application/{zip,gzip,x-tar,x-bzip2,x-7z-compressed,x-xz,x-rar,vnd.rar}", fg = "#E89A4A" },
+	# NOTE: yazi strips "x-"/"vnd." prefixes before matching (mime.local), so
+	# patterns must use the normalized names (tar, not x-tar). Matches yazi's
+	# own default archive list.
+	{ mime = "application/{zip,rar,7z*,tar,gzip,xz,zstd,bzip*,lzma,compress,archive,cpio,arj,xar,ms-cab*}", fg = "#E89A4A" },
 	{ mime = "inode/empty", fg = "#9890B8" },
 
 	{ url = "*", is = "orphan", fg = "#E74C3C" },

@@ -108,8 +108,10 @@ UI, `:Lazy sync` to install/update, `:Lazy clean` to prune removed plugins.
 | `nvim-tree.lua`              | File explorer                             |
 | `nvim-treesitter` (main)     | Syntax highlighting                       |
 | `lualine.nvim`              | Status line                               |
+| `bufferline.nvim`            | Buffer tab bar (hidden by default; `<leader>bt` toggles) |
 | `vimade`                     | Dim inactive windows                      |
 | `render-markdown.nvim`       | In-editor markdown rendering              |
+| `vim-obsession`              | Session tracking (lets tmux-resurrect re-open nvim sessions) |
 | `vim-tmux-navigator`         | Seamless `Ctrl + h/j/k/l` across nvim & tmux |
 
 ## Theme

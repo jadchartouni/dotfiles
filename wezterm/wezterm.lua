@@ -97,6 +97,13 @@ config.font_size = 16
 config.line_height = 1.1
 config.color_scheme = 'SentryCore'
 
+-- The fancy tab bar ignores colors.tab_bar.background from the scheme file;
+-- its strip color comes from window_frame, so theme it here (bg_dark).
+config.window_frame = {
+    active_titlebar_bg = '#0A0618',
+    inactive_titlebar_bg = '#0A0618',
+}
+
 -- Window opacity
 config.window_background_opacity = 0.9
 if is_macos then

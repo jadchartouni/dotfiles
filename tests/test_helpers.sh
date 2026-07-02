@@ -35,6 +35,12 @@ check_nonempty dnf    "@development-tools"
 check_nonempty pacman base-devel
 check_nonempty apt    wl-clipboard
 check_nonempty pacman fontconfig
+check_nonempty apt    gnupg
+check_nonempty apt    ripgrep
+check_nonempty dnf    ripgrep
+check_nonempty pacman ripgrep
+check_nonempty apt    zoxide
+check_nonempty apt    direnv
 
 # appimage_url_filter reads release JSON on stdin, echoes the AppImage asset URL
 sample_json='{"assets":[{"browser_download_url":"https://github.com/wez/wezterm/releases/download/2024/WezTerm-2024-Ubuntu20.04.AppImage"},{"browser_download_url":"https://github.com/wez/wezterm/releases/download/2024/WezTerm-2024-src.tar.gz"}]}'

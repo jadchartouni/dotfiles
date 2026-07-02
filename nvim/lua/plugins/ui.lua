@@ -1,6 +1,6 @@
 return {
   {
-    dir = "~/.config/nvim/themes/sentrycore.nvim",
+    dir = vim.fn.stdpath("config") .. "/themes/sentrycore.nvim",
     name = "sentrycore",
     lazy = false,
     priority = 1000,

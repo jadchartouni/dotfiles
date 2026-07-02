@@ -8,6 +8,9 @@ return {
       "nvim-tree/nvim-web-devicons",
     },
     ft = { "markdown" },
+    -- Also load on the command itself so <leader>mr works before any
+    -- markdown file has been opened (lazy.nvim creates a loader stub).
+    cmd = "RenderMarkdown",
     opts = {
       -- Keep the cursor line rendered too (default reveals raw source on the
       -- line under the cursor). Trade-off: while actively typing a line, the

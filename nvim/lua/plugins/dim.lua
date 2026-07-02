@@ -19,7 +19,7 @@ return {
       -- 0 = fully dark, 1 = no fade. 0.7 is a gentle dim — inactive windows
       -- recede slightly but stay clearly readable. (Lower = stronger fade.)
       fadelevel = 0.7,
-      -- Pull faded windows gently toward the SentryCore bg (#1A1230).
+      -- Pull faded windows gently toward SentryCore bg_alt (#1A1230).
       tint = {
         bg = { rgb = { 26, 18, 48 }, intensity = 0.25 },
       },

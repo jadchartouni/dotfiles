@@ -1,9 +1,6 @@
 -- Shortcut
 local opt = vim.opt
 
--- Encoding
-opt.encoding = "utf-8"
-
 -- Line numbers
 opt.relativenumber = true
 opt.number = true
@@ -46,9 +43,6 @@ opt.fillchars:append({ eob = " " }) -- Remove ~ from end of buffer
 
 -- Window title
 opt.title = true
-
--- Backspace
-opt.backspace = "indent,eol,start"
 
 -- Clipboard
 opt.clipboard = "unnamedplus" -- Use system clipboard

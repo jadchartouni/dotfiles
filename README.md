@@ -7,20 +7,30 @@ custom dark colorscheme shared across the editor, terminal, and multiplexer.
 
 | Path            | Description                                            |
 | --------------- | ------------------------------------------------------ |
+| `install.sh`    | Idempotent bootstrap/repair script (macOS + Linux)     |
 | `brew/Brewfile` | CLI tools, apps, and Nerd Fonts installed via Homebrew |
 | `git/`          | Global gitignore                                       |
 | `nvim/`         | Neovim config (lazy.nvim) + the SentryCore theme       |
 | `tmux/`         | tmux config (see `docs/tmux.md` for the cheat sheet)   |
 | `wezterm/`      | WezTerm config + SentryCore color scheme               |
+| `zsh/`          | zshrc, zprofile, and Powerlevel10k prompt config       |
+| `btop/`         | btop config + SentryCore theme                         |
+| `yazi/`         | yazi file manager config + SentryCore flavor           |
+| `cursor/`       | Cursor/VS Code SentryCore theme (unpacked extension)   |
+| `obsidian/`     | SentryCore CSS snippet for Obsidian                    |
+| `raycast/`      | Raycast visual settings script (macOS)                 |
+| `tests/`        | Unit tests + container install matrix (`tests/README`) |
 | `docs/`         | Notes and cheat sheets                                 |
 | `LICENSE.md`    | MIT                                                    |
 
 ## Highlights
 
 - **Neovim** as a clean file editor (not an IDE): lazy.nvim, treesitter
-  highlighting, lualine, nvim-tree, Telescope fuzzy finding (files + live grep),
-  inactive-window dimming (vimade), in-editor markdown rendering, and seamless
-  tmux navigation. No LSP / completion / formatters by design.
+  highlighting, lualine, bufferline (hidden by default, `<leader>bt`), nvim-tree,
+  Telescope fuzzy finding (files + live grep), inactive-window dimming (vimade),
+  in-editor markdown rendering, session tracking (vim-obsession, feeds tmux
+  restore), and seamless tmux navigation. No LSP / completion / formatters by
+  design.
 - **WezTerm** using JetBrainsMono Nerd Font, the SentryCore scheme, leader-based
   splits/panes, and single-cell icon rendering.
 - **tmux** with `vim-tmux-navigator` (seamless `C-h/j/k/l` across nvim & tmux),
@@ -49,9 +59,11 @@ git clone https://github.com/jadchartouni/dotfiles.git ~/.dotfiles
 ```
 
 `install.sh` is **idempotent** — run it any time to install, update, or repair.
-It clones/updates the repo, installs packages (Homebrew on macOS; skipped on
-Linux), symlinks the configs (backing up anything in the way), wires the global
-gitignore, and installs the tmux + Neovim plugins.
+It clones/updates the repo, installs packages (Homebrew Brewfile on macOS; on
+Linux a native tier via apt/dnf/pacman plus Linuxbrew for version-sensitive
+tools, fonts, and wezterm on desktops), symlinks the configs (backing up
+anything in the way), wires the global gitignore, and installs the tmux +
+Neovim plugins.
 
 > Run it in a real terminal so it can prompt for `sudo` when needed (Homebrew
 > and Docker Desktop both require it).
@@ -82,6 +94,7 @@ Leader is <kbd>,</kbd>.
 | `<leader>tn` / `<leader>tp` | Next / previous tab         |
 | `<leader>bn` / `<leader>bp` | Next / previous buffer      |
 | `<leader>bd` | Delete current buffer           |
+| `<leader>bt` | Toggle the buffer tab bar       |
 
 **Editing / misc**
 
@@ -112,6 +125,7 @@ cheat sheet; the essentials:
 | `prefix h/j/k/l`       | Resize focused pane by 5 cells (repeatable) |
 | `prefix m`             | Toggle pane zoom (fullscreen)             |
 | `prefix R` / `prefix T`| Resize pane to an exact width / height %  |
+| `prefix s`             | Fuzzy session picker popup (sesh)         |
 | `prefix r`             | Reload `~/.tmux.conf`                      |
 
 **Key options**

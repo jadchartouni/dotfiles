@@ -16,6 +16,9 @@ M.colors = {
   fg_dim      = "#C9C5DB", -- secondary text
   fg_dark     = "#9890B8", -- comments, line numbers
   fg_gutter   = "#3D3560",
+  fg_faint    = "#756B96", -- ANSI bright black: dim CLI text (autosuggestions
+                           -- etc.) — must stay readable against bg
+  white       = "#FFFFFF", -- ANSI bright white
 
   -- Brand primaries
   purple      = "#6A39A9", -- Core Amethyst
@@ -49,6 +52,7 @@ M.colors = {
   -- Borders
   border      = "#3D2570",
   border_hl   = "#6A39A9",
+  border_dim  = "#2A2045", -- subtle UI borders / guides (Cursor, Obsidian)
 
   none        = "NONE",
 }

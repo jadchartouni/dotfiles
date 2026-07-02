@@ -6,8 +6,9 @@
 # Thumbnails
 ._*
 
-# Icon must end with two \r — the Finder custom-icon file
-Icon
+# The Finder custom-icon file is "Icon\r" (literal carriage return in the
+# name); "Icon?" matches it without needing invisible CR bytes in this file
+Icon?
 
 # Files that might appear on external disk
 .Spotlight-V100
