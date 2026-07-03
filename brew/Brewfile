@@ -1,3 +1,6 @@
+# Taps
+tap "hashicorp/tap"   # official HashiCorp formulae (terraform is no longer in core)
+
 # Core
 brew "coreutils"
 
@@ -36,6 +39,7 @@ cask "docker-desktop"   # Docker Desktop: engine, CLI & Compose
 # Cloud
 brew "awscli"
 brew "azure-cli"
+brew "hashicorp/tap/terraform"  # infrastructure as code (official HashiCorp tap)
 cask "session-manager-plugin"   # AWS SSM session plugin
 
 # Security
