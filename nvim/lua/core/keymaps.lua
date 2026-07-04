@@ -76,10 +76,11 @@ end, { desc = "Toggle bufferline visibility" })
 -- Re-indent the whole file, keeping the cursor in place
 keymap.set("n", "<leader>=", "mzgg=G`z")
 
--- Toggle soft word wrap (with word-boundary breaking) for the current buffer
+-- Toggle soft word wrap for the current window. The wrap style (word-boundary
+-- breaking, indent-aligned, +3 offset) is global in options.lua, so flipping
+-- wrap alone gives the full enhanced look — same as auto-wrapped prose files.
 keymap.set("n", "<leader>w", function()
   vim.wo.wrap = not vim.wo.wrap
-  vim.wo.linebreak = vim.wo.wrap
 end, { desc = "Toggle word wrap" })
 
 -- Plugin: nvim-tree

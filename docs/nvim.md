@@ -35,6 +35,7 @@ Fuzzy finding with Telescope (`telescope-fzf-native` sorter) + nvim-tree.
 | Toggle file tree                | `<leader>ft`          |
 | Reveal current file in the tree | `<leader>fe`          |
 
+
 Inside a Telescope prompt:
 
 | Description                          | Command / key binding |
@@ -45,6 +46,7 @@ Inside a Telescope prompt:
 | Open selection                       | `Enter`               |
 | Open in split / vsplit               | `Ctrl + x` / `Ctrl + v` |
 | Close                                | `Esc` `Esc` / `Ctrl + c` |
+
 
 ## Windows & splits
 
@@ -67,6 +69,7 @@ New splits open to the right and below (`splitright` / `splitbelow`).
 | Next tab          | `<leader>tn`          |
 | Previous tab      | `<leader>tp`          |
 
+
 ## Buffers
 
 | Description           | Command / key binding |
@@ -75,11 +78,13 @@ New splits open to the right and below (`splitright` / `splitbelow`).
 | Previous buffer       | `<leader>bp`          |
 | Delete current buffer | `<leader>bd`          |
 
+
 ## Markdown
 
 | Description                | Command / key binding |
 | -------------------------- | --------------------- |
 | Toggle markdown rendering  | `<leader>mr`          |
+
 
 ## Notable options
 
@@ -96,6 +101,7 @@ New splits open to the right and below (`splitright` / `splitbelow`).
 | `backup`                        | Automatic backups (kept out of cwd)        |
 | `confirm`                       | Prompt instead of failing on unsaved exit  |
 | `termguicolors`                 | True-color (required by SentryCore)        |
+
 
 ## Plugins
 
@@ -119,3 +125,4 @@ UI, `:Lazy sync` to install/update, `:Lazy clean` to prune removed plugins.
 SentryCore is the default colorscheme (`nvim/themes/sentrycore.nvim`). To switch
 back to nightfly, set `enabled = true` in `nvim/lua/plugins/ui.nightfly.lua` and
 `enabled = false` in `ui.lua`.
+

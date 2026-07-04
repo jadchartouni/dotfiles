@@ -13,9 +13,13 @@ opt.shiftwidth = 4
 opt.autoindent = true
 opt.smartindent = true
 opt.breakindent = true
+opt.breakindentopt = "shift:3" -- wrapped lines sit 3 columns past the indent
 
--- Line wrapping
+-- Line wrapping: off by default; prose filetypes turn it on (autocmds.lua) and
+-- <leader>w toggles it. linebreak + breakindent(opt) make every wrap break at
+-- word boundaries and stay indented, wherever wrap gets enabled.
 opt.wrap = false
+opt.linebreak = true
 
 -- Autocomplete
 opt.wildmode = "longest:full,full"

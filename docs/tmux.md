@@ -20,6 +20,7 @@ Tmux configuration and cheat sheet
 | Session picker popup (sesh)     | `Ctrl + a` `s`        |
 | Session/window tree (built-in)  | `Ctrl + a` `S`        |
 
+
 ## Miscellaneous
 
 | Description                      | Command / key binding |
@@ -32,6 +33,7 @@ Tmux configuration and cheat sheet
 | ...                              | `:list-keys`          |
 | ...                              | `Ctrl + a` `?`        |
 | Show every session, window, pane | `tmux info`           |
+
 
 ## Session management
 
@@ -62,6 +64,7 @@ Tmux configuration and cheat sheet
 | Move to the next session                   | `Ctrl + a` `)`                           |
 | Detach others on the session               | `:attach -d`                             |
 
+
 ## Window management
 
 | Description                            | Command / key binding                         |
@@ -76,6 +79,7 @@ Tmux configuration and cheat sheet
 | Switch/select window by number         | `Ctrl + a` `0...9`                            |
 | Reorder windows (-s src -t dst)        | `:swap-window -s 2 -t 1`                      |
 | Move window position to the left       | `:swap-window -t -1`                          |
+
 
 ## Pane management
 
@@ -103,6 +107,7 @@ Tmux configuration and cheat sheet
 | Toggle synchronize-panes     | `:setw synchronize-panes` |
 | Close current pane           | `Ctrl + a` `x`            |
 
+
 ## Copy mode
 
 In copy mode, all vi movement keys will work.
@@ -122,4 +127,5 @@ In copy mode, all vi movement keys will work.
 | Show all buffers and paste selected        | `:choose-buffer`          |
 | Save buffer contents to file               | `:save-buffer [filename]` |
 | Delete buffer (-b buffer)                  | `:delete-buffer -b 1`     |
+
 

@@ -16,9 +16,9 @@ return {
       -- Fade the WHOLE nvim pane when terminal focus leaves it (e.g. you jump
       -- to another tmux pane). Relies on tmux's `focus-events on`, already set.
       enablefocusfading = true,
-      -- 0 = fully dark, 1 = no fade. 0.7 is a gentle dim — inactive windows
-      -- recede slightly but stay clearly readable. (Lower = stronger fade.)
-      fadelevel = 0.7,
+      -- 0 = fully dark, 1 = no fade. 0.6 dims inactive windows noticeably so
+      -- the active one stands out, while staying readable. (Lower = stronger.)
+      fadelevel = 0.6,
       -- Pull faded windows gently toward SentryCore bg_alt (#1A1230).
       tint = {
         bg = { rgb = { 26, 18, 48 }, intensity = 0.25 },
