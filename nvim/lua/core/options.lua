@@ -13,7 +13,11 @@ opt.shiftwidth = 4
 opt.autoindent = true
 opt.smartindent = true
 opt.breakindent = true
-opt.breakindentopt = "shift:3" -- wrapped lines sit 3 columns past the indent
+-- Hanging indent for wrapped lines: list items (per formatlistpat) continue
+-- aligned under their text ("- " hangs by 2, "1. " by 3); plain paragraphs
+-- wrap with no extra shift. Markdown's ftplugin brings its own formatlistpat.
+opt.breakindentopt = "list:-1"
+opt.formatlistpat = [[^\s*\%([-*+]\|\d\+[.)]\)\s\+]] -- bullets + numbered lists
 
 -- Line wrapping: off by default; prose filetypes turn it on (autocmds.lua) and
 -- <leader>w toggles it. linebreak + breakindent(opt) make every wrap break at

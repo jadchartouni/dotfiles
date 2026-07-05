@@ -77,8 +77,8 @@ end, { desc = "Toggle bufferline visibility" })
 keymap.set("n", "<leader>=", "mzgg=G`z")
 
 -- Toggle soft word wrap for the current window. The wrap style (word-boundary
--- breaking, indent-aligned, +3 offset) is global in options.lua, so flipping
--- wrap alone gives the full enhanced look — same as auto-wrapped prose files.
+-- breaking, indent-aligned, hanging list indent) is global in options.lua, so
+-- flipping wrap alone gives the full look — same as auto-wrapped prose files.
 keymap.set("n", "<leader>w", function()
   vim.wo.wrap = not vim.wo.wrap
 end, { desc = "Toggle word wrap" })
