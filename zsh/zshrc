@@ -58,6 +58,15 @@ alias vim="nvim"
 alias python="python3"
 alias pip="pip3"
 
+# eza — modern ls (--icons needs a Nerd Font; --git adds a per-file status
+# column). Guarded so machines without eza keep the stock ls aliases.
+if command -v eza >/dev/null 2>&1; then
+  alias ls="eza"
+  alias ll="eza -l --git --icons"
+  alias la="eza -la --git --icons"
+  alias lt="eza --tree --level=2 --icons"
+fi
+
 # fzf — fuzzy finder (Ctrl-R history · Ctrl-T files · Alt-C cd)
 command -v fzf >/dev/null 2>&1 && source <(fzf --zsh)
 
