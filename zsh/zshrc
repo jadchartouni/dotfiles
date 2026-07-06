@@ -60,7 +60,10 @@ alias pip="pip3"
 
 # eza — modern ls (--icons needs a Nerd Font; --git adds a per-file status
 # column). Guarded so machines without eza keep the stock ls aliases.
+# EZA_CONFIG_DIR: eza on macOS ignores ~/.config and looks in ~/Library/
+# Application Support, so point it at the SentryCore theme explicitly.
 if command -v eza >/dev/null 2>&1; then
+  export EZA_CONFIG_DIR="$HOME/.config/eza"
   alias ls="eza"
   alias ll="eza -l --git --icons"
   alias la="eza -la --git --icons"
@@ -163,3 +166,11 @@ fi
 # guards above return non-zero when their target dir is absent, and that exit
 # code would otherwise carry into the initial prompt.
 true
+
+
+# Herd injected PHP 8.4 configuration.
+export HERD_PHP_84_INI_SCAN_DIR="/Users/jadchartouni/Library/Application Support/Herd/config/php/84/"
+
+
+# Herd injected PHP 8.5 configuration.
+export HERD_PHP_85_INI_SCAN_DIR="/Users/jadchartouni/Library/Application Support/Herd/config/php/85/"

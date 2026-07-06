@@ -1,0 +1,92 @@
+# SentryCore theme for eza (~/.config/eza/theme.yml, symlinked by install.sh).
+# Palette source of truth: nvim/themes/sentrycore.nvim/lua/sentrycore/palette.lua
+#
+# Permissions are deliberately uniform (fg_dim) instead of eza's default
+# per-bit rainbow; unset bits ("-") come from `punctuation` (fg_faint).
+# Special bits (setuid/setgid/sticky) stay orange — rare and worth noticing.
+
+colourful: true
+
+punctuation: { foreground: "#756B96", is_bold: false } # fg_faint — perm dashes, separators
+
+perms:
+  # is_bold/is_underline explicitly false: eza otherwise keeps its default
+  # bold-user / underlined-executable attributes under the new colors.
+  user_read:          { foreground: "#C9C5DB", is_bold: false }
+  user_write:         { foreground: "#C9C5DB", is_bold: false }
+  user_execute_file:  { foreground: "#C9C5DB", is_bold: false, is_underline: false }
+  user_execute_other: { foreground: "#C9C5DB", is_bold: false, is_underline: false }
+  group_read:         { foreground: "#C9C5DB" }
+  group_write:        { foreground: "#C9C5DB" }
+  group_execute:      { foreground: "#C9C5DB" }
+  other_read:         { foreground: "#C9C5DB" }
+  other_write:        { foreground: "#C9C5DB" }
+  other_execute:      { foreground: "#C9C5DB" }
+  special_user_file:  { foreground: "#E89A4A" } # orange — setuid/setgid
+  special_other:      { foreground: "#E89A4A" }
+  attribute:          { foreground: "#756B96" } # the trailing "@" on macOS
+
+filekinds:
+  normal:       { foreground: "#E6E4F0" } # fg
+  directory:    { foreground: "#5A78D9", is_bold: true } # blue_br, matches yazi
+  symlink:      { foreground: "#6BA8FF" } # cyan_br
+  executable:   { foreground: "#00BFA5" } # teal, matches yazi exec
+  pipe:         { foreground: "#E89A4A" }
+  socket:       { foreground: "#8324BF" }
+  block_device: { foreground: "#FF6B5B" }
+  char_device:  { foreground: "#FF6B5B" }
+  special:      { foreground: "#A855E0" }
+  mount_point:  { foreground: "#A855E0", is_bold: true }
+
+symlink_path:        { foreground: "#4A8FE7" } # cyan — the "-> target"
+broken_symlink:      { foreground: "#E74C3C" }
+broken_path_overlay: { foreground: "#E74C3C", is_underline: true }
+control_char:        { foreground: "#FF6B5B" }
+
+links:
+  normal:          { foreground: "#6BA8FF" }
+  multi_link_file: { foreground: "#E89A4A" }
+
+size:
+  number_byte: { foreground: "#C9C5DB" }
+  number_kilo: { foreground: "#C9C5DB" }
+  number_mega: { foreground: "#C9C5DB" }
+  number_giga: { foreground: "#C9C5DB" }
+  number_huge: { foreground: "#C9C5DB" }
+  unit_byte:   { foreground: "#9890B8" }
+  unit_kilo:   { foreground: "#9890B8" }
+  unit_mega:   { foreground: "#9890B8" }
+  unit_giga:   { foreground: "#9890B8" }
+  unit_huge:   { foreground: "#9890B8" }
+  major:       { foreground: "#C9C5DB" }
+  minor:       { foreground: "#9890B8" }
+
+users:
+  user_you:    { foreground: "#C29BFF", is_bold: true } # lavender — it's you
+  user_other:  { foreground: "#C9C5DB" }
+  user_root:   { foreground: "#E74C3C" }
+  group_yours: { foreground: "#C29BFF" }
+  group_other: { foreground: "#9890B8" }
+  group_root:  { foreground: "#E74C3C" }
+
+date:   { foreground: "#9890B8" } # fg_dark, same role as comments
+inode:  { foreground: "#9890B8" }
+blocks: { foreground: "#9890B8" }
+octal:  { foreground: "#C29BFF" }
+flags:  { foreground: "#9890B8" }
+header: { foreground: "#9890B8", is_underline: true }
+
+git:
+  new:        { foreground: "#00BFA5" } # git_add
+  modified:   { foreground: "#5A78D9" } # git_change, brightened for one-char glyphs
+  deleted:    { foreground: "#E74C3C" } # git_delete
+  renamed:    { foreground: "#6BA8FF" }
+  typechange: { foreground: "#A855E0" }
+  ignored:    { foreground: "#756B96" }
+  conflicted: { foreground: "#FF6B5B", is_bold: true }
+
+git_repo:
+  branch_main:  { foreground: "#C29BFF" }
+  branch_other: { foreground: "#A855E0" }
+  git_clean:    { foreground: "#00BFA5" }
+  git_dirty:    { foreground: "#E89A4A" }

@@ -16,6 +16,7 @@ custom dark colorscheme shared across the editor, terminal, and multiplexer.
 | `zsh/`          | zshrc, zprofile, and Powerlevel10k prompt config       |
 | `btop/`         | btop config + SentryCore theme                         |
 | `yazi/`         | yazi file manager config + SentryCore flavor           |
+| `eza/`          | eza (ls replacement) SentryCore theme                  |
 | `cursor/`       | Cursor/VS Code SentryCore theme (unpacked extension)   |
 | `obsidian/`     | SentryCore CSS snippet for Obsidian                    |
 | `raycast/`      | Raycast visual settings script (macOS)                 |
