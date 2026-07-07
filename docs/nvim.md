@@ -18,6 +18,14 @@ Leader is `,` (comma). Below, `<leader>` means `,`.
 | Re-indent the whole file            | `<leader>` `=`        |
 | Toggle soft word wrap               | `<leader>` `w`        |
 | Spellcheck on / off                 | `<leader>es` / `<leader>ds` |
+| Jump to definition (ctags)          | `Ctrl + ]`            |
+| Jump back from definition           | `Ctrl + t`            |
+| List all matching definitions       | `g` `]`               |
+
+Dependencies (`vendor/`, `node_modules/`, venvs) are not indexed automatically.
+Run `:TagsDeps` in a project to add them as *lower-priority* matches — project
+definitions always rank first in the `Ctrl + ]` pick-list. Re-run it after
+composer/npm/pip installs.
 
 Wrapped lines: `j` / `k` move by screen line (gj/gk) when no count is given.
 
@@ -118,6 +126,7 @@ UI, `:Lazy sync` to install/update, `:Lazy clean` to prune removed plugins.
 | `vimade`                     | Dim inactive windows                      |
 | `render-markdown.nvim`       | In-editor markdown rendering              |
 | `vim-obsession`              | Session tracking (lets tmux-resurrect re-open nvim sessions) |
+| `vim-gutentags`              | Auto-maintained ctags index for `Ctrl + ]` jump-to-definition |
 | `vim-tmux-navigator`         | Seamless `Ctrl + h/j/k/l` across nvim & tmux |
 
 ## Theme

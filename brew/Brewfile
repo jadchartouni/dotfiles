@@ -27,6 +27,7 @@ brew "zoxide"        # smarter cd (`z`); feeds sesh's session picker
 # Editors
 brew "neovim"
 brew "tree-sitter-cli"   # compiles nvim-treesitter (main branch) parsers
+brew "universal-ctags"   # tags index for nvim Ctrl-] jump-to-definition
 
 # Development
 brew "php"

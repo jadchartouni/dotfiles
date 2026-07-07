@@ -20,6 +20,8 @@ Icon?
 *~
 # vim-obsession session files (per-project, not shared)
 Session.vim
+# ctags dependency index written by nvim's :TagsDeps
+tags
 
 # AI coding tools
 .claude/

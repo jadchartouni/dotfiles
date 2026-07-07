@@ -89,3 +89,8 @@ keymap.set("n", "<leader>fe", ":NvimTreeFindFile<cr>") -- Reveal current file in
 
 -- Plugin: render-markdown
 keymap.set("n", "<leader>mr", ":RenderMarkdown toggle<cr>") -- Toggle markdown rendering
+
+-- Tags: make Ctrl-] use :tjump semantics — jump straight to a unique
+-- definition, but list the candidates when a name is defined in more than
+-- one place (plain :tag silently picks the first match).
+keymap.set("n", "<C-]>", "g<C-]>")

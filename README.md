@@ -30,8 +30,8 @@ custom dark colorscheme shared across the editor, terminal, and multiplexer.
   highlighting, lualine, bufferline (hidden by default, `<leader>bt`), nvim-tree,
   Telescope fuzzy finding (files + live grep), inactive-window dimming (vimade),
   in-editor markdown rendering, session tracking (vim-obsession, feeds tmux
-  restore), and seamless tmux navigation. No LSP / completion / formatters by
-  design.
+  restore), ctags-powered `Ctrl-]` jump-to-definition (gutentags, no LSP), and
+  seamless tmux navigation. No LSP / completion / formatters by design.
 - **WezTerm** using JetBrainsMono Nerd Font, the SentryCore scheme, leader-based
   splits/panes, and single-cell icon rendering.
 - **tmux** with `vim-tmux-navigator` (seamless `C-h/j/k/l` across nvim & tmux),
