@@ -11,7 +11,6 @@ return {
       vim.g.loaded_netrwPlugin = 1
     end,
     opts = {
-      update_focused_file = { enable = true },
       view = { width = 35, side = "left" },
       git = { ignore = false },
       filters = {
