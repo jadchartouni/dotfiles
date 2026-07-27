@@ -65,9 +65,9 @@ alias pip="pip3"
 if command -v eza >/dev/null 2>&1; then
   export EZA_CONFIG_DIR="$HOME/.config/eza"
   alias ls="eza"
-  alias ll="eza -l --git --icons"
-  alias la="eza -la --git --icons"
-  alias lt="eza --tree --level=2 --icons"
+  alias ll="eza -l --git --icons=auto"
+  alias la="eza -la --git --icons=auto"
+  alias lt="eza --tree --level=2 --icons=auto"
 fi
 
 # fzf — fuzzy finder (Ctrl-R history · Ctrl-T files · Alt-C cd)
