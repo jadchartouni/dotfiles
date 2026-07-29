@@ -28,6 +28,10 @@ return {
         -- by nesting level.
         icons = { "•", "◦", "▪", "▫" },
       },
+      -- NOTE: rendered tables break on rows wider than the window (borders
+      -- are drawn by column position, which soft wrap scrambles — upstream
+      -- limitation). Rows in practice fit once the window has enough columns:
+      -- close the tree (,ft) or widen the split when reading table-heavy notes.
     },
   },
 }
