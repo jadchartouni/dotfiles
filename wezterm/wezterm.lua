@@ -97,11 +97,20 @@ config.font_size = 16
 config.line_height = 1.1
 config.color_scheme = 'SentryCore'
 
--- The fancy tab bar ignores colors.tab_bar.background from the scheme file;
--- its strip color comes from window_frame, so theme it here (bg_dark).
-config.window_frame = {
-    active_titlebar_bg = '#0A0618',
-    inactive_titlebar_bg = '#0A0618',
+-- No title bar or tab bar: tmux owns all session/window UI, so WezTerm's top
+-- chrome is redundant. RESIZE keeps the resizable border and rounded corners.
+-- (Traffic lights are gone; Cmd+W / Cmd+M still work. WezTerm tabs still exist
+-- via LEADER c but have no visible strip — restore with enable_tab_bar = true.)
+config.window_decorations = 'RESIZE'
+config.enable_tab_bar = false
+
+-- Slim frame instead of the default ~1-cell padding: enough breathing room to
+-- clear the rounded corners without a chunky translucent border.
+config.window_padding = {
+    left = '8px',
+    right = '8px',
+    top = '8px',
+    bottom = '8px',
 }
 
 -- Window opacity
