@@ -124,6 +124,8 @@ UI, `:Lazy sync` to install/update, `:Lazy clean` to prune removed plugins.
 | `lualine.nvim`              | Status line                               |
 | `bufferline.nvim`            | Buffer tab bar (hidden by default; `<leader>bt` toggles) |
 | `vimade`                     | Dim inactive windows                      |
+| `colorful-winsep.nvim`       | Purple outline around the active split    |
+| `incline.nvim`               | Floating filename label per split (only when split) |
 | `render-markdown.nvim`       | In-editor markdown rendering              |
 | `vim-obsession`              | Session tracking (lets tmux-resurrect re-open nvim sessions) |
 | `vim-gutentags`              | Auto-maintained ctags index for `Ctrl + ]` jump-to-definition |

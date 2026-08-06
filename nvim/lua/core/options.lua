@@ -48,6 +48,17 @@ opt.termguicolors = true
 opt.background = "dark"
 opt.signcolumn = "yes"
 opt.fillchars:append({ eob = " " }) -- Remove ~ from end of buffer
+-- Heavy box-drawing chars for split separators (incl. junctions), so window
+-- borders read as solid panel frames instead of thin hairlines.
+opt.fillchars:append({
+  vert = "┃",
+  vertleft = "┫",
+  vertright = "┣",
+  verthoriz = "╋",
+  horiz = "━",
+  horizup = "┻",
+  horizdown = "┳",
+})
 
 -- Window title
 opt.title = true
