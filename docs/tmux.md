@@ -19,6 +19,7 @@ Tmux configuration and cheat sheet
 | Toggle pane zoom                | `Ctrl + a` `m`        |
 | Session picker popup (sesh)     | `Ctrl + a` `s`        |
 | Session/window tree (built-in)  | `Ctrl + a` `S`        |
+| New session popup (empty = auto name) | `Ctrl + a` `C`  |
 
 
 ## Miscellaneous
