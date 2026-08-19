@@ -77,5 +77,18 @@ check "gh_url_filter picks x86 asset" \
   "$(printf '%s' "$gh_json" | gh_url_filter "$(expand_arch 'nvim-linux-{arch}\.tar\.gz' x86_64)")"
 check "gh_url_filter no match fails" "1" "$(printf '%s' "$gh_json" | gh_url_filter 'windows\.zip' >/dev/null; echo $?)"
 
+# cmd_version / pkg_satisfied with stub commands
+stubdir="$(mktemp -d)"
+printf '#!/bin/sh\necho "stubtool v1.4.2 (deadbeef)"\n' > "$stubdir/stubtool"
+chmod +x "$stubdir/stubtool"
+PATH="$stubdir:$PATH"
+check "cmd_version parses x.y.z" "1.4.2" "$(cmd_version stubtool)"
+check_true  pkg_satisfied stubtool -
+check_true  pkg_satisfied stubtool 1.4
+check_true  pkg_satisfied stubtool 1.3
+check_false pkg_satisfied stubtool 1.5
+check_false pkg_satisfied no-such-cmd-xyz -
+rm -rf "$stubdir"
+
 echo
 if [ "$fails" -eq 0 ]; then echo "ALL PASS"; exit 0; else echo "$fails FAILURE(S)"; exit 1; fi

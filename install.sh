@@ -108,6 +108,24 @@ nvim_version() {
   nvim --version | head -1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+'
 }
 
+# cmd_version <cmd> -> first x.y[.z] in `<cmd> --version`, or failure.
+cmd_version() {
+  command -v "$1" >/dev/null 2>&1 || return 1
+  "$1" --version 2>/dev/null | grep -oE '[0-9]+\.[0-9]+(\.[0-9]+)?' | head -1
+  # grep in a pipeline: rely on output emptiness, not exit status
+}
+
+# pkg_satisfied <check> <min> -> success when <check> exists and meets <min>.
+# min "-" means any version. A probe that yields no version fails the check.
+pkg_satisfied() {
+  local check="$1" min="$2" v
+  command -v "$check" >/dev/null 2>&1 || return 1
+  [ "$min" = "-" ] && return 0
+  v="$(cmd_version "$check")"
+  [ -n "$v" ] || return 1
+  version_ge "$v" "$min"
+}
+
 # Native-tier package list for the given PM (bootstrap + tools distros ship fine).
 native_packages() {
   case "$1" in
