@@ -85,6 +85,23 @@ expand_arch() {
   printf '%s\n' "${1//\{arch\}/$re}"
 }
 
+# native_for_pm <pm> <field> -> native package name for this PM.
+# field is "-" (no native package), a bare name (same on every PM), or
+# per-PM overrides "apt:x,dnf:y,pacman:z" (PM not listed -> no candidate).
+native_for_pm() {
+  local pm="$1" field="$2" part
+  [ "$field" = "-" ] && return 1
+  case "$field" in
+    *:*)
+      local IFS=','
+      for part in $field; do
+        case "$part" in "$pm":*) echo "${part#"$pm":}"; return 0 ;; esac
+      done
+      return 1 ;;
+    *) echo "$field" ;;
+  esac
+}
+
 # Installed nvim version (x.y.z) on stdout, or return 1 if nvim is absent or unparseable.
 nvim_version() {
   command -v nvim >/dev/null 2>&1 || return 1

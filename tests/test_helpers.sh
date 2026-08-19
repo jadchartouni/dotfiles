@@ -60,5 +60,12 @@ check "expand_arch replaces placeholder" \
   "nvim-linux-(aarch64|arm64)\.tar\.gz" \
   "$(expand_arch 'nvim-linux-{arch}\.tar\.gz' arm64)"
 
+# native_for_pm <pm> <field> -> native package name for this PM, or failure
+check "native_for_pm plain name"    "ripgrep"          "$(native_for_pm apt ripgrep)"
+check "native_for_pm apt override"  "build-essential"  "$(native_for_pm apt apt:build-essential,dnf:@development-tools,pacman:base-devel)"
+check "native_for_pm dnf override"  "@development-tools" "$(native_for_pm dnf apt:build-essential,dnf:@development-tools,pacman:base-devel)"
+check_false native_for_pm apt -
+check_false native_for_pm dnf apt:universal-ctags
+
 echo
 if [ "$fails" -eq 0 ]; then echo "ALL PASS"; exit 0; else echo "$fails FAILURE(S)"; exit 1; fi
