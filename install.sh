@@ -68,6 +68,22 @@ version_ge() {
   [ "$a_minor" -ge "$b_minor" ]
 }
 
+# arch_regex [machine] -> grep -E alternation matching this machine's flavor in
+# release asset names (projects disagree: x86_64/amd64/x64, aarch64/arm64).
+arch_regex() {
+  case "${1:-$(uname -m)}" in
+    x86_64|amd64|x64) echo "(x86_64|amd64|x64)" ;;
+    aarch64|arm64)    echo "(aarch64|arm64)" ;;
+    *)                echo "$(uname -m)" ;;
+  esac
+}
+
+# expand_arch <pattern> [machine] -> pattern with {arch} -> arch_regex output.
+expand_arch() {
+  local re; re="$(arch_regex "${2:-}")"
+  printf '%s\n' "${1//\{arch\}/$re}"
+}
+
 # Installed nvim version (x.y.z) on stdout, or return 1 if nvim is absent or unparseable.
 nvim_version() {
   command -v nvim >/dev/null 2>&1 || return 1

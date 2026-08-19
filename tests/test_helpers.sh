@@ -48,5 +48,16 @@ got="$(printf '%s' "$sample_json" | appimage_url_filter)"
 check "appimage_url_filter picks the AppImage" \
   "https://github.com/wez/wezterm/releases/download/2024/WezTerm-2024-Ubuntu20.04.AppImage" "$got"
 
+# arch_regex [machine] -> grep alternation for that architecture's asset names
+check "arch_regex x86_64"  "(x86_64|amd64|x64)" "$(arch_regex x86_64)"
+check "arch_regex aarch64" "(aarch64|arm64)"    "$(arch_regex aarch64)"
+check "arch_regex arm64"   "(aarch64|arm64)"    "$(arch_regex arm64)"
+check "arch_regex default is non-empty" "0" "$(test -n "$(arch_regex)"; echo $?)"
+
+# expand_arch <pattern> [machine] -> {arch} placeholders replaced
+check "expand_arch replaces placeholder" \
+  "nvim-linux-(aarch64|arm64)\.tar\.gz" \
+  "$(expand_arch 'nvim-linux-{arch}\.tar\.gz' arm64)"
+
 echo
 if [ "$fails" -eq 0 ]; then echo "ALL PASS"; exit 0; else echo "$fails FAILURE(S)"; exit 1; fi
