@@ -20,7 +20,6 @@ custom dark colorscheme shared across the editor, terminal, and multiplexer.
 | `cursor/`       | Cursor/VS Code SentryCore theme (unpacked extension)   |
 | `obsidian/`     | SentryCore CSS snippet for Obsidian                    |
 | `raycast/`      | Raycast visual settings script (macOS)                 |
-| `tests/`        | Unit tests + container install matrix (`tests/README`) |
 | `docs/`         | Notes and cheat sheets                                 |
 | `LICENSE.md`    | MIT                                                    |
 

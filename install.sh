@@ -271,7 +271,7 @@ link() {
   ok "linked $dest -> $src"
 }
 
-# When sourced (e.g. by tests/test_helpers.sh) expose the helpers above and stop
+# When sourced, expose the helpers above and stop
 # before performing any installation. When executed normally, continue.
 # bash-only: `return` in a subshell succeeds only when the file is being sourced.
 if (return 0 2>/dev/null); then return 0; fi
