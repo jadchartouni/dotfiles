@@ -53,6 +53,7 @@ check "arch_regex x86_64"  "(x86_64|amd64|x64)" "$(arch_regex x86_64)"
 check "arch_regex aarch64" "(aarch64|arm64)"    "$(arch_regex aarch64)"
 check "arch_regex arm64"   "(aarch64|arm64)"    "$(arch_regex arm64)"
 check "arch_regex default is non-empty" "0" "$(test -n "$(arch_regex)"; echo $?)"
+check "arch_regex passes through unknown arch" "riscv64" "$(arch_regex riscv64)"
 
 # expand_arch <pattern> [machine] -> {arch} placeholders replaced
 check "expand_arch replaces placeholder" \

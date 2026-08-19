@@ -71,10 +71,11 @@ version_ge() {
 # arch_regex [machine] -> grep -E alternation matching this machine's flavor in
 # release asset names (projects disagree: x86_64/amd64/x64, aarch64/arm64).
 arch_regex() {
-  case "${1:-$(uname -m)}" in
+  local m="${1:-$(uname -m)}"
+  case "$m" in
     x86_64|amd64|x64) echo "(x86_64|amd64|x64)" ;;
     aarch64|arm64)    echo "(aarch64|arm64)" ;;
-    *)                echo "$(uname -m)" ;;
+    *)                echo "$m" ;;
   esac
 }
 
