@@ -4,9 +4,10 @@
 #
 # Safe to run any number of times: every step checks current state first, then
 # fixes / installs / updates only what's needed. On macOS it uses Homebrew; on
-# Linux it uses the native package manager (apt/dnf/pacman) for base tools and
-# falls back to Linuxbrew only for version-sensitive tools. Linux package
-# installs require root — the script uses sudo and may prompt for a password.
+# Linux it resolves packages from a manifest (linux/packages.conf): native
+# package manager (apt/dnf/pacman) first, then a GitHub release binary, with
+# Linuxbrew (x86_64 only) as a last resort. Linux package installs require
+# root — the script uses sudo and may prompt for a password.
 #
 # Run from a local checkout:
 #   ./install.sh
@@ -68,21 +69,62 @@ version_ge() {
   [ "$a_minor" -ge "$b_minor" ]
 }
 
+# arch_regex [machine] -> grep -E alternation matching this machine's flavor in
+# release asset names (projects disagree: x86_64/amd64/x64, aarch64/arm64).
+arch_regex() {
+  local m="${1:-$(uname -m)}"
+  case "$m" in
+    x86_64|amd64|x64) echo "(x86_64|amd64|x64)" ;;
+    aarch64|arm64)    echo "(aarch64|arm64)" ;;
+    *)                echo "$m" ;;
+  esac
+}
+
+# expand_arch <pattern> [machine] -> pattern with {arch} -> arch_regex output.
+expand_arch() {
+  local re; re="$(arch_regex "${2:-}")"
+  printf '%s\n' "${1//\{arch\}/$re}"
+}
+
+# native_for_pm <pm> <field> -> native package name for this PM.
+# field is "-" (no native package), a bare name (same on every PM), or
+# per-PM overrides "apt:x,dnf:y,pacman:z" (PM not listed -> no candidate).
+native_for_pm() {
+  local pm="$1" field="$2" part
+  [ "$field" = "-" ] && return 1
+  case "$field" in
+    *:*)
+      local IFS=','
+      for part in $field; do
+        case "$part" in "$pm":*) echo "${part#"$pm":}"; return 0 ;; esac
+      done
+      return 1 ;;
+    *) echo "$field" ;;
+  esac
+}
+
 # Installed nvim version (x.y.z) on stdout, or return 1 if nvim is absent or unparseable.
 nvim_version() {
   command -v nvim >/dev/null 2>&1 || return 1
   nvim --version | head -1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+'
 }
 
-# Native-tier package list for the given PM (bootstrap + tools distros ship fine).
-native_packages() {
-  case "$1" in
-    # gnupg: the apt wezterm repo path needs `gpg` (minimal installs lack it).
-    # ripgrep/zoxide/direnv: required by telescope live_grep, sesh + zshrc.
-    apt)    echo "git curl zsh tmux jq tree unzip build-essential wl-clipboard xclip fontconfig gnupg ripgrep zoxide direnv" ;;
-    dnf)    echo "git curl zsh tmux jq tree unzip @development-tools wl-clipboard xclip fontconfig ripgrep zoxide direnv" ;;
-    pacman) echo "git curl zsh tmux jq tree unzip base-devel wl-clipboard xclip fontconfig ripgrep zoxide direnv" ;;
-  esac
+# cmd_version <cmd> -> first x.y[.z] in `<cmd> --version`, or failure.
+cmd_version() {
+  command -v "$1" >/dev/null 2>&1 || return 1
+  "$1" --version 2>/dev/null | grep -oE '[0-9]+\.[0-9]+(\.[0-9]+)?' | head -1
+  # grep in a pipeline: rely on output emptiness, not exit status
+}
+
+# pkg_satisfied <check> <min> -> success when <check> exists and meets <min>.
+# min "-" means any version. A probe that yields no version fails the check.
+pkg_satisfied() {
+  local check="$1" min="$2" v
+  command -v "$check" >/dev/null 2>&1 || return 1
+  [ "$min" = "-" ] && return 0
+  v="$(cmd_version "$check")"
+  [ -n "$v" ] || return 1
+  version_ge "$v" "$min"
 }
 
 # Refresh package metadata for the given PM.
@@ -118,57 +160,6 @@ ensure_linuxbrew() {
   command -v brew >/dev/null 2>&1
 }
 
-# Ensure the version-sensitive tools the configs depend on, brewing only laggards.
-ensure_version_tools() {
-  local v
-  v="$(nvim_version || true)"
-  if [ -n "$v" ] && version_ge "$v" "$MIN_NVIM"; then
-    ok "neovim $v (>= $MIN_NVIM)"
-  else
-    info "neovim ${v:-absent} (< $MIN_NVIM) — installing via Homebrew"
-    ensure_linuxbrew && brew install neovim && ok "neovim installed via brew" \
-      || warn "could not install neovim >= $MIN_NVIM; treesitter may not work"
-  fi
-
-  # tree-sitter-cli (binary: tree-sitter) — needed for :TSUpdate to compile parsers
-  if command -v tree-sitter >/dev/null 2>&1; then
-    ok "tree-sitter-cli present"
-  else
-    info "tree-sitter-cli absent — installing via Homebrew"
-    ensure_linuxbrew && brew install tree-sitter-cli && ok "tree-sitter-cli installed" \
-      || warn "tree-sitter-cli install failed; parsers may not compile"
-  fi
-
-  # fzf must support `fzf --zsh` (>= 0.48), used by zshrc
-  if command -v fzf >/dev/null 2>&1 && fzf --zsh >/dev/null 2>&1; then
-    ok "fzf (supports --zsh)"
-  else
-    info "fzf missing or too old (no --zsh) — installing via Homebrew"
-    ensure_linuxbrew && brew install fzf && ok "fzf installed via brew" \
-      || warn "fzf install failed; Ctrl-R/Ctrl-T integration unavailable"
-  fi
-
-  # bat — everyday pager (macOS gets it via the Brewfile); native Debian
-  # ships the binary as `batcat`, so brew it for a consistent name
-  if command -v bat >/dev/null 2>&1; then
-    ok "bat present"
-  else
-    info "bat absent — installing via Homebrew"
-    ensure_linuxbrew && brew install bat && ok "bat installed via brew" \
-      || warn "bat install failed"
-  fi
-
-  # sesh — tmux session manager bound to prefix-s in tmux.conf; no distro
-  # packages it, so brew is the only non-Go install path
-  if command -v sesh >/dev/null 2>&1; then
-    ok "sesh present"
-  else
-    info "sesh absent — installing via Homebrew"
-    ensure_linuxbrew && brew install sesh && ok "sesh installed via brew" \
-      || warn "sesh install failed; tmux prefix-s session picker unavailable"
-  fi
-}
-
 # Install JetBrainsMono Nerd Font into the user font dir if not already present.
 install_nerd_font_linux() {
   if fc-list 2>/dev/null | grep -qi "JetBrainsMono Nerd Font"; then
@@ -191,6 +182,24 @@ install_nerd_font_linux() {
 # Read GitHub release JSON on stdin, echo the first Ubuntu AppImage asset URL.
 appimage_url_filter() {
   grep -oE 'https://[^"]*Ubuntu[^"]*\.AppImage' | head -1
+}
+
+# Read GitHub release JSON on stdin, echo the first browser_download_url whose
+# value matches the given extended regex. Returns 1 when nothing matches.
+gh_url_filter() {
+  grep -oE '"browser_download_url" *: *"[^"]+"' \
+    | grep -oE 'https://[^"]+' \
+    | grep -E -m1 "$1"
+}
+
+# asset_kind <url> -> targz | zip | gz | bin, by extension.
+asset_kind() {
+  case "$1" in
+    *.tar.gz|*.tgz) echo targz ;;
+    *.zip)          echo zip ;;
+    *.gz)           echo gz ;;
+    *)              echo bin ;;
+  esac
 }
 
 # Install wezterm on a Linux desktop: native repo per PM, AppImage as fallback.
@@ -268,6 +277,94 @@ link() {
 if (return 0 2>/dev/null); then return 0; fi
 
 # ----------------------------------------------------------------------------
+# Manifest-driven package resolution (Linux). See linux/packages.conf.
+# ----------------------------------------------------------------------------
+
+# install_gh_release <name> <check> <owner/repo:asset-regex>
+# Latest-release asset -> ~/.local/bin (single binaries, flat tarballs) or
+# ~/.local/opt/<name> with bin/* symlinked (tarballs with a directory tree).
+install_gh_release() {
+  local name="$1" check="$2" spec="$3"
+  local repo="${spec%%:*}" pattern="${spec#*:}" url tmp bindir="$HOME/.local/bin"
+  pattern="$(expand_arch "$pattern")"
+  url="$(curl -fsSL "https://api.github.com/repos/$repo/releases/latest" | gh_url_filter "$pattern")" \
+    || { warn "$name: no release asset matching $pattern"; return 1; }
+  tmp="$(mktemp -d)" || return 1
+  mkdir -p "$bindir"
+  info "$name: downloading ${url##*/}"
+  if ! curl -fsSL -o "$tmp/asset" "$url"; then warn "$name: download failed"; rm -rf "$tmp"; return 1; fi
+  case "$(asset_kind "$url")" in
+    targz|zip)
+      if [ "$(asset_kind "$url")" = zip ]; then
+        unzip -q "$tmp/asset" -d "$tmp" || { warn "$name: extract failed"; rm -rf "$tmp"; return 1; }
+      else
+        tar -xzf "$tmp/asset" -C "$tmp" || { warn "$name: extract failed"; rm -rf "$tmp"; return 1; }
+      fi
+      local tree
+      tree="$(find "$tmp" -maxdepth 2 -type d -name bin | head -1)"
+      if [ -n "$tree" ]; then
+        # Full tree (e.g. neovim): keep it in ~/.local/opt, symlink executables.
+        rm -rf "$HOME/.local/opt/$name"; mkdir -p "$HOME/.local/opt"
+        mv "$(dirname "$tree")" "$HOME/.local/opt/$name"
+        local exe
+        for exe in "$HOME/.local/opt/$name/bin/"*; do
+          [ -x "$exe" ] && ln -sf "$exe" "$bindir/$(basename "$exe")"
+        done
+      else
+        local bin
+        bin="$(find "$tmp" -maxdepth 2 -type f -name "$check" | head -1)"
+        [ -n "$bin" ] || { warn "$name: no '$check' binary in archive"; rm -rf "$tmp"; return 1; }
+        install -m 755 "$bin" "$bindir/$check"
+      fi ;;
+    gz)
+      gunzip -c "$tmp/asset" > "$bindir/$check" || { warn "$name: gunzip failed"; rm -rf "$tmp"; return 1; }
+      chmod +x "$bindir/$check" ;;
+    bin)
+      install -m 755 "$tmp/asset" "$bindir/$check" ;;
+  esac
+  rm -rf "$tmp"
+}
+
+# resolve_packages <pm> <manifest>
+# Tier order per entry: already satisfied -> native (batched) -> GitHub
+# release -> Linuxbrew (x86_64 only). One tool's failure never aborts.
+resolve_packages() {
+  local pm="$1" manifest="$2"
+  local name check min native gh pkg pkg2 batch=""
+  export PATH="$HOME/.local/bin:$PATH"
+
+  # Pass 1: everything the native PM should provide, in one transaction.
+  while read -r name check min native gh; do
+    case "$name" in ''|\#*) continue ;; esac
+    if [ "$check" != "-" ] && pkg_satisfied "$check" "$min"; then continue; fi
+    pkg="$(native_for_pm "$pm" "$native")" && batch="$batch $pkg"
+  done < "$manifest"
+  if [ -n "$batch" ]; then
+    # shellcheck disable=SC2086
+    if ! pm_install "$pm" $batch; then
+      warn "batch install failed — retrying packages individually"
+      for pkg2 in $batch; do
+        pm_install "$pm" "$pkg2" || warn "$pkg2: native install failed"
+      done
+    fi
+  fi
+
+  # Pass 2: verify each probed tool; fall back per entry.
+  while read -r name check min native gh; do
+    case "$name" in ''|\#*) continue ;; esac
+    [ "$check" = "-" ] && continue
+    if pkg_satisfied "$check" "$min"; then ok "$name $(cmd_version "$check" || echo present)"; continue; fi
+    if [ "$gh" != "-" ] && install_gh_release "$name" "$check" "$gh" </dev/null && pkg_satisfied "$check" "$min"; then
+      ok "$name installed from GitHub release"; continue
+    fi
+    if [ "$(uname -m)" = "x86_64" ] && { ensure_linuxbrew && brew install "$name"; } </dev/null && pkg_satisfied "$check" "$min"; then
+      ok "$name installed via Linuxbrew"; continue
+    fi
+    warn "$name: could not satisfy (check '$check', min $min) — install manually"
+  done < "$manifest"
+}
+
+# ----------------------------------------------------------------------------
 # 0. Prerequisites: Homebrew (macOS) provides git; ensure git exists elsewhere
 # ----------------------------------------------------------------------------
 step "Prerequisites"
@@ -290,9 +387,8 @@ elif is_linux; then
   info "Detected package manager: $PM"
   [ -n "$SUDO" ] && info "Privileged installs use sudo; you may be prompted for your password."
   pm_update "$PM" || warn "package metadata refresh failed (continuing)"
-  # shellcheck disable=SC2046
-  pm_install "$PM" $(native_packages "$PM") || die "native package install failed"
-  ok "native tier installed"
+  pm_install "$PM" git curl unzip ca-certificates || die "bootstrap package install failed"
+  ok "bootstrap tier installed (git curl unzip)"
 fi
 command -v git >/dev/null 2>&1 || die "git is required. Install it (e.g. 'sudo apt install git') and re-run."
 
@@ -323,7 +419,7 @@ if is_macos; then
     warn "brew bundle reported problems (continuing)"
   fi
 elif is_linux; then
-  ensure_version_tools
+  resolve_packages "$PM" "$DOTFILES/linux/packages.conf"
 fi
 
 # ----------------------------------------------------------------------------
