@@ -191,10 +191,11 @@ gh_url_filter() {
     | grep -E -m1 "$1"
 }
 
-# asset_kind <url> -> targz | gz | bin, by extension.
+# asset_kind <url> -> targz | zip | gz | bin, by extension.
 asset_kind() {
   case "$1" in
     *.tar.gz|*.tgz) echo targz ;;
+    *.zip)          echo zip ;;
     *.gz)           echo gz ;;
     *)              echo bin ;;
   esac
@@ -292,8 +293,12 @@ install_gh_release() {
   info "$name: downloading ${url##*/}"
   if ! curl -fsSL -o "$tmp/asset" "$url"; then warn "$name: download failed"; rm -rf "$tmp"; return 1; fi
   case "$(asset_kind "$url")" in
-    targz)
-      tar -xzf "$tmp/asset" -C "$tmp" || { warn "$name: extract failed"; rm -rf "$tmp"; return 1; }
+    targz|zip)
+      if [ "$(asset_kind "$url")" = zip ]; then
+        unzip -q "$tmp/asset" -d "$tmp" || { warn "$name: extract failed"; rm -rf "$tmp"; return 1; }
+      else
+        tar -xzf "$tmp/asset" -C "$tmp" || { warn "$name: extract failed"; rm -rf "$tmp"; return 1; }
+      fi
       local tree
       tree="$(find "$tmp" -maxdepth 2 -type d -name bin | head -1)"
       if [ -n "$tree" ]; then

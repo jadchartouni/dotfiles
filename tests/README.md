@@ -5,8 +5,10 @@
     bash tests/test_helpers.sh
 
 Sources `install.sh` (which stops early when sourced via the source-guard) and
-asserts on the pure helper functions: `version_ge`, `native_packages`,
-`appimage_url_filter`.
+asserts on the pure helper functions: `version_ge`, `arch_regex`/`expand_arch`,
+`native_for_pm`, `gh_url_filter`, `cmd_version`/`pkg_satisfied`, `asset_kind`,
+and lints `linux/packages.conf` (every non-comment line has exactly 5 fields,
+and each expected tool is present).
 
 ## Integration matrix (headless install per distro)
 
@@ -28,6 +30,16 @@ Fedora (dnf):
       git clone https://github.com/jadchartouni/dotfiles /root/.dotfiles &&
       cd /root/.dotfiles && ./install.sh && ./install.sh &&
       nvim --version | head -1'
+
+Kali (apt, and on Apple Silicon this runs the ARM64 image — the same
+architecture as the real VMs, exercising the gh-release ARM assets):
+
+    docker run --rm -it kalilinux/kali-rolling bash -c '
+      apt-get update && apt-get install -y sudo curl git &&
+      git clone https://github.com/jadchartouni/dotfiles /root/.dotfiles &&
+      cd /root/.dotfiles && ./install.sh && ./install.sh &&
+      export PATH="$HOME/.local/bin:$PATH" &&
+      nvim --version | head -1 && sesh --version && bat --version'
 
 Arch (pacman):
 
