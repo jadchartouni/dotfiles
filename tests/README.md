@@ -6,8 +6,8 @@
 
 Sources `install.sh` (which stops early when sourced via the source-guard) and
 asserts on the pure helper functions: `version_ge`, `arch_regex`/`expand_arch`,
-`native_for_pm`, `gh_url_filter`, `cmd_version`/`pkg_satisfied`, `asset_kind`,
-and lints `linux/packages.conf` (every non-comment line has exactly 5 fields,
+`native_for_pm`, `gh_url_filter`, `appimage_url_filter`, `cmd_version`/`pkg_satisfied`,
+`asset_kind`, and lints `linux/packages.conf` (every non-comment line has exactly 5 fields,
 and each expected tool is present).
 
 ## Integration matrix (headless install per distro)
@@ -21,6 +21,7 @@ Ubuntu (apt):
       apt-get update && apt-get install -y sudo curl git &&
       git clone https://github.com/jadchartouni/dotfiles /root/.dotfiles &&
       cd /root/.dotfiles && ./install.sh && ./install.sh &&
+      export PATH="$HOME/.local/bin:$PATH" &&
       nvim --version | head -1'
 
 Fedora (dnf):
@@ -29,6 +30,7 @@ Fedora (dnf):
       dnf install -y sudo curl git &&
       git clone https://github.com/jadchartouni/dotfiles /root/.dotfiles &&
       cd /root/.dotfiles && ./install.sh && ./install.sh &&
+      export PATH="$HOME/.local/bin:$PATH" &&
       nvim --version | head -1'
 
 Kali (apt, and on Apple Silicon this runs the ARM64 image — the same
@@ -47,12 +49,16 @@ Arch (pacman):
       pacman -Sy --noconfirm sudo curl git &&
       git clone https://github.com/jadchartouni/dotfiles /root/.dotfiles &&
       cd /root/.dotfiles && ./install.sh && ./install.sh &&
+      export PATH="$HOME/.local/bin:$PATH" &&
       nvim --version | head -1'
 
 Expected per distro:
-- First run: native tier installs (incl. ripgrep/zoxide/direnv); nvim,
-  tree-sitter-cli, fzf, bat and sesh are resolved via Linuxbrew when absent —
-  on every distro, since the native tier does not include them.
+- First run: native tier installs (incl. ripgrep/zoxide/direnv). For
+  version-sensitive tools (nvim, tree-sitter-cli, fzf, bat, sesh), each entry
+  in `linux/packages.conf` is resolved tier by tier: the distro package if
+  present and new enough, otherwise a GitHub release binary installed into
+  `~/.local/bin` (works on both ARM64 and x86_64), and only as a last resort —
+  on x86_64 only — Linuxbrew.
 - Second run: every step reports "already" / "in sync" (idempotent), and
   Linuxbrew is not reinstalled.
 - `nvim --version` reports >= 0.11.

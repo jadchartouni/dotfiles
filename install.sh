@@ -4,9 +4,10 @@
 #
 # Safe to run any number of times: every step checks current state first, then
 # fixes / installs / updates only what's needed. On macOS it uses Homebrew; on
-# Linux it uses the native package manager (apt/dnf/pacman) for base tools and
-# falls back to Linuxbrew only for version-sensitive tools. Linux package
-# installs require root — the script uses sudo and may prompt for a password.
+# Linux it resolves packages from a manifest (linux/packages.conf): native
+# package manager (apt/dnf/pacman) first, then a GitHub release binary, with
+# Linuxbrew (x86_64 only) as a last resort. Linux package installs require
+# root — the script uses sudo and may prompt for a password.
 #
 # Run from a local checkout:
 #   ./install.sh
@@ -353,10 +354,10 @@ resolve_packages() {
     case "$name" in ''|\#*) continue ;; esac
     [ "$check" = "-" ] && continue
     if pkg_satisfied "$check" "$min"; then ok "$name $(cmd_version "$check" || echo present)"; continue; fi
-    if [ "$gh" != "-" ] && install_gh_release "$name" "$check" "$gh" && pkg_satisfied "$check" "$min"; then
+    if [ "$gh" != "-" ] && install_gh_release "$name" "$check" "$gh" </dev/null && pkg_satisfied "$check" "$min"; then
       ok "$name installed from GitHub release"; continue
     fi
-    if [ "$(uname -m)" = "x86_64" ] && ensure_linuxbrew && brew install "$name" && pkg_satisfied "$check" "$min"; then
+    if [ "$(uname -m)" = "x86_64" ] && { ensure_linuxbrew && brew install "$name"; } </dev/null && pkg_satisfied "$check" "$min"; then
       ok "$name installed via Linuxbrew"; continue
     fi
     warn "$name: could not satisfy (check '$check', min $min) — install manually"
