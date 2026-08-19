@@ -253,6 +253,15 @@ gh_url_filter() {
     | grep -E -m1 "$1"
 }
 
+# asset_kind <url> -> targz | gz | bin, by extension.
+asset_kind() {
+  case "$1" in
+    *.tar.gz|*.tgz) echo targz ;;
+    *.gz)           echo gz ;;
+    *)              echo bin ;;
+  esac
+}
+
 # Install wezterm on a Linux desktop: native repo per PM, AppImage as fallback.
 install_wezterm_linux() {
   command -v wezterm >/dev/null 2>&1 && { ok "wezterm present"; return; }

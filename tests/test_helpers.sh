@@ -100,5 +100,11 @@ for tool in build-tools neovim fzf sesh tree-sitter-cli eza yazi btop bat univer
   else printf 'FAIL - packages.conf missing %s\n' "$tool"; fails=$((fails+1)); fi
 done
 
+# asset_kind <url-or-filename> -> targz | gz | bin
+check "asset_kind tar.gz" "targz" "$(asset_kind https://x/nvim-linux-arm64.tar.gz)"
+check "asset_kind tgz"    "targz" "$(asset_kind x.tgz)"
+check "asset_kind gz"     "gz"    "$(asset_kind https://x/tree-sitter-linux-arm64.gz)"
+check "asset_kind bare"   "bin"   "$(asset_kind https://x/some-binary)"
+
 echo
 if [ "$fails" -eq 0 ]; then echo "ALL PASS"; exit 0; else echo "$fails FAILURE(S)"; exit 1; fi
