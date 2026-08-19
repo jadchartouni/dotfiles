@@ -27,21 +27,6 @@ check_false version_ge 0.10.4 0.11
 check_false version_ge 0.9.5  0.11
 check_true  version_ge 0.11   0.11
 
-# native_packages <pm> -> space-separated package list for that PM
-check_true  test -n "$(native_packages apt)"
-check_nonempty() { if native_packages "$1" | grep -q "$2"; then printf 'ok   - native_packages %s has %s\n' "$1" "$2"; else printf 'FAIL - native_packages %s missing %s\n' "$1" "$2"; fails=$((fails+1)); fi; }
-check_nonempty apt    build-essential
-check_nonempty dnf    "@development-tools"
-check_nonempty pacman base-devel
-check_nonempty apt    wl-clipboard
-check_nonempty pacman fontconfig
-check_nonempty apt    gnupg
-check_nonempty apt    ripgrep
-check_nonempty dnf    ripgrep
-check_nonempty pacman ripgrep
-check_nonempty apt    zoxide
-check_nonempty apt    direnv
-
 # appimage_url_filter reads release JSON on stdin, echoes the AppImage asset URL
 sample_json='{"assets":[{"browser_download_url":"https://github.com/wez/wezterm/releases/download/2024/WezTerm-2024-Ubuntu20.04.AppImage"},{"browser_download_url":"https://github.com/wez/wezterm/releases/download/2024/WezTerm-2024-src.tar.gz"}]}'
 got="$(printf '%s' "$sample_json" | appimage_url_filter)"

@@ -126,17 +126,6 @@ pkg_satisfied() {
   version_ge "$v" "$min"
 }
 
-# Native-tier package list for the given PM (bootstrap + tools distros ship fine).
-native_packages() {
-  case "$1" in
-    # gnupg: the apt wezterm repo path needs `gpg` (minimal installs lack it).
-    # ripgrep/zoxide/direnv: required by telescope live_grep, sesh + zshrc.
-    apt)    echo "git curl zsh tmux jq tree unzip build-essential wl-clipboard xclip fontconfig gnupg ripgrep zoxide direnv" ;;
-    dnf)    echo "git curl zsh tmux jq tree unzip @development-tools wl-clipboard xclip fontconfig ripgrep zoxide direnv" ;;
-    pacman) echo "git curl zsh tmux jq tree unzip base-devel wl-clipboard xclip fontconfig ripgrep zoxide direnv" ;;
-  esac
-}
-
 # Refresh package metadata for the given PM.
 pm_update() {
   case "$1" in
@@ -168,57 +157,6 @@ ensure_linuxbrew() {
     || { warn "Linuxbrew install failed"; return 1; }
   [ -x /home/linuxbrew/.linuxbrew/bin/brew ] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
   command -v brew >/dev/null 2>&1
-}
-
-# Ensure the version-sensitive tools the configs depend on, brewing only laggards.
-ensure_version_tools() {
-  local v
-  v="$(nvim_version || true)"
-  if [ -n "$v" ] && version_ge "$v" "$MIN_NVIM"; then
-    ok "neovim $v (>= $MIN_NVIM)"
-  else
-    info "neovim ${v:-absent} (< $MIN_NVIM) — installing via Homebrew"
-    ensure_linuxbrew && brew install neovim && ok "neovim installed via brew" \
-      || warn "could not install neovim >= $MIN_NVIM; treesitter may not work"
-  fi
-
-  # tree-sitter-cli (binary: tree-sitter) — needed for :TSUpdate to compile parsers
-  if command -v tree-sitter >/dev/null 2>&1; then
-    ok "tree-sitter-cli present"
-  else
-    info "tree-sitter-cli absent — installing via Homebrew"
-    ensure_linuxbrew && brew install tree-sitter-cli && ok "tree-sitter-cli installed" \
-      || warn "tree-sitter-cli install failed; parsers may not compile"
-  fi
-
-  # fzf must support `fzf --zsh` (>= 0.48), used by zshrc
-  if command -v fzf >/dev/null 2>&1 && fzf --zsh >/dev/null 2>&1; then
-    ok "fzf (supports --zsh)"
-  else
-    info "fzf missing or too old (no --zsh) — installing via Homebrew"
-    ensure_linuxbrew && brew install fzf && ok "fzf installed via brew" \
-      || warn "fzf install failed; Ctrl-R/Ctrl-T integration unavailable"
-  fi
-
-  # bat — everyday pager (macOS gets it via the Brewfile); native Debian
-  # ships the binary as `batcat`, so brew it for a consistent name
-  if command -v bat >/dev/null 2>&1; then
-    ok "bat present"
-  else
-    info "bat absent — installing via Homebrew"
-    ensure_linuxbrew && brew install bat && ok "bat installed via brew" \
-      || warn "bat install failed"
-  fi
-
-  # sesh — tmux session manager bound to prefix-s in tmux.conf; no distro
-  # packages it, so brew is the only non-Go install path
-  if command -v sesh >/dev/null 2>&1; then
-    ok "sesh present"
-  else
-    info "sesh absent — installing via Homebrew"
-    ensure_linuxbrew && brew install sesh && ok "sesh installed via brew" \
-      || warn "sesh install failed; tmux prefix-s session picker unavailable"
-  fi
 }
 
 # Install JetBrainsMono Nerd Font into the user font dir if not already present.
@@ -337,6 +275,85 @@ link() {
 if (return 0 2>/dev/null); then return 0; fi
 
 # ----------------------------------------------------------------------------
+# Manifest-driven package resolution (Linux). See linux/packages.conf.
+# ----------------------------------------------------------------------------
+
+# install_gh_release <name> <check> <owner/repo:asset-regex>
+# Latest-release asset -> ~/.local/bin (single binaries, flat tarballs) or
+# ~/.local/opt/<name> with bin/* symlinked (tarballs with a directory tree).
+install_gh_release() {
+  local name="$1" check="$2" spec="$3"
+  local repo="${spec%%:*}" pattern="${spec#*:}" url tmp bindir="$HOME/.local/bin"
+  pattern="$(expand_arch "$pattern")"
+  url="$(curl -fsSL "https://api.github.com/repos/$repo/releases/latest" | gh_url_filter "$pattern")" \
+    || { warn "$name: no release asset matching $pattern"; return 1; }
+  tmp="$(mktemp -d)" || return 1
+  mkdir -p "$bindir"
+  info "$name: downloading ${url##*/}"
+  if ! curl -fsSL -o "$tmp/asset" "$url"; then warn "$name: download failed"; rm -rf "$tmp"; return 1; fi
+  case "$(asset_kind "$url")" in
+    targz)
+      tar -xzf "$tmp/asset" -C "$tmp" || { warn "$name: extract failed"; rm -rf "$tmp"; return 1; }
+      local tree
+      tree="$(find "$tmp" -maxdepth 2 -type d -name bin | head -1)"
+      if [ -n "$tree" ]; then
+        # Full tree (e.g. neovim): keep it in ~/.local/opt, symlink executables.
+        rm -rf "$HOME/.local/opt/$name"; mkdir -p "$HOME/.local/opt"
+        mv "$(dirname "$tree")" "$HOME/.local/opt/$name"
+        local exe
+        for exe in "$HOME/.local/opt/$name/bin/"*; do
+          [ -x "$exe" ] && ln -sf "$exe" "$bindir/$(basename "$exe")"
+        done
+      else
+        local bin
+        bin="$(find "$tmp" -maxdepth 2 -type f -name "$check" | head -1)"
+        [ -n "$bin" ] || { warn "$name: no '$check' binary in archive"; rm -rf "$tmp"; return 1; }
+        install -m 755 "$bin" "$bindir/$check"
+      fi ;;
+    gz)
+      gunzip -c "$tmp/asset" > "$bindir/$check" || { warn "$name: gunzip failed"; rm -rf "$tmp"; return 1; }
+      chmod +x "$bindir/$check" ;;
+    bin)
+      install -m 755 "$tmp/asset" "$bindir/$check" ;;
+  esac
+  rm -rf "$tmp"
+}
+
+# resolve_packages <pm> <manifest>
+# Tier order per entry: already satisfied -> native (batched) -> GitHub
+# release -> Linuxbrew (x86_64 only). One tool's failure never aborts.
+resolve_packages() {
+  local pm="$1" manifest="$2"
+  local name check min native gh pkg batch=""
+  export PATH="$HOME/.local/bin:$PATH"
+
+  # Pass 1: everything the native PM should provide, in one transaction.
+  while read -r name check min native gh; do
+    case "$name" in ''|\#*) continue ;; esac
+    if [ "$check" != "-" ] && pkg_satisfied "$check" "$min"; then continue; fi
+    pkg="$(native_for_pm "$pm" "$native")" && batch="$batch $pkg"
+  done < "$manifest"
+  if [ -n "$batch" ]; then
+    # shellcheck disable=SC2086
+    pm_install "$pm" $batch || warn "some native packages failed (continuing)"
+  fi
+
+  # Pass 2: verify each probed tool; fall back per entry.
+  while read -r name check min native gh; do
+    case "$name" in ''|\#*) continue ;; esac
+    [ "$check" = "-" ] && continue
+    if pkg_satisfied "$check" "$min"; then ok "$name $(cmd_version "$check" || echo present)"; continue; fi
+    if [ "$gh" != "-" ] && install_gh_release "$name" "$check" "$gh" && pkg_satisfied "$check" "$min"; then
+      ok "$name installed from GitHub release"; continue
+    fi
+    if [ "$(uname -m)" = "x86_64" ] && ensure_linuxbrew && brew install "$name" && pkg_satisfied "$check" "$min"; then
+      ok "$name installed via Linuxbrew"; continue
+    fi
+    warn "$name: could not satisfy (check '$check', min $min) — install manually"
+  done < "$manifest"
+}
+
+# ----------------------------------------------------------------------------
 # 0. Prerequisites: Homebrew (macOS) provides git; ensure git exists elsewhere
 # ----------------------------------------------------------------------------
 step "Prerequisites"
@@ -359,9 +376,8 @@ elif is_linux; then
   info "Detected package manager: $PM"
   [ -n "$SUDO" ] && info "Privileged installs use sudo; you may be prompted for your password."
   pm_update "$PM" || warn "package metadata refresh failed (continuing)"
-  # shellcheck disable=SC2046
-  pm_install "$PM" $(native_packages "$PM") || die "native package install failed"
-  ok "native tier installed"
+  pm_install "$PM" git curl unzip ca-certificates || die "bootstrap package install failed"
+  ok "bootstrap tier installed (git curl unzip)"
 fi
 command -v git >/dev/null 2>&1 || die "git is required. Install it (e.g. 'sudo apt install git') and re-run."
 
@@ -392,7 +408,7 @@ if is_macos; then
     warn "brew bundle reported problems (continuing)"
   fi
 elif is_linux; then
-  ensure_version_tools
+  resolve_packages "$PM" "$DOTFILES/linux/packages.conf"
 fi
 
 # ----------------------------------------------------------------------------
