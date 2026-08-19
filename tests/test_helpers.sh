@@ -90,5 +90,15 @@ check_false pkg_satisfied stubtool 1.5
 check_false pkg_satisfied no-such-cmd-xyz -
 rm -rf "$stubdir"
 
+# linux/packages.conf: every non-comment line has exactly 5 fields
+conf="$HERE/../linux/packages.conf"
+check "packages.conf exists" "0" "$(test -f "$conf"; echo $?)"
+badlines="$(awk 'NF && $1 !~ /^#/ && NF != 5' "$conf" | wc -l | tr -d ' ')"
+check "packages.conf lines have 5 fields" "0" "$badlines"
+for tool in build-tools neovim fzf sesh tree-sitter-cli eza yazi btop bat universal-ctags ripgrep zoxide direnv; do
+  if grep -qE "^$tool[[:space:]]" "$conf"; then printf 'ok   - packages.conf has %s\n' "$tool"
+  else printf 'FAIL - packages.conf missing %s\n' "$tool"; fails=$((fails+1)); fi
+done
+
 echo
 if [ "$fails" -eq 0 ]; then echo "ALL PASS"; exit 0; else echo "$fails FAILURE(S)"; exit 1; fi
