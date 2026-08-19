@@ -227,6 +227,14 @@ appimage_url_filter() {
   grep -oE 'https://[^"]*Ubuntu[^"]*\.AppImage' | head -1
 }
 
+# Read GitHub release JSON on stdin, echo the first browser_download_url whose
+# value matches the given extended regex. Returns 1 when nothing matches.
+gh_url_filter() {
+  grep -oE '"browser_download_url" *: *"[^"]+"' \
+    | grep -oE 'https://[^"]+' \
+    | grep -E -m1 "$1"
+}
+
 # Install wezterm on a Linux desktop: native repo per PM, AppImage as fallback.
 install_wezterm_linux() {
   command -v wezterm >/dev/null 2>&1 && { ok "wezterm present"; return; }

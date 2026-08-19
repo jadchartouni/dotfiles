@@ -67,5 +67,15 @@ check "native_for_pm dnf override"  "@development-tools" "$(native_for_pm dnf ap
 check_false native_for_pm apt -
 check_false native_for_pm dnf apt:universal-ctags
 
+# gh_url_filter <regex> reads release JSON on stdin, echoes first matching asset URL
+gh_json='{"assets":[{"browser_download_url":"https://github.com/neovim/neovim/releases/download/v0.11.3/nvim-linux-arm64.tar.gz"},{"browser_download_url":"https://github.com/neovim/neovim/releases/download/v0.11.3/nvim-linux-x86_64.tar.gz"}]}'
+check "gh_url_filter picks arm64 asset" \
+  "https://github.com/neovim/neovim/releases/download/v0.11.3/nvim-linux-arm64.tar.gz" \
+  "$(printf '%s' "$gh_json" | gh_url_filter "$(expand_arch 'nvim-linux-{arch}\.tar\.gz' arm64)")"
+check "gh_url_filter picks x86 asset" \
+  "https://github.com/neovim/neovim/releases/download/v0.11.3/nvim-linux-x86_64.tar.gz" \
+  "$(printf '%s' "$gh_json" | gh_url_filter "$(expand_arch 'nvim-linux-{arch}\.tar\.gz' x86_64)")"
+check "gh_url_filter no match fails" "1" "$(printf '%s' "$gh_json" | gh_url_filter 'windows\.zip' >/dev/null; echo $?)"
+
 echo
 if [ "$fails" -eq 0 ]; then echo "ALL PASS"; exit 0; else echo "$fails FAILURE(S)"; exit 1; fi
