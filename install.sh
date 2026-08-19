@@ -202,10 +202,14 @@ asset_kind() {
   esac
 }
 
-# Install wezterm on a Linux desktop: native repo per PM, AppImage as fallback.
+# Install wezterm on a Linux desktop: native repo per PM, then an arch-suited
+# release asset (Debian arm64 deb on ARM, AppImage on x86_64) as fallback.
 install_wezterm_linux() {
-  command -v wezterm >/dev/null 2>&1 && { ok "wezterm present"; return; }
-  local pm="$1"
+  # Probe with --version, not command -v: a wrong-arch binary from an earlier
+  # install would pass a presence check forever ("exec format error").
+  wezterm --version >/dev/null 2>&1 && { ok "wezterm present"; return; }
+  local pm="$1" is_arm=""
+  case "$(uname -m)" in aarch64|arm64) is_arm=1 ;; esac
   case "$pm" in
     pacman)
       # wezterm is in Arch's official repos; a failure here is transient, and an
@@ -214,6 +218,24 @@ install_wezterm_linux() {
         || warn "wezterm: pacman install failed"
       return ;;
     apt)
+      # The fury repo publishes amd64 only; on ARM go straight to the Debian
+      # arm64 deb wezterm ships in its releases (Kali is Debian-based).
+      if [ -n "$is_arm" ]; then
+        local deb_url tmp
+        deb_url="$(curl -fsSL https://api.github.com/repos/wez/wezterm/releases/latest \
+          | gh_url_filter 'Debian[0-9.]+\.arm64\.deb')"
+        if [ -n "$deb_url" ]; then
+          tmp="$(mktemp -d)"
+          info "Downloading wezterm arm64 deb..."
+          if curl -fsSL -o "$tmp/wezterm.deb" "$deb_url" \
+             && $SUDO apt-get install -y "$tmp/wezterm.deb"; then
+            rm -rf "$tmp"; ok "wezterm installed (arm64 deb)"; return
+          fi
+          rm -rf "$tmp"
+        fi
+        warn "wezterm arm64 install failed; install manually from https://wezterm.org/install/linux.html"
+        return
+      fi
       # Only register the apt repo if we actually fetched a key — otherwise a
       # network failure would write a sources.list that poisons every future
       # `apt update`. On any failure, fall through to the AppImage (valid on Debian/Ubuntu).
@@ -229,6 +251,11 @@ install_wezterm_linux() {
       $SUDO dnf -y copr enable wezfurlong/wezterm-nightly \
         && pm_install dnf wezterm && { ok "wezterm installed (copr)"; return; } ;;
   esac
+  # AppImages are x86_64-only — never the remedy on ARM (exec format error).
+  if [ -n "$is_arm" ]; then
+    warn "wezterm: no ARM install path for $pm; install manually from https://wezterm.org/install/linux.html"
+    return
+  fi
   warn "wezterm repo install unavailable; trying AppImage"
   local url
   url="$(curl -fsSL https://api.github.com/repos/wez/wezterm/releases/latest | appimage_url_filter)"
