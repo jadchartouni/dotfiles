@@ -324,7 +324,7 @@ install_gh_release() {
 # release -> Linuxbrew (x86_64 only). One tool's failure never aborts.
 resolve_packages() {
   local pm="$1" manifest="$2"
-  local name check min native gh pkg batch=""
+  local name check min native gh pkg pkg2 batch=""
   export PATH="$HOME/.local/bin:$PATH"
 
   # Pass 1: everything the native PM should provide, in one transaction.
@@ -335,7 +335,12 @@ resolve_packages() {
   done < "$manifest"
   if [ -n "$batch" ]; then
     # shellcheck disable=SC2086
-    pm_install "$pm" $batch || warn "some native packages failed (continuing)"
+    if ! pm_install "$pm" $batch; then
+      warn "batch install failed — retrying packages individually"
+      for pkg2 in $batch; do
+        pm_install "$pm" "$pkg2" || warn "$pkg2: native install failed"
+      done
+    fi
   fi
 
   # Pass 2: verify each probed tool; fall back per entry.
